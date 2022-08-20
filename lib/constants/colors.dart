@@ -47,7 +47,7 @@ class ColorName {
   static const Color dividerDark = Color(0xFF545454);
 
   /// Color: #c62828
-  static const Color dividerLight = Color(0xFFC62828);
+  static const Color dividerLight = Color(0xFF545454);
 
   /// Color: #102027
   static const Color primaryDark = Color(0xFF16a085);

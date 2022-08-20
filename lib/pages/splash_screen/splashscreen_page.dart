@@ -5,9 +5,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-import '../third_library/button_default.dart';
-import '../third_library/progress_button/iconed_button.dart';
-import '../third_library/progress_button/progress_button.dart';
+import '../../../third_library/button_default.dart';
 
 class SplashScreenPage extends StatefulWidget {
   const SplashScreenPage({Key? key}) : super(key: key);

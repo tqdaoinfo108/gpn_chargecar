@@ -18,7 +18,8 @@ dependencies:
   flutter_map: ^2.2.0
   flutter_native_splash: ^2.2.7
   sliding_up_panel: ^2.0.0+1
-  
+  progress_state_button: "^1.0.4"
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
