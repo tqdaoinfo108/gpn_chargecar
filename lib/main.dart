@@ -1,6 +1,5 @@
 import 'package:charge_car/pages/home/home_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/route_manager.dart';
 
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      theme: Style.light,
+      theme: Style.dark,
       debugShowCheckedModeBanner: false,
       home: const SplashScreenPage(),
       initialBinding: HomeBinding(),

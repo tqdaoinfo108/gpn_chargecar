@@ -8,6 +8,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../../constants/dimens.dart';
 import '../../third_library/search_page/search_page.dart';
+import '../history/history_page.dart';
 import '../notification/notification_page.dart';
 import '../profile/profile_page.dart';
 import 'home_controller.dart';
@@ -26,8 +27,8 @@ class HomePage extends GetView<HomeController>  {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.saved_search),
-              label: 'Saved',
+              icon: Icon(Icons.history),
+              label: 'History',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications),
@@ -52,7 +53,7 @@ class HomePage extends GetView<HomeController>  {
             markers: controller.lstMarkLocaltion,
             homeController: controller,
           ),
-          Text("data"),
+          HistoryPage(),
           NotificationPage(),
           ProfilePage(),
         ][controller.pageCurrent.value],

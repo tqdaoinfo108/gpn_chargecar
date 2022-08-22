@@ -1,8 +1,8 @@
 import 'package:charge_car/constants/index.dart';
 import 'package:flutter/material.dart';
 
-class NotificationPage extends StatelessWidget {
-  const NotificationPage({Key? key}) : super(key: key);
+class HistoryPage extends StatelessWidget {
+  const HistoryPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class NotificationPage extends StatelessWidget {
           padding: const EdgeInsets.all(Paddings.normal),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text("Notifications",
+            Text("History",
                 style: theme.textTheme.headline5!
                     .copyWith(fontWeight: FontWeight.bold)),
             const SizedBox(height: Space.medium),

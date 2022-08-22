@@ -1,8 +1,6 @@
 import 'package:charge_car/constants/dimens.dart';
 import 'package:charge_car/constants/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -18,7 +16,8 @@ class ProfilePage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: Paddings.normal),
         child: Row(
           children: [
-            CircleAvatar(
+            const SizedBox(width: Space.large),
+            const CircleAvatar(
               radius: 30.0,
               backgroundImage: NetworkImage(
                   'https://vtv1.mediacdn.vn/thumb_w/650/2022/3/4/avatar-jake-neytiri-pandora-ocean-1646372078251163431014-crop-16463720830272075805905.jpg'),
