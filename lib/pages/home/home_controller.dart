@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../../model/charge_car.dart';
+import '../profile/dark_mode_page.dart';
 
 class HomeBinding implements Bindings {
   @override
@@ -13,7 +15,7 @@ class HomeBinding implements Bindings {
   }
 }
 
-class HomeController extends GetxController  {
+class HomeController extends GetxController {
   RxList<Marker> lstMarkLocaltion = RxList([]);
   Rx<ChargeCarModel?> markLocaltionCurrent = Rx<ChargeCarModel?>(null);
   final Rx<PanelController> pageController =
@@ -23,6 +25,7 @@ class HomeController extends GetxController  {
   @override
   void onInit() {
     super.onInit();
+    FlutterNativeSplash.remove();
 
     for (var element in ChargeCarModel.getList()) {
       lstMarkLocaltion.add(Marker(
@@ -32,7 +35,8 @@ class HomeController extends GetxController  {
         builder: (ctx) => InkWell(
           child: Image.asset("assets/icons/icon_charging.png"),
           onTap: () {
-            mapController.value.move(element.latLng!, 15, id: DateTime.now().toString());
+            mapController.value
+                .move(element.latLng!, 15, id: DateTime.now().toString());
             markLocaltionCurrent.value = element;
             pageController.value.open();
           },
@@ -47,7 +51,7 @@ class HomeController extends GetxController  {
     pageCurrent.value = pageNumber;
   }
 
-  void moveLocation(ChargeCarModel model){
+  void moveLocation(ChargeCarModel model) {
     mapController.value.move(model.latLng!, 17);
     markLocaltionCurrent.value = model;
     pageController.value.open();
@@ -56,5 +60,16 @@ class HomeController extends GetxController  {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  // change dark mode
+  var listDarkMode = [
+    DarkModeModel("Light", ThemeMode.light),
+    DarkModeModel("Dark", ThemeMode.dark)
+  ].obs;
+
+  changeDarkMode(ThemeMode theme) {
+      Get.changeThemeMode(theme);
+      Get.back();
   }
 }

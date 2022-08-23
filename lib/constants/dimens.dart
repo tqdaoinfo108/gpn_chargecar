@@ -48,7 +48,7 @@ class RadiusSize {
 
   static const double kAttachmentBorderRadius   = 30.0;
   static const kDialogCornerRadius = 25.0;
-
+  static const cardBorderRadius = 10.0;
   static const popupMenuBorderRadius = 6.0;
 }
 

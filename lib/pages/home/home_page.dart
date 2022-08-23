@@ -13,7 +13,7 @@ import '../notification/notification_page.dart';
 import '../profile/profile_page.dart';
 import 'home_controller.dart';
 
-class HomePage extends GetView<HomeController>  {
+class HomePage extends GetView<HomeController> {
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -53,9 +53,9 @@ class HomePage extends GetView<HomeController>  {
             markers: controller.lstMarkLocaltion,
             homeController: controller,
           ),
-          HistoryPage(),
-          NotificationPage(),
-          ProfilePage(),
+          const HistoryPage(),
+          const NotificationPage(),
+          const ProfilePage(),
         ][controller.pageCurrent.value],
       ),
     );
@@ -83,98 +83,108 @@ class HomeChildPageOne extends StatelessWidget {
       () => SlidingUpPanel(
         controller: pageController,
         color: Colors.transparent,
-        minHeight: 80,
+        minHeight: homeController.markLocaltionCurrent.value == null ? 0 : 80,
         maxHeight: 350,
-        panel: MediaQuery.removePadding(
-          context: context,
-          removeTop: true,
-          child: Container(
-            decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(RadiusSize.kDialogCornerRadius),
-                    topRight: Radius.circular(RadiusSize.kDialogCornerRadius))),
-            child: Column(
-              children: [
-                const SizedBox(height: Space.small),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      width: 80,
-                      height: 5,
-                      decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: const BorderRadius.all(
+        panel: homeController.markLocaltionCurrent.value == null
+            ? const SizedBox()
+            : MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: const BorderRadius.only(
+                          topLeft:
+                              Radius.circular(RadiusSize.kDialogCornerRadius),
+                          topRight:
                               Radius.circular(RadiusSize.kDialogCornerRadius))),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(Space.large),
                   child: Column(
                     children: [
-                      Text(
-                        homeController.markLocaltionCurrent.value?.name ?? "",
-                        softWrap: true,
-                        style: theme.textTheme.headline5!.copyWith(
-                            color: theme.colorScheme.primary,
-                            fontWeight: FontWeight.bold),
-                      ),
                       const SizedBox(height: Space.small),
-                      Text(
-                        homeController.markLocaltionCurrent.value?.address ??
-                            "",
-                        style: theme.textTheme.bodyText1!
-                            .copyWith(color: theme.colorScheme.primary),
-                      ),
-                      const SizedBox(height: Space.small),
-                      Text(
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-                        style: theme.textTheme.bodyText1!
-                            .copyWith(color: theme.colorScheme.primary),
-                      ),
-                      const SizedBox(height: Space.medium),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Số trụ: 8",
-                              style: theme.textTheme.bodyText1!
-                                  .copyWith(color: theme.colorScheme.primary)),
-                          Text("Lỗ sạc còn trống: 8",
-                              style: theme.textTheme.bodyText1!
-                                  .copyWith(color: theme.colorScheme.primary)),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            width: 80,
+                            height: 5,
+                            decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(
+                                        RadiusSize.kDialogCornerRadius))),
+                          ),
                         ],
                       ),
-                      const SizedBox(height: Space.medium),
-                      Row(
-                        children: [
-                          Expanded(
-                              child: DefaultButtonWidthDynamic(
-                                backgroundColor:
-                                    theme.colorScheme.primary.withOpacity(0.2),
-                                widget: Icon(Icons.open_with),
-                              ),
-                              flex: 3),
-                          const SizedBox(width: Space.medium),
-                          Expanded(
-                              child: DefaultButtonWidthDynamic(
-                                backgroundColor: theme.primaryColor,
-                                widget: Text("Booking",
-                                    style: theme.textTheme.headline6!.copyWith(
+                      Padding(
+                        padding: const EdgeInsets.all(Space.large),
+                        child: Column(
+                          children: [
+                            Text(
+                              homeController.markLocaltionCurrent.value?.name ??
+                                  "",
+                              softWrap: true,
+                              style: theme.textTheme.headline5!.copyWith(
+                                  color: theme.colorScheme.primary,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: Space.small),
+                            Text(
+                              homeController
+                                      .markLocaltionCurrent.value?.address ??
+                                  "",
+                              style: theme.textTheme.bodyText1!
+                                  .copyWith(color: theme.colorScheme.primary),
+                            ),
+                            const SizedBox(height: Space.small),
+                            Text(
+                              "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+                              style: theme.textTheme.bodyText1!
+                                  .copyWith(color: theme.colorScheme.primary),
+                            ),
+                            const SizedBox(height: Space.medium),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Số trụ: 8",
+                                    style: theme.textTheme.bodyText1!.copyWith(
                                         color: theme.colorScheme.primary)),
-                              ),
-                              flex: 12)
-                        ],
-                      )
+                                Text("Lỗ sạc còn trống: 8",
+                                    style: theme.textTheme.bodyText1!.copyWith(
+                                        color: theme.colorScheme.primary)),
+                              ],
+                            ),
+                            const SizedBox(height: Space.medium),
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 3,
+                                  child: DefaultButtonWidthDynamic(
+                                    backgroundColor: theme.colorScheme.primary
+                                        .withOpacity(0.2),
+                                    widget: const Icon(Icons.open_with),
+                                  ),
+                                ),
+                                const SizedBox(width: Space.medium),
+                                Expanded(
+                                    flex: 12,
+                                    child: DefaultButtonWidthDynamic(
+                                      backgroundColor: theme.primaryColor,
+                                      widget: Text("Booking",
+                                          style: theme.textTheme.headline6!
+                                              .copyWith(
+                                                  color: theme
+                                                      .colorScheme.primary)),
+                                    ))
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              ),
         collapsed: MediaQuery.removePadding(
           context: context,
           removeTop: true,
