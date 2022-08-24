@@ -21,22 +21,22 @@ class HomePage extends GetView<HomeController> {
     return Obx(
       () => Scaffold(
         bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
+          items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
+              icon: const Icon(Icons.home),
+              label: 'home'.tr,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.history),
-              label: 'History',
+              icon: const Icon(Icons.history),
+              label: 'history'.tr,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              label: 'Notifications',
+              icon: const Icon(Icons.notifications),
+              label: 'notification'.tr,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Settings',
+              icon: const Icon(Icons.person),
+              label: 'setting'.tr,
             ),
           ],
           currentIndex: controller.pageCurrent.value,
@@ -45,6 +45,7 @@ class HomePage extends GetView<HomeController> {
           showSelectedLabels: true,
           showUnselectedLabels: true,
           onTap: (s) => controller.onChangePageScreen(s),
+          type: BottomNavigationBarType.fixed,
         ),
         body: [
           HomeChildPageOne(
@@ -79,12 +80,16 @@ class HomeChildPageOne extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+
     return Obx(
       () => SlidingUpPanel(
+        renderPanelSheet: true,
         controller: pageController,
+        parallaxEnabled: true,
+        parallaxOffset: 0.5,
         color: Colors.transparent,
         minHeight: homeController.markLocaltionCurrent.value == null ? 0 : 80,
-        maxHeight: 350,
+        maxHeight: 320,
         panel: homeController.markLocaltionCurrent.value == null
             ? const SizedBox()
             : MediaQuery.removePadding(
@@ -229,6 +234,7 @@ class HomeChildPageOne extends StatelessWidget {
           FlutterMap(
             mapController: mapController,
             options: MapOptions(
+                keepAlive: true,
                 center: LatLng(10.780231, 106.6645121),
                 onTap: (tapPosition, point) {
                   homeController.pageController.value.close();

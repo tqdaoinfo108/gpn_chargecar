@@ -22,6 +22,8 @@ class HomeController extends GetxController {
       Rx<PanelController>(PanelController());
   final Rx<MapController> mapController = Rx<MapController>(MapController());
 
+  RxDouble sizeHeightPopup = RxDouble(0);
+
   @override
   void onInit() {
     super.onInit();
@@ -49,6 +51,14 @@ class HomeController extends GetxController {
   Rx<int> pageCurrent = Rx<int>(0);
   void onChangePageScreen(int pageNumber) {
     pageCurrent.value = pageNumber;
+
+    if (pageNumber == 0) {
+      mapController.value = MapController();
+      if (markLocaltionCurrent.value != null) {
+        // mapController.value.move(markLocaltionCurrent.value!.latLng!, 15,
+        //     id: DateTime.now().toString());
+      }
+    }
   }
 
   void moveLocation(ChargeCarModel model) {
@@ -69,7 +79,9 @@ class HomeController extends GetxController {
   ].obs;
 
   changeDarkMode(ThemeMode theme) {
-      Get.changeThemeMode(theme);
-      Get.back();
+    Get.changeThemeMode(theme);
+    Get.back();
   }
+
+  // =--
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:charge_car/pages/home/home_controller.dart';
 import 'package:charge_car/pages/home/home_page.dart';
+import 'package:charge_car/pages/translation/translations.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,9 +42,12 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: Style.light,
       darkTheme: Style.dark,
-      debugShowCheckedModeBanner: false,
+      translations: LanguageTranslations(),
+      locale: const Locale('en', 'US'),
+      fallbackLocale: const Locale('en', 'UK'),
       initialRoute: '/',
       getPages: [
         GetPage(name: "/", page: () => const HomePage(), binding: HomeBinding())

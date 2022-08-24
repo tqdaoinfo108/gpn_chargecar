@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 class ColorName {
   ColorName._();
 
+  /// Color: #ecf0f1
+  static const Color cardLight = Color(0xFFf1f2f6);
+
   /// Color: #6a4f4b
   static const Color accentDark = Color(0xFF6A4F4B);
 
@@ -23,7 +26,7 @@ class ColorName {
   static const Color attachmentTextColor = Color(0xFF5D5C5D);
 
   /// Color: #1b1b1b
-  static const Color backgroundDark = Color(0xFF1B1B1B);
+  static const Color backgroundDark = Color(0xFF121212);
 
   /// Color: #b2ebf2
   static const Color backgroundExperimental = Color(0xFFB2EBF2);
@@ -40,8 +43,8 @@ class ColorName {
   /// Color: #242424
   static const Color canvasDark = Color(0xFF242424);
 
-  /// Color: #272727
-  static const Color cardDark = Color(0xFF272727);
+  /// Color: #242424
+  static const Color cardDark = Color(0xFF242424);
 
   /// Color: #545454
   static const Color dividerDark = Color(0xFF545454);

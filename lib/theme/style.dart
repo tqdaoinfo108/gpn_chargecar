@@ -166,23 +166,25 @@ class Style {
     final textTheme = _buildTextTheme(base);
 
     return base.copyWith(
-      brightness: Brightness.light,
-      appBarTheme: const AppBarTheme(
-        systemOverlayStyle:
-            SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
-      ),
-      colorScheme: const ColorScheme.light().copyWith(
-        primary: Colors.black,
-        secondary: ColorName.accentLight,
-        onSecondary: Colors.white,
-      ),
-      primaryColor: ColorName.primaryLight,
-      scaffoldBackgroundColor: ColorName.backgroundLight,
-      dividerColor: ColorName.dividerLight,
-      pageTransitionsTheme: _pageTransitionsTheme,
-      textTheme: GoogleFonts.openSansTextTheme(textTheme),
-      popupMenuTheme: _buildPopupMenuThemeData(),
-    );
+        brightness: Brightness.light,
+        appBarTheme: const AppBarTheme(
+          systemOverlayStyle:
+              SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
+        ),
+        colorScheme: const ColorScheme.light().copyWith(
+          primary: Colors.black,
+          secondary: ColorName.accentLight,
+          onSecondary: Colors.white,
+        ),
+        primaryColor: ColorName.primaryLight,
+        scaffoldBackgroundColor: ColorName.backgroundLight,
+        dividerColor: ColorName.dividerLight,
+        pageTransitionsTheme: _pageTransitionsTheme,
+        textTheme: GoogleFonts.openSansTextTheme(textTheme),
+        popupMenuTheme: _buildPopupMenuThemeData(),
+        cardColor: ColorName.cardLight,
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+            backgroundColor: ColorName.cardLight));
   }
 
   /// Dark style
@@ -191,22 +193,25 @@ class Style {
     final textTheme = _buildTextTheme(base);
 
     return base.copyWith(
-      brightness: Brightness.dark,
-      colorScheme: const ColorScheme.dark().copyWith(
-        primary: Colors.white,
-        secondary: ColorName.accentDark,
-        onSecondary: Colors.white,
-      ),
-      primaryColor: ColorName.primaryDark,
-      canvasColor: ColorName.canvasDark,
-      scaffoldBackgroundColor: ColorName.backgroundDark,
-      cardColor: ColorName.cardDark,
-      dividerColor: ColorName.dividerDark,
-      dialogBackgroundColor: ColorName.cardDark,
-      pageTransitionsTheme: _pageTransitionsTheme,
-      textTheme: GoogleFonts.openSansTextTheme(textTheme),
-      popupMenuTheme: _buildPopupMenuThemeData(),
-    );
+        brightness: Brightness.dark,
+        colorScheme: const ColorScheme.dark().copyWith(
+          primary: Colors.white,
+          secondary: ColorName.accentDark,
+          onSecondary: Colors.white,
+        ),
+        primaryColor: ColorName.primaryDark,
+        canvasColor: ColorName.canvasDark,
+        scaffoldBackgroundColor: ColorName.backgroundDark,
+        cardColor: ColorName.cardDark,
+        dividerColor: ColorName.dividerDark,
+        dialogBackgroundColor: ColorName.cardDark,
+        pageTransitionsTheme: _pageTransitionsTheme,
+        textTheme: GoogleFonts.openSansTextTheme(textTheme),
+        popupMenuTheme: _buildPopupMenuThemeData(),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            backgroundColor: ColorName.cardDark,
+            selectedLabelStyle: textTheme.bodyLarge,
+            unselectedLabelStyle: textTheme.bodyMedium));
   }
 
   static PopupMenuThemeData _buildPopupMenuThemeData() {

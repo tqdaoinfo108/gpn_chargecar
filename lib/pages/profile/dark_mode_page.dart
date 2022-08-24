@@ -8,8 +8,7 @@ import '../../third_library/bottom_sheet_default.dart';
 class DarkModeModel {
   String title;
   ThemeMode themeMode;
-  bool value;
-  DarkModeModel(this.title, this.themeMode, this.value);
+  DarkModeModel(this.title, this.themeMode);
 }
 
 final HomeController controller = Get.put(HomeController());

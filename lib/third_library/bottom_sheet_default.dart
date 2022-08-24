@@ -14,7 +14,6 @@ class BottomSheetDefault extends StatelessWidget {
   Widget build(BuildContext context) {
     return IntrinsicHeight(
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: Paddings.normal),
         decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
             borderRadius: const BorderRadius.only(
@@ -24,16 +23,24 @@ class BottomSheetDefault extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: Space.small),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(title, style: Theme.of(context).textTheme.titleLarge),
-                IconButton(
-                    onPressed: () => Get.back(), icon: const Icon(Icons.close)),
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Paddings.normal),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(title, style: Theme.of(context).textTheme.titleLarge),
+                  IconButton(
+                      onPressed: () => Get.back(),
+                      icon: const Icon(Icons.close)),
+                ],
+              ),
             ),
-            body,
+            Divider(thickness: 2, color: Colors.grey.withOpacity(0.2)),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Paddings.normal),
+              child: body,
+            ),
             SizedBox(height: MediaQuery.of(context).size.height / 9),
           ],
         ),
