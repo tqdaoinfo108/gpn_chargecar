@@ -1,5 +1,7 @@
 import 'package:charge_car/constants/dimens.dart';
+import 'package:charge_car/constants/index.dart';
 import 'package:charge_car/third_library/button_default.dart';
+import 'package:charge_car/third_library/scaffold_default.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -16,9 +18,10 @@ class SignInPage extends StatelessWidget {
     var widthOfScreen = MediaQuery.of(context).size.width;
     ThemeData theme = Theme.of(context);
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: DefaultTabController(
+    // backgroundColor: Theme.of(context).scaffoldBackgroundColor
+    return ScaffoldDefault(
+      "",
+      DefaultTabController(
         length: 2,
         child: GestureDetector(
           onTap: () {
@@ -59,7 +62,7 @@ class SignInPage extends StatelessWidget {
                   SizedBox(
                     height: (heightOfScreen * 0.05),
                   ),
-                  Container(
+                  SizedBox(
                     height: 400,
                     child: _buildTabView(context),
                   )
@@ -92,44 +95,36 @@ class SignInPage extends StatelessWidget {
     var widthOfScreen = MediaQuery.of(context).size.width;
     ThemeData theme = Theme.of(context);
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.symmetric(horizontal: Paddings.normal),
       child: Column(
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(Paddings.minimum),
             ),
-            padding: const EdgeInsets.only(left: 12, top: 12),
+            padding: const EdgeInsets.only(
+                left: Paddings.normal, top: Paddings.normal),
             child: CustomTextFormField(
               textInputType: TextInputType.text,
-              textFormFieldMargin: const EdgeInsets.only(left: 26),
+              textFormFieldMargin: const EdgeInsets.only(
+                  left: Paddings.normal + Paddings.minimum),
               hasTitle: true,
               title: "Email",
               titleStyle: theme.textTheme.subtitle1!.copyWith(
-                color: Colors.red,
-                fontSize: 14,
-              ),
+                  color: Theme.of(context).primaryColor, fontSize: 14),
               hasTitleIcon: true,
-              titleIcon: const Padding(
-                padding: EdgeInsets.only(right: 8),
-                child: Icon(
-                  Icons.email_outlined,
-                  color: Colors.redAccent,
-                  size: 16,
-                ),
+              titleIcon: Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: Icon(Icons.email_outlined,
+                    color: Theme.of(context).primaryColor, size: 16),
               ),
               enabledBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(
-                  style: BorderStyle.none,
-                ),
-              ),
+                  borderSide: BorderSide(style: BorderStyle.none)),
               focusedBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(
-                  style: BorderStyle.none,
-                ),
-              ),
-              hintTextStyle: Theme.of(context).textTheme.subtitle1,
+                  borderSide: BorderSide(style: BorderStyle.none)),
+              hintTextStyle: Theme.of(context).textTheme.subtitle1!.copyWith(
+                  color: Theme.of(context).dividerColor, fontSize: 14),
               textStyle: Theme.of(context).textTheme.bodyMedium,
               hintText: "Email",
             ),

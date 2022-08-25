@@ -8,7 +8,13 @@ class ScaffoldDefault extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(title, style: Theme.of(context).textTheme.titleMedium),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
+      ),
+      body: body,
     );
   }
 }
