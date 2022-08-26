@@ -4,8 +4,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-
-import '../../model/charge_car.dart';
+import 'package:charge_car/services/model/charge_car.dart';
 import '../profile/dark_mode_page.dart';
 
 class HomeBinding implements Bindings {
@@ -82,6 +81,5 @@ class HomeController extends GetxController {
     Get.changeThemeMode(theme);
     Get.back();
   }
-
   // =--
 }

@@ -1,4 +1,4 @@
-import 'package:charge_car/model/charge_car.dart';
+import 'package:charge_car/services/model/charge_car.dart';
 import 'package:charge_car/third_library/button_default.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';

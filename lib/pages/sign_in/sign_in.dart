@@ -54,7 +54,7 @@ class SignInPage extends StatelessWidget {
                       labelColor: Theme.of(context).primaryColor,
                       unselectedLabelColor: Theme.of(context).dividerColor,
                       tabs: [
-                        Tab(text: "SignIn"),
+                        Tab(text: "Sign In"),
                         Tab(text: "Register"),
                       ],
                     ),
@@ -129,7 +129,7 @@ class SignInPage extends StatelessWidget {
               hintText: "Email",
             ),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: Space.medium),
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
@@ -138,21 +138,17 @@ class SignInPage extends StatelessWidget {
             padding: const EdgeInsets.only(left: 12, top: 12),
             child: CustomTextFormField(
               textInputType: TextInputType.text,
-              textFormFieldMargin: EdgeInsets.only(left: 26),
+              textFormFieldMargin: const EdgeInsets.only(
+                  left: Paddings.normal + Paddings.minimum),
               hasTitle: true,
               title: "Password",
               titleStyle: theme.textTheme.subtitle1!.copyWith(
-                color: Colors.red,
-                fontSize: 14,
-              ),
+                  color: Theme.of(context).primaryColor, fontSize: 14),
               hasTitleIcon: true,
-              titleIcon: const Padding(
-                padding: EdgeInsets.only(right: 8),
-                child: Icon(
-                  Icons.lock,
-                  color: Colors.red,
-                  size: 16,
-                ),
+              titleIcon: Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: Icon(Icons.email_outlined,
+                    color: Theme.of(context).primaryColor, size: 16),
               ),
               enabledBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(
@@ -165,16 +161,17 @@ class SignInPage extends StatelessWidget {
                 ),
               ),
               obscured: true,
-              hintTextStyle: Theme.of(context).textTheme.subtitle1,
+              hintTextStyle: Theme.of(context).textTheme.subtitle1!.copyWith(
+                  color: Theme.of(context).dividerColor, fontSize: 14),
               textStyle: Theme.of(context).textTheme.bodyMedium,
               hintText: "Password",
             ),
           ),
           const SizedBox(height: Space.medium),
-          Container(
+          SizedBox(
             width: widthOfScreen * 0.6,
             child: DefaultButton(
-                text: 'Get start',
+                text: 'Login',
                 textColor: theme.colorScheme.primary,
                 backgroundColor: theme.primaryColor,
                 press: () => Get.to(HomePage())),
@@ -188,32 +185,28 @@ class SignInPage extends StatelessWidget {
     var widthOfScreen = MediaQuery.of(context).size.width;
     ThemeData theme = Theme.of(context);
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.symmetric(horizontal: Paddings.normal),
       child: Column(
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(8),
             ),
-            padding: EdgeInsets.only(left: 12, top: 12),
+            padding: const EdgeInsets.only(left: 12, top: 12),
             child: CustomTextFormField(
               textInputType: TextInputType.text,
-              textFormFieldMargin: EdgeInsets.only(left: 26),
+              textFormFieldMargin: const EdgeInsets.only(
+                  left: Paddings.normal + Paddings.minimum),
               hasTitle: true,
-              title: "StringConst.USER_NAME",
+              title: "Email",
               titleStyle: theme.textTheme.subtitle1!.copyWith(
-                color: Colors.red,
-                fontSize: 14,
-              ),
+                  color: Theme.of(context).primaryColor, fontSize: 14),
               hasTitleIcon: true,
               titleIcon: Padding(
                 padding: const EdgeInsets.only(right: 8),
-                child: Icon(
-                  Icons.percent,
-                  color: Colors.red,
-                  size: 16,
-                ),
+                child: Icon(Icons.email_outlined,
+                    color: Theme.of(context).primaryColor, size: 16),
               ),
               enabledBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(
@@ -225,16 +218,18 @@ class SignInPage extends StatelessWidget {
                   style: BorderStyle.none,
                 ),
               ),
-              // hintTextStyle: Styles.customTextStyle(color: Colors.redShade1),
-              // textStyle: Styles.customTextStyle(color: Colors.redShade1),
-              hintText: "StringConst.USERNAME_HINT_TEXT",
+              obscured: true,
+              hintTextStyle: Theme.of(context).textTheme.subtitle1!.copyWith(
+                  color: Theme.of(context).dividerColor, fontSize: 14),
+              textStyle: Theme.of(context).textTheme.bodyMedium,
+              hintText: "Password",
             ),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: Space.medium),
           Container(
             width: widthOfScreen * 0.6,
             child: DefaultButton(
-                text: 'Get start',
+                text: 'Register',
                 textColor: theme.colorScheme.primary,
                 backgroundColor: theme.primaryColor,
                 press: () => Get.to(HomePage())),
