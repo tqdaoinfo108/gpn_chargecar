@@ -2,20 +2,29 @@ import 'dart:async';
 
 import 'package:charge_car/pages/home/home_controller.dart';
 import 'package:charge_car/pages/home/home_page.dart';
+import 'package:charge_car/pages/qr/qr_scanner_controller.dart';
+import 'package:charge_car/pages/qr/qr_scanner_page.dart';
+import 'package:charge_car/pages/sign_in/sign_in_controller.dart';
+import 'package:charge_car/pages/sign_in/sign_in_page.dart';
+import 'package:charge_car/pages/splash_screen/splashscreen_page.dart';
 import 'package:charge_car/pages/translation/translations.dart';
+import 'package:charge_car/utils/get_storage.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
 
-import 'pages/splash_screen/splashscreen_page.dart';
 import 'theme/theme.dart';
 
-void main() {
+void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await GetStorage.init();
   runApp(const MyApp());
+  configLoading();
 }
 
 class MyApp extends StatefulWidget {
@@ -39,18 +48,41 @@ class _MyAppState extends State<MyApp> {
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
   }
 
+  ThemeMode getTheme() {
+    var code = LocalDB.getLanguagCode;
+    if (code == "light") {
+      return ThemeMode.light;
+    } else if (code == "dark") {
+      return ThemeMode.dark;
+    }
+    return ThemeMode.system;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      themeMode: getTheme(),
       theme: Style.light,
       darkTheme: Style.dark,
       translations: LanguageTranslations(),
-      locale: const Locale('en', 'US'),
-      fallbackLocale: const Locale('en', 'UK'),
-      initialRoute: '/',
+      locale: Locale(LocalDB.getLanguagCode),
+      builder: EasyLoading.init(),
+      initialRoute: "/splash",
       getPages: [
-        GetPage(name: "/", page: () => const HomePage(), binding: HomeBinding())
+        GetPage(name: "/splash", page: () => const SplashScreenPage()),
+        GetPage(
+            name: "/", page: () => const HomePage(), binding: HomeBinding()),
+        GetPage(
+          name: "/login",
+          page: () => const SignInPage(),
+          binding: SignInBinding(),
+        ),
+        GetPage(
+          name: "/qr",
+          page: () => const QRScannerPage(),
+          binding: QRScannerPageBinding(),
+        ),
       ],
     );
   }
@@ -81,4 +113,21 @@ class _MyAppState extends State<MyApp> {
       print(_connectionStatus);
     });
   }
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.dark
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = Colors.yellow
+    ..backgroundColor = Colors.green
+    ..indicatorColor = Colors.yellow
+    ..textColor = Colors.yellow
+    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..userInteractions = true
+    ..dismissOnTap = true
+    ..dismissOnTap = false;
 }

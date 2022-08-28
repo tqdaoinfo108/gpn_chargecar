@@ -1,16 +1,19 @@
-import 'package:charge_car/services/model/charge_car.dart';
+import 'package:charge_car/services/model/parking.dart';
 import 'package:charge_car/third_library/button_default.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:map_launcher/map_launcher.dart' as MapLauncher;
+
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../../constants/dimens.dart';
 import '../../third_library/search_page/search_page.dart';
-import '../history/history_page.dart';
-import '../notification/notification_page.dart';
-import '../profile/profile_page.dart';
+import 'history_page.dart';
+import 'notification_page.dart';
+import 'profile/profile_page.dart';
 import 'home_controller.dart';
 
 class HomePage extends GetView<HomeController> {
@@ -56,7 +59,7 @@ class HomePage extends GetView<HomeController> {
           ),
           const HistoryPage(),
           const NotificationPage(),
-          const ProfilePage(),
+          ProfilePage(controller),
         ][controller.pageCurrent.value],
       ),
     );
@@ -89,7 +92,7 @@ class HomeChildPageOne extends StatelessWidget {
         parallaxOffset: 0.5,
         color: Colors.transparent,
         minHeight: homeController.markLocaltionCurrent.value == null ? 0 : 80,
-        maxHeight: 320,
+        maxHeight: 250,
         panel: homeController.markLocaltionCurrent.value == null
             ? const SizedBox()
             : MediaQuery.removePadding(
@@ -124,41 +127,38 @@ class HomeChildPageOne extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(Space.large),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              homeController.markLocaltionCurrent.value?.name ??
+                              homeController.markLocaltionCurrent.value
+                                      ?.nameParking ??
                                   "",
-                              softWrap: true,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: theme.textTheme.headline5!.copyWith(
                                   color: theme.colorScheme.primary,
                                   fontWeight: FontWeight.bold),
                             ),
-                            const SizedBox(height: Space.small),
+                            const SizedBox(height: Space.large),
                             Text(
-                              homeController
-                                      .markLocaltionCurrent.value?.address ??
-                                  "",
-                              style: theme.textTheme.bodyText1!
-                                  .copyWith(color: theme.colorScheme.primary),
-                            ),
-                            const SizedBox(height: Space.small),
+                                homeController.markLocaltionCurrent.value
+                                        ?.addressParking ??
+                                    "",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: theme.textTheme.bodyText1!.copyWith(
+                                    color: theme.colorScheme.primary)),
+                            const SizedBox(height: Space.medium),
                             Text(
-                              "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+                              "Phone: ${homeController.markLocaltionCurrent.value!.phoneParking}",
                               style: theme.textTheme.bodyText1!
                                   .copyWith(color: theme.colorScheme.primary),
                             ),
                             const SizedBox(height: Space.medium),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Số trụ: 8",
-                                    style: theme.textTheme.bodyText1!.copyWith(
-                                        color: theme.colorScheme.primary)),
-                                Text("Lỗ sạc còn trống: 8",
-                                    style: theme.textTheme.bodyText1!.copyWith(
-                                        color: theme.colorScheme.primary)),
-                              ],
-                            ),
+                            Text(
+                                "Power socket available: ${homeController.markLocaltionCurrent.value!.powerSocketAvailable}",
+                                style: theme.textTheme.bodyText1!.copyWith(
+                                    color: theme.colorScheme.primary)),
                             const SizedBox(height: Space.medium),
                             Row(
                               children: [
@@ -168,6 +168,32 @@ class HomeChildPageOne extends StatelessWidget {
                                     backgroundColor: theme.colorScheme.primary
                                         .withOpacity(0.2),
                                     widget: const Icon(Icons.open_with),
+                                    press: () async {
+                                      final availableMaps = await MapLauncher
+                                          .MapLauncher.installedMaps;
+                                      if(availableMaps.isEmpty){
+                                        EasyLoading.showToast("No found map");
+                                        return ;
+                                      }
+                                      await availableMaps.first.showMarker(
+                                        coords: MapLauncher.Coords(
+                                            homeController.markLocaltionCurrent
+                                                .value!.getLatLng.latitude,
+                                            homeController.markLocaltionCurrent
+                                                .value!.getLatLng.longitude),
+                                        title: homeController.markLocaltionCurrent
+                                                .value!.nameParking!,
+                                      );
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: Space.medium),
+                                Expanded(
+                                  flex: 3,
+                                  child: DefaultButtonWidthDynamic(
+                                    backgroundColor: theme.colorScheme.primary
+                                        .withOpacity(0.2),
+                                    widget: const Icon(Icons.phone),
                                   ),
                                 ),
                                 const SizedBox(width: Space.medium),
@@ -175,6 +201,7 @@ class HomeChildPageOne extends StatelessWidget {
                                     flex: 12,
                                     child: DefaultButtonWidthDynamic(
                                       backgroundColor: theme.primaryColor,
+                                      press: () => Get.toNamed("/qr"),
                                       widget: Text("Booking",
                                           style: theme.textTheme.headline6!
                                               .copyWith(
@@ -219,7 +246,8 @@ class HomeChildPageOne extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(Space.large),
                   child: Text(
-                    homeController.markLocaltionCurrent.value?.name ?? "",
+                    homeController.markLocaltionCurrent.value?.nameParking ??
+                        "",
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.headline5!
@@ -275,8 +303,8 @@ class HomeChildPageOne extends StatelessWidget {
                   showSearch(
                     context: context,
                     useRootNavigator: true,
-                    delegate: SearchPage<ChargeCarModel>(
-                      items: ChargeCarModel.getList(),
+                    delegate: SearchPage<ParkingModel>(
+                      items: homeController.homeData.value.listParking ?? [],
                       barTheme: Theme.of(context).copyWith(
                           appBarTheme: AppBarTheme(
                         color: Theme.of(context).dividerColor,
@@ -295,17 +323,18 @@ class HomeChildPageOne extends StatelessWidget {
                           child: Text('No charge car location found :('),
                         ),
                       ),
-                      filter: (person) => [person.name, person.address],
+                      filter: (parking) =>
+                          [parking.nameParking, parking.addressParking],
                       onQueryUpdate: (s) {},
-                      builder: (person) => InkWell(
+                      builder: (parking) => InkWell(
                         onTap: (() {
                           Get.back();
-                          homeController.moveLocation(person);
+                          homeController.moveLocation(parking);
                         }),
                         child: ListTile(
-                          title: Text(person.name!),
-                          subtitle: Text(person.address!),
-                          trailing: Text(person.bettwen!),
+                          title: Text(parking.nameParking!),
+                          subtitle: Text(parking.addressParking!),
+                          trailing: Text(parking.distance.toString()),
                         ),
                       ),
                     ),

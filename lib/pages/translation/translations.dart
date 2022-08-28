@@ -12,14 +12,14 @@ class LanguageTranslations extends Translations {
           'light': 'Light',
           'dark': 'Dark',
         },
-        'ja_JP': {
-          'home': 'HomeJP',
-          'history': "HistoryJP",
-          'notification': "NotificationJP",
-          'setting': "SettingJP",
-          'dark_mode': 'DarkJP',
-          'light': 'LightJP',
-          'dark': 'DarkJP',
+        'jp_JP': {
+          'home': '家',
+          'history': "歴史",
+          'notification': "通知",
+          'setting': "設定",
+          'dark_mode': 'ダークモード',
+          'light': 'ライト',
+          'dark': '暗い',
         }
       };
 }

@@ -53,13 +53,13 @@ class ColorName {
   static const Color dividerLight = Color(0xFF545454);
 
   /// Color: #102027
-  static const Color primaryDark = Color(0xFF16a085);
+  static const Color primaryDark = Color(0xFF32b29a);
 
   /// Color: #005b9f
   static const Color primaryExperimental = Color(0xFF005B9F);
 
   /// Color: #1E1E1E
-  static const Color primaryLight = Color(0xFF16a085);
+  static const Color primaryLight = Color(0xFF32b29a);
 
   /// Color: #fbc02d
   static const Color primaryYellow = Color(0xFFFBC02D);

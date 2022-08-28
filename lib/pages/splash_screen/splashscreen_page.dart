@@ -1,11 +1,15 @@
+import 'package:charge_car/constants/dimens.dart';
 import 'package:charge_car/constants/index.dart';
-import 'package:charge_car/pages/home/home_page.dart';
+import 'package:charge_car/services/model/home.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-import '../../../third_library/button_default.dart';
+import '../../services/model/parking.dart';
+import '../../services/model/user.dart';
+import '../../services/servces.dart';
+import '../../utils/get_storage.dart';
 
 class SplashScreenPage extends StatefulWidget {
   const SplashScreenPage({Key? key}) : super(key: key);
@@ -15,10 +19,45 @@ class SplashScreenPage extends StatefulWidget {
 }
 
 class _SplashScreenPageState extends State<SplashScreenPage> {
+  HomeModel homeModel = HomeModel();
+
+  // PROFILE PAGE
+  Future<bool?> getProfile() async {
+    if (LocalDB.getUserID == 0) return true;
+
+    try {
+      var response = await HttpClientLocal().getProfile(LocalDB.getUserID);
+      homeModel.userModel = UserModel.getUserResponse(response.data).data;
+      return true;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<bool?> getListParking() async {
+    try {
+      var response =
+          await HttpClientLocal().getListChargeCarLocaltion("", 1, 1000);
+      homeModel.listParking =
+          ParkingModel.getListParkingResponse(response.data).data;
+      return true;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future onInitLoading() async {
+    var response = await Future.wait([getProfile(), getListParking()]);
+    if (!response.contains(null)) {
+      Get.offAndToNamed("/", arguments: homeModel);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     FlutterNativeSplash.remove();
+    onInitLoading();
   }
 
   @override
@@ -35,7 +74,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
               Transform(
                   transform: Matrix4.translationValues(
                       MediaQuery.of(context).size.width * .3, -20.0, 0.0),
-                  child: SvgPicture.asset('assets/svg/svg_splashscreen.svg',
+                  child: Image.asset('assets/images/svg_splashscreen.png',
                       width: 300)),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text("Charge\nAnywhere",
@@ -50,11 +89,21 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                         fontSize: FontSizes.subtitle1,
                         fontWeight: FontWeight.normal)),
                 const SizedBox(height: Space.superLarge),
-                DefaultButton(
-                    text: 'Get start',
-                    textColor: theme.colorScheme.primary,
-                    backgroundColor: theme.primaryColor,
-                    press: () => Get.to(HomePage())),
+                const SizedBox(height: Space.superLarge),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const CupertinoActivityIndicator(
+                      radius: RadiusSize.cardBorderRadius,
+                    ),
+                  ],
+                ),
+                // DefaultButton(
+                //     text: 'Get start',
+                //     textColor: theme.colorScheme.primary,
+                //     backgroundColor: theme.primaryColor,
+                //     press: () => Get.to(HomePage())),
               ]),
             ],
           ),

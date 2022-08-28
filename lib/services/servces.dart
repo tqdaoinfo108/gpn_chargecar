@@ -1,22 +1,18 @@
-import 'package:get/get_connect.dart';
+import 'package:dio/dio.dart';
+import 'http_client.dart';
 
-import '../utils/const.dart';
+class RequestBase {}
 
-class RequestBase {
-  
-}
+class HttpClientLocal {
+  Future<Response> getProfile(int userID) => HttpClientHelper()
+      .getRequest("/api/user/profile", query: {"userID": userID});
 
-class HttpClient extends GetConnect {
-  @override
-  void onInit() {
-    httpClient.baseUrl = Constants.URL_BASE;
-    httpClient.timeout = const Duration(milliseconds: Constants.TIME_OUT);
-    httpClient.addResponseModifier<RequestBase>((request, response) {
-      CasesModel model = response.body;
-      if (model.countries.contains('Brazil')) {
-        model.countries.remove('Brazilll');
-      }
-    });
-  }
-  
+  Future<Response> postLogin(String email, String password) =>
+      HttpClientHelper().postRequest("/api/user/login",
+          body: {"Email": email, "PassWord": password});
+
+  Future<Response> getListChargeCarLocaltion(
+          String keySearch, int page, int limit) =>
+      HttpClientHelper().getRequest("/api/parkinglot/get",
+          query: {"keySearch": keySearch, "page": page, "limit": limit});
 }
