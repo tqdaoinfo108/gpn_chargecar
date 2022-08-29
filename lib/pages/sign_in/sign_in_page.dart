@@ -3,6 +3,7 @@ import 'package:charge_car/constants/index.dart';
 import 'package:charge_car/third_library/button_default.dart';
 import 'package:charge_car/third_library/scaffold_default.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 import '../../third_library/custom_text_form_field.dart';
@@ -303,10 +304,7 @@ class SignInPage extends GetView<SignInController> {
                   press: () async {
                     if (controller.signUpFormKey.value.currentState!
                         .validate()) {
-                      var result = await controller.register();
-                      if (result) {
-                        Get.offAllNamed("/splash");
-                      }
+                      await controller.register();
                     }
                   }),
             ),

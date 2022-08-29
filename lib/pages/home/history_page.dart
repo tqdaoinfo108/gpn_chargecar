@@ -3,6 +3,7 @@ import 'package:charge_car/pages/home/home_controller.dart';
 import 'package:flutter/material.dart';
 
 import '../../services/model/booking_detail.dart';
+import '../../utils/func.dart';
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage(this.controller, {Key? key}) : super(key: key);
@@ -29,14 +30,16 @@ class HistoryPage extends StatelessWidget {
                     "No data found",
                     style: theme.textTheme.bodyLarge,
                   )))
-                : SingleChildScrollView(
-                    child: Column(children: [
-                      for (var item in controller
-                              .homeData.value.listBookingDetail?.data ??
-                          [])
-                        itemNotification(context, item),
-                    ]),
-                  ),
+                : Expanded(
+                  child: SingleChildScrollView(
+                      child: Column(children: [
+                        for (var item in controller
+                                .homeData.value.listBookingDetail?.data ??
+                            [])
+                          itemNotification(context, item),
+                      ]),
+                    ),
+                ),
           ]),
         ),
       ),
@@ -77,7 +80,7 @@ class HistoryPage extends StatelessWidget {
               ),
               const SizedBox(height: Space.small),
               Text(
-                "${data.dateStart}-${data.dateEnd}",
+                "${Functions.getDateTimeString(data.dateStart)} - ${Functions.getDateTimeString(data.dateEnd)}",
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               const SizedBox(height: Space.small),
@@ -94,7 +97,7 @@ class HistoryPage extends StatelessWidget {
               Container(
                 alignment: Alignment.bottomRight,
                 child: Text(
-                  data.dateBook.toString(),
+                  Functions.getDateTimeString(data.createdDate),
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 11,

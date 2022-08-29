@@ -17,6 +17,8 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 
+import 'pages/charging/charging_controller.dart';
+import 'pages/charging/charging_page.dart';
 import 'theme/theme.dart';
 
 void main() async {
@@ -82,6 +84,11 @@ class _MyAppState extends State<MyApp> {
           name: "/qr",
           page: () => const QRScannerPage(),
           binding: QRScannerPageBinding(),
+        ),
+        GetPage(
+          name: "/charging",
+          page: () =>  const ChargingPage(),
+          binding: ChargingPageBinding(),
         ),
       ],
     );

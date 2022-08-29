@@ -12,16 +12,16 @@ class QRScannerPage extends GetView<QRScannerPageController> {
   Widget build(BuildContext context) {
     return ScaffoldDefault(
       "",
-      Column(
-        children: [
-          Expanded(
-            flex: 5,
-            child: QRView(
-              key: controller.qrKey,
-              onQRViewCreated: controller.onQRViewCreated,
-            ),
-          ),
-        ],
+      QRView(
+        key: controller.qrKey,
+        overlay: QrScannerOverlayShape(
+          borderColor: Colors.orange,
+                  borderRadius: 10,
+                  borderLength: 30,
+                  borderWidth: 10,
+                  cutOutSize: 300,
+        ),
+        onQRViewCreated: controller.onQRViewCreated,
       ),
     );
   }

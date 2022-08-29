@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:charge_car/services/model/home.dart';
 import 'package:charge_car/services/model/parking.dart';
 import 'package:charge_car/utils/get_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'profile/dark_mode_page.dart';
@@ -34,6 +37,45 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     homeData.value = Get.arguments;
+    init();
+  }
+
+  init() async {
+    var locationData = await Geolocator.getCurrentPosition();
+    var latlng =
+        LatLng(locationData.latitude , locationData.longitude );
+    mapController.value.move(latlng, 15);
+    lstMarkLocaltion.add(Marker(
+        width: 32,
+        height: 32,
+        point: latlng,
+        builder: (ctx) => InkWell(
+              child: Image.asset("assets/icons/ic_current.png"),
+              onTap: () {
+                mapController.value
+                    .move(latlng, 15, id: DateTime.now().toString());
+              },
+            )));
+    // ignore: prefer_const_constructors
+    final LocationSettings locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 100,
+    );
+
+    Geolocator.getPositionStream(locationSettings: locationSettings)
+            .listen((Position? position) {
+      var latlng = LatLng(position?.latitude ?? 0, position?.longitude ?? 0);
+      lstMarkLocaltion[0] = Marker(
+          width: 32,
+          height: 32,
+          point: latlng,
+          builder: (ctx) => InkWell(
+              child: Image.asset("assets/icons/ic_current.png"),
+              onTap: () {
+                mapController.value
+                    .move(latlng, 15, id: DateTime.now().toString());
+              }));
+    });
 
     for (var element in homeData.value.listParking ?? []) {
       lstMarkLocaltion.add(Marker(
@@ -60,10 +102,6 @@ class HomeController extends GetxController {
 
     if (pageNumber == 0) {
       mapController.value = MapController();
-      if (markLocaltionCurrent.value != null) {
-        // mapController.value.move(markLocaltionCurrent.value!.latLng!, 15,
-        //     id: DateTime.now().toString());
-      }
     }
   }
 
@@ -76,12 +114,13 @@ class HomeController extends GetxController {
   // change dark mode
   var listDarkMode = [
     DarkModeModel("System", ThemeMode.system, "system"),
-    DarkModeModel("Light", ThemeMode.light,"light"),
+    DarkModeModel("Light", ThemeMode.light, "light"),
     DarkModeModel("Dark", ThemeMode.dark, "dark")
   ].obs;
 
   changeDarkMode(ThemeMode theme) {
-    LocalDB.setThemeMode = listDarkMode.firstWhere((element) => element.themeMode == theme).code;
+    LocalDB.setThemeMode =
+        listDarkMode.firstWhere((element) => element.themeMode == theme).code;
     Get.changeThemeMode(theme);
     Get.back();
   }

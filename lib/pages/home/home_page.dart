@@ -1,3 +1,4 @@
+import 'package:charge_car/pages/home/profile/language_page.dart';
 import 'package:charge_car/services/model/parking.dart';
 import 'package:charge_car/third_library/button_default.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+// ignore: library_prefixes
 import 'package:map_launcher/map_launcher.dart' as MapLauncher;
 
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -265,7 +267,7 @@ class HomeChildPageOne extends StatelessWidget {
             mapController: mapController,
             options: MapOptions(
                 keepAlive: true,
-                center: LatLng(10.780231, 106.6645121),
+                center: controller.lstMarkLocaltion.length > 0 ? controller.lstMarkLocaltion[0].point : LatLng(0,0),
                 onTap: (tapPosition, point) {
                   homeController.pageController.value.close();
                 },

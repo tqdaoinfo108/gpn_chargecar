@@ -7,11 +7,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../services/model/parking.dart';
 import '../../services/model/user.dart';
 import '../../services/servces.dart';
-import '../../utils/const.dart';
 import '../../utils/get_storage.dart';
 
 class SplashScreenPage extends StatefulWidget {
@@ -66,7 +66,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     if (LocalDB.getUserID == 0) return true;
 
     try {
-      var response = await HttpClientLocal().getListBookingDetail(100, 1);
+      var response = await HttpClientLocal().getListBookingDetail(-100, 1);
       homeModel.listBookingDetail =
           BookingDetail.getListBookingDetailResponse(response.data);
       return true;
@@ -82,8 +82,19 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
       getNotification(1),
       getListBookingDetail()
     ]);
+
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.location,
+      Permission.camera,
+      Permission.photos,
+      Permission.notification,
+    ].request();
+    if(statuses.values.firstWhere((element) => element == PermissionStatus.denied, orElse: () => PermissionStatus.granted) == PermissionStatus.denied){
+      openAppSettings();
+    }
+
     if (!response.contains(null)) {
-      Get.offAndToNamed("/", arguments: homeModel);
+      Get.offAndToNamed(LocalDB.getUserID == 0 ? "/login" : "/", arguments: homeModel);
     }
   }
 

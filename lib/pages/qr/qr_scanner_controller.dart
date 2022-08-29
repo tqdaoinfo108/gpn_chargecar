@@ -17,7 +17,9 @@ class QRScannerPageController extends GetxController {
   void onQRViewCreated(QRViewController controllerQRView) {
     controllerQRView = controllerQRView;
     controllerQRView.scannedDataStream.listen((scanData) {
-     
+      if(scanData.code != null){
+        Get.toNamed("/charging");
+      }
     });
   }
 }

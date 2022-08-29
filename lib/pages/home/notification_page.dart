@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../services/model/notification.dart';
+import '../../utils/func.dart';
 import 'home_controller.dart';
 
 class NotificationPage extends StatelessWidget {
@@ -48,9 +49,8 @@ class NotificationPage extends StatelessWidget {
     );
   }
 
-  InkWell itemNotification(context, NotificationModel data) {
-    return InkWell(
-      onTap: () {},
+  GestureDetector itemNotification(context, NotificationModel data) {
+    return GestureDetector(
       child: Padding(
         padding: const EdgeInsets.only(bottom: 12),
         child: Container(
@@ -108,7 +108,7 @@ class NotificationPage extends StatelessWidget {
                       child: Container(
                         alignment: Alignment.bottomRight,
                         child: Text(
-                          (data.createdDate ?? 0).toString(),
+                          Functions.getDateTimeString(data.createdDate),
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 11,
