@@ -3,7 +3,6 @@ import 'package:charge_car/constants/index.dart';
 import 'package:charge_car/third_library/button_default.dart';
 import 'package:charge_car/third_library/scaffold_default.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 import '../../third_library/custom_text_form_field.dart';
@@ -37,7 +36,7 @@ class SignInPage extends GetView<SignInController> {
                 textFormFieldMargin: const EdgeInsets.only(
                     left: Paddings.normal + Paddings.minimum),
                 hasTitle: true,
-                title: "Email",
+                title: "email".tr,
                 titleStyle: theme.textTheme.subtitle1!.copyWith(
                     color: Theme.of(context).primaryColor, fontSize: 14),
                 hasTitleIcon: true,
@@ -53,11 +52,12 @@ class SignInPage extends GetView<SignInController> {
                 hintTextStyle: Theme.of(context).textTheme.subtitle1!.copyWith(
                     color: Theme.of(context).dividerColor, fontSize: 14),
                 textStyle: Theme.of(context).textTheme.bodyMedium,
-                hintText: "Email",
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Don't leave blank";
+                hintText: "email".tr,
+                validator: (s) {
+                  if (s == null || s.isEmpty) {
+                    return 'dont_blank'.tr;
                   }
+
                   // if (!value.isEmail) {
                   //   return "Email don't incorect";
                   // }
@@ -79,13 +79,13 @@ class SignInPage extends GetView<SignInController> {
                 textFormFieldMargin: const EdgeInsets.only(
                     left: Paddings.normal + Paddings.minimum),
                 hasTitle: true,
-                title: "Password",
+                title: "password".tr,
                 titleStyle: theme.textTheme.subtitle1!.copyWith(
                     color: Theme.of(context).primaryColor, fontSize: 14),
                 hasTitleIcon: true,
                 titleIcon: Padding(
                   padding: const EdgeInsets.only(right: 8),
-                  child: Icon(Icons.email_outlined,
+                  child: Icon(Icons.password_outlined,
                       color: Theme.of(context).primaryColor, size: 16),
                 ),
                 enabledBorder: const UnderlineInputBorder(
@@ -102,14 +102,14 @@ class SignInPage extends GetView<SignInController> {
                 hintTextStyle: Theme.of(context).textTheme.subtitle1!.copyWith(
                     color: Theme.of(context).dividerColor, fontSize: 14),
                 textStyle: Theme.of(context).textTheme.bodyMedium,
-                hintText: "Password",
+                hintText: "password".tr,
                 validator: (s) {
                   if (s == null || s.isEmpty) {
-                    return "Don't leave blank";
+                    return 'dont_blank'.tr;
                   }
 
                   if (s.length < 6) {
-                    return "length < 6";
+                    return "more_than_6".tr;
                   }
                 },
                 onChanged: (s) {
@@ -121,7 +121,7 @@ class SignInPage extends GetView<SignInController> {
             SizedBox(
               width: widthOfScreen * 0.6,
               child: DefaultButton(
-                  text: 'Login',
+                  text: 'login'.tr,
                   textColor: Colors.white,
                   backgroundColor: theme.primaryColor,
                   press: () async {
@@ -158,7 +158,7 @@ class SignInPage extends GetView<SignInController> {
                 textFormFieldMargin: const EdgeInsets.only(
                     left: Paddings.normal + Paddings.minimum),
                 hasTitle: true,
-                title: "Email",
+                title: "email".tr,
                 titleStyle: theme.textTheme.subtitle1!.copyWith(
                     color: Theme.of(context).primaryColor, fontSize: 14),
                 hasTitleIcon: true,
@@ -174,14 +174,18 @@ class SignInPage extends GetView<SignInController> {
                 hintTextStyle: Theme.of(context).textTheme.subtitle1!.copyWith(
                     color: Theme.of(context).dividerColor, fontSize: 14),
                 textStyle: Theme.of(context).textTheme.bodyMedium,
-                hintText: "Email",
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Don't leave blank";
+                hintText: "email".tr,
+                validator: (s) {
+                  if (s == null || s.isEmpty) {
+                    return 'dont_blank'.tr;
                   }
 
-                  if (!value.isEmail) {
-                    return "Email don't incorect";
+                  if (s.length < 6) {
+                    return "more_than_6".tr;
+                  }
+
+                  if (!s.isEmail) {
+                    return "email_invalid".tr;
                   }
                 },
                 onChanged: (s) {
@@ -201,13 +205,13 @@ class SignInPage extends GetView<SignInController> {
                 textFormFieldMargin: const EdgeInsets.only(
                     left: Paddings.normal + Paddings.minimum),
                 hasTitle: true,
-                title: "Password",
+                title: "password".tr,
                 titleStyle: theme.textTheme.subtitle1!.copyWith(
                     color: Theme.of(context).primaryColor, fontSize: 14),
                 hasTitleIcon: true,
                 titleIcon: Padding(
                   padding: const EdgeInsets.only(right: 8),
-                  child: Icon(Icons.email_outlined,
+                  child: Icon(Icons.password_outlined,
                       color: Theme.of(context).primaryColor, size: 16),
                 ),
                 enabledBorder: const UnderlineInputBorder(
@@ -224,14 +228,14 @@ class SignInPage extends GetView<SignInController> {
                 hintTextStyle: Theme.of(context).textTheme.subtitle1!.copyWith(
                     color: Theme.of(context).dividerColor, fontSize: 14),
                 textStyle: Theme.of(context).textTheme.bodyMedium,
-                hintText: "Password",
+                hintText: "password".tr,
                 validator: (s) {
                   if (s == null || s.isEmpty) {
-                    return "Don't leave blank";
+                    return 'dont_blank'.tr;
                   }
 
                   if (s.length < 6) {
-                    return "Password is more than 6 characters";
+                    return "more_than_6".tr;
                   }
                 },
                 onChanged: (s) {
@@ -251,13 +255,13 @@ class SignInPage extends GetView<SignInController> {
                 textFormFieldMargin: const EdgeInsets.only(
                     left: Paddings.normal + Paddings.minimum),
                 hasTitle: true,
-                title: "Confirm password",
+                title: "confirm_password".tr,
                 titleStyle: theme.textTheme.subtitle1!.copyWith(
                     color: Theme.of(context).primaryColor, fontSize: 14),
                 hasTitleIcon: true,
                 titleIcon: Padding(
                   padding: const EdgeInsets.only(right: 8),
-                  child: Icon(Icons.email_outlined,
+                  child: Icon(Icons.password_outlined,
                       color: Theme.of(context).primaryColor, size: 16),
                 ),
                 enabledBorder: const UnderlineInputBorder(
@@ -274,19 +278,19 @@ class SignInPage extends GetView<SignInController> {
                 hintTextStyle: Theme.of(context).textTheme.subtitle1!.copyWith(
                     color: Theme.of(context).dividerColor, fontSize: 14),
                 textStyle: Theme.of(context).textTheme.bodyMedium,
-                hintText: "Password",
+                hintText: "confirm_password".tr,
                 validator: (s) {
                   if (s == null || s.isEmpty) {
-                    return "Don't leave blank";
+                    return 'dont_blank'.tr;
                   }
 
                   if (s.length < 6) {
-                    return "Password is more than 6 characters";
+                    return "more_than_6".tr;
                   }
 
                   if (controller.signUpPassword.value !=
                       controller.signUpPasswordConfirm.value) {
-                    return "Password incorrect";
+                    return "password_incorrect".tr;
                   }
                 },
                 onChanged: (s) {
@@ -298,7 +302,7 @@ class SignInPage extends GetView<SignInController> {
             SizedBox(
               width: widthOfScreen * 0.6,
               child: DefaultButton(
-                  text: 'Register',
+                  text: 'register'.tr,
                   textColor: Colors.white,
                   backgroundColor: theme.primaryColor,
                   press: () async {

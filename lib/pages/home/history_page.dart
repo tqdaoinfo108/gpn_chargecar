@@ -1,6 +1,7 @@
 import 'package:charge_car/constants/index.dart';
 import 'package:charge_car/pages/home/home_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../services/model/booking_detail.dart';
 import '../../utils/func.dart';
@@ -18,7 +19,7 @@ class HistoryPage extends StatelessWidget {
           padding: const EdgeInsets.all(Paddings.normal),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text("History",
+            Text("history".tr,
                 style: theme.textTheme.headline5!
                     .copyWith(fontWeight: FontWeight.bold)),
             const SizedBox(height: Space.medium),
@@ -27,7 +28,7 @@ class HistoryPage extends StatelessWidget {
                 ? Expanded(
                     child: Center(
                         child: Text(
-                    "No data found",
+                    'data_not_found'.tr,
                     style: theme.textTheme.bodyLarge,
                   )))
                 : Expanded(
@@ -85,12 +86,12 @@ class HistoryPage extends StatelessWidget {
               ),
               const SizedBox(height: Space.small),
               Text(
-                "Số Kwh: ${data.powerConsumption ?? 0}",
+                "${'number_kwh'.tr}: ${data.powerConsumption ?? 0}",
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               const SizedBox(height: Space.small),
               Text(
-                "Tổng tiền: ${data.amount ?? 0}",
+                "${'total_amount'.tr}: ${data.amount ?? 0}",
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               const SizedBox(height: Space.small),

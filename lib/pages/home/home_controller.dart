@@ -113,14 +113,15 @@ class HomeController extends GetxController {
 
   // change dark mode
   var listDarkMode = [
-    DarkModeModel("System", ThemeMode.system, "system"),
-    DarkModeModel("Light", ThemeMode.light, "light"),
-    DarkModeModel("Dark", ThemeMode.dark, "dark")
+    DarkModeModel("system".tr, ThemeMode.system, "system"),
+    DarkModeModel("light".tr, ThemeMode.light, "light"),
+    DarkModeModel("dark".tr, ThemeMode.dark, "dark")
   ].obs;
 
   changeDarkMode(ThemeMode theme) {
     LocalDB.setThemeMode =
         listDarkMode.firstWhere((element) => element.themeMode == theme).code;
+        listDarkMode.refresh();
     Get.changeThemeMode(theme);
     Get.back();
   }

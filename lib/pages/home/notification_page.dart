@@ -20,7 +20,7 @@ class NotificationPage extends StatelessWidget {
           padding: const EdgeInsets.all(Paddings.normal),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text("Notifications",
+            Text("notification".tr,
                 style: theme.textTheme.headline5!
                     .copyWith(fontWeight: FontWeight.bold)),
             const SizedBox(height: Space.medium),
@@ -140,9 +140,9 @@ class NotificationPage extends StatelessWidget {
 
   String getString(id) {
     if (id == 1) {
-      return "Charging";
+      return 'charging'.tr;
     } else if (id == 2) {
-      return "Stop charging";
+      return 'stop_charging'.tr;
     } else if (id == 3) {
       return "Verified";
     } else {

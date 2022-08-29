@@ -22,7 +22,7 @@ class DarkModePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomSheetDefault(
-      title: "Dark mode",
+      title: "dark_mode".tr,
       body: Column(
         children: [
           newMethod(context, controller.listDarkMode[0]),
@@ -44,7 +44,7 @@ class DarkModePage extends StatelessWidget {
           darkModeModel.title,
           style: Theme.of(context).textTheme.bodyText1,
         ),
-        trailing: LocalDB.getThemeMode == darkModeModel.themeMode
+        trailing: LocalDB.getThemeMode == darkModeModel.code
             ? const Icon(Icons.check, size: 28, color: Colors.green)
             : const SizedBox(),
       ),

@@ -152,13 +152,13 @@ class HomeChildPageOne extends StatelessWidget {
                                     color: theme.colorScheme.primary)),
                             const SizedBox(height: Space.medium),
                             Text(
-                              "Phone: ${homeController.markLocaltionCurrent.value!.phoneParking}",
+                              "${'Phone'.tr}: ${homeController.markLocaltionCurrent.value!.phoneParking}",
                               style: theme.textTheme.bodyText1!
                                   .copyWith(color: theme.colorScheme.primary),
                             ),
                             const SizedBox(height: Space.medium),
                             Text(
-                                "Power socket available: ${homeController.markLocaltionCurrent.value!.powerSocketAvailable}",
+                                "${'power_socket_available'.tr}: ${homeController.markLocaltionCurrent.value!.powerSocketAvailable}",
                                 style: theme.textTheme.bodyText1!.copyWith(
                                     color: theme.colorScheme.primary)),
                             const SizedBox(height: Space.medium),
@@ -174,7 +174,7 @@ class HomeChildPageOne extends StatelessWidget {
                                       final availableMaps = await MapLauncher
                                           .MapLauncher.installedMaps;
                                       if (availableMaps.isEmpty) {
-                                        EasyLoading.showToast("No found map");
+                                        EasyLoading.showToast('maps_app_not_found'.tr);
                                         return;
                                       }
                                       await availableMaps.first.showMarker(
@@ -206,7 +206,7 @@ class HomeChildPageOne extends StatelessWidget {
                                     child: DefaultButtonWidthDynamic(
                                       backgroundColor: theme.primaryColor,
                                       press: () => Get.toNamed("/qr"),
-                                      widget: Text("Booking",
+                                      widget: Text('booking'.tr,
                                           style: theme.textTheme.headline6!
                                               .copyWith(
                                                   color: theme
@@ -312,18 +312,18 @@ class HomeChildPageOne extends StatelessWidget {
                           appBarTheme: AppBarTheme(
                         color: Theme.of(context).dividerColor,
                       )),
-                      searchLabel: 'Search charge car location ',
+                      searchLabel: 'search'.tr,
                       suggestion: Container(
                         color: Theme.of(context).cardColor,
-                        child: const Center(
+                        child: Center(
                           child: Text(
-                              'Filter charge car location by name or address'),
+                              'filter_name_or_address'.tr),
                         ),
                       ),
                       failure: Container(
                         color: Theme.of(context).cardColor,
-                        child: const Center(
-                          child: Text('No charge car location found :('),
+                        child: Center(
+                          child: Text('data_not_found'.tr),
                         ),
                       ),
                       filter: (parking) =>
@@ -356,8 +356,8 @@ class HomeChildPageOne extends StatelessWidget {
                         padding: const EdgeInsets.only(),
                         width: MediaQuery.of(context).size.width - 40,
                         child: ListTile(
-                          title: const Text(
-                            "Search",
+                          title:  Text(
+                            'search'.tr,
                             style: TextStyle(fontSize: 18),
                           ),
                           leading: Image.asset(

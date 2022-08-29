@@ -76,17 +76,17 @@ class ProfilePage extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: Paddings.normal),
-                              child: Text("ACCOUNT",
+                              child: Text('account'.tr,
                                   style: theme.textTheme.titleSmall!
                                       .copyWith(fontWeight: FontWeight.bold)),
                             ),
-                            itemSetting("Verify account",
+                            itemSetting('verify_account'.tr,
                                 value: (controller.homeData.value.userModel!
                                                 .confirmEmail ??
                                             0) ==
                                         1
-                                    ? "Verified"
-                                    : "Not Verified",
+                                    ? "verified".tr
+                                    : "not_verified".tr,
                                 icon: (controller.homeData.value.userModel!
                                                 .confirmEmail ??
                                             0) ==
@@ -99,18 +99,19 @@ class ProfilePage extends StatelessWidget {
                                 thickness: 1,
                                 height: 1,
                                 color: Colors.grey.withOpacity(.2)),
-                            itemSetting("Infomation account",
-                                value: controller.homeData.value.userModel?.fullName ),
+                            itemSetting("info_account".tr,
+                                value: controller
+                                    .homeData.value.userModel?.fullName),
                             Divider(
                                 thickness: 1,
                                 height: 1,
                                 color: Colors.grey.withOpacity(.2)),
-                            itemSetting("Xóa tài khoản"),
+                            itemSetting("delete_account".tr),
                             Divider(
                                 thickness: 1,
                                 height: 1,
                                 color: Colors.grey.withOpacity(.2)),
-                            itemSetting("Đăng xuất", onPressed: () {
+                            itemSetting("sign_out".tr, onPressed: () {
                               LocalDB.setUserID = 0;
                               Get.offAllNamed("/splash");
                             }),
@@ -125,14 +126,14 @@ class ProfilePage extends StatelessWidget {
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: Paddings.normal),
-                    child: Text("SETTINGS",
+                    child: Text("settings".tr,
                         style: theme.textTheme.titleSmall!
                             .copyWith(fontWeight: FontWeight.bold)),
                   ),
                   itemSetting("dark_mode".tr,
                       value: controller.listDarkMode
-                          .firstWhere((element) =>
-                              element.code == LocalDB.getThemeMode)
+                          .firstWhere(
+                              (element) => element.code == LocalDB.getThemeMode)
                           .title, onPressed: () {
                     Get.bottomSheet(const DarkModePage());
                   }),
@@ -140,23 +141,26 @@ class ProfilePage extends StatelessWidget {
                       thickness: 1,
                       height: 1,
                       color: Colors.grey.withOpacity(.2)),
-                  itemSetting("Language",
-                      value: controller.lstLanguage.firstWhere((element) => element.locale == Locale(LocalDB.getLanguagCode)).title,
+                  itemSetting("language".tr,
+                      value: controller.lstLanguage
+                          .firstWhere((element) =>
+                              element.locale == Locale(LocalDB.getLanguagCode))
+                          .title,
                       onPressed: () => Get.bottomSheet(const LanguagePage())),
+                  // Divider(
+                  //     thickness: 1,
+                  //     height: 1,
+                  //     color: Colors.grey.withOpacity(.2)),
+                  // itemSetting("About", value: "GPN-Avanced"),
                   Divider(
                       thickness: 1,
                       height: 1,
                       color: Colors.grey.withOpacity(.2)),
-                  itemSetting("About", value: "GPN-Avanced"),
-                  Divider(
-                      thickness: 1,
-                      height: 1,
-                      color: Colors.grey.withOpacity(.2)),
-                  itemSetting("Version",
+                  itemSetting("version".tr,
                       value: "beta 1.0.0",
                       onPressed: () => EasyLoading.showToast(
                           toastPosition: EasyLoadingToastPosition.top,
-                          "Application verion beta 1.0.0")),
+                          "${'app_version'.tr} 1.0.0")),
                 ],
               ),
             ),
