@@ -57,8 +57,8 @@ class HomePage extends GetView<HomeController> {
             markers: controller.lstMarkLocaltion,
             homeController: controller,
           ),
-          const HistoryPage(),
-          const NotificationPage(),
+          HistoryPage(controller),
+          NotificationPage(controller),
           ProfilePage(controller),
         ][controller.pageCurrent.value],
       ),
@@ -171,9 +171,9 @@ class HomeChildPageOne extends StatelessWidget {
                                     press: () async {
                                       final availableMaps = await MapLauncher
                                           .MapLauncher.installedMaps;
-                                      if(availableMaps.isEmpty){
+                                      if (availableMaps.isEmpty) {
                                         EasyLoading.showToast("No found map");
-                                        return ;
+                                        return;
                                       }
                                       await availableMaps.first.showMarker(
                                         coords: MapLauncher.Coords(
@@ -181,8 +181,10 @@ class HomeChildPageOne extends StatelessWidget {
                                                 .value!.getLatLng.latitude,
                                             homeController.markLocaltionCurrent
                                                 .value!.getLatLng.longitude),
-                                        title: homeController.markLocaltionCurrent
-                                                .value!.nameParking!,
+                                        title: homeController
+                                            .markLocaltionCurrent
+                                            .value!
+                                            .nameParking!,
                                       );
                                     },
                                   ),
@@ -278,9 +280,8 @@ class HomeChildPageOne extends StatelessWidget {
                 minZoom: 4),
             layers: [
               TileLayerOptions(
-                urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                subdomains: ['a', 'b', 'c'],
-                userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+                urlTemplate:
+                    "https://api.mapbox.com/styles/v1/tranquocdao108/cl7ej62u7000015mt54hc1a1c/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoidHJhbnF1b2NkYW8xMDgiLCJhIjoiY2swZjQ2dWxzMDcwNTNtbXh1OXVwbGwyayJ9.zd_7KBxex95xUOMBJl7ISA",
               ),
               MarkerLayerOptions(markers: markers),
             ],

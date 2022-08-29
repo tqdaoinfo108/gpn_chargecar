@@ -94,7 +94,6 @@ class CustomTextFormField extends StatelessWidget {
                 : Container(),
           ],
         ),
-//        hasTitle ? SpaceH4() : Container(),
         Container(
           width: width,
           height: height,

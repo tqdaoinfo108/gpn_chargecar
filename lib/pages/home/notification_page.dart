@@ -1,9 +1,14 @@
 import 'package:charge_car/constants/index.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../services/model/notification.dart';
+import 'home_controller.dart';
 
 class NotificationPage extends StatelessWidget {
-  const NotificationPage({Key? key}) : super(key: key);
+  const NotificationPage(this.controller, {Key? key}) : super(key: key);
 
+  final HomeController controller;
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -18,18 +23,32 @@ class NotificationPage extends StatelessWidget {
                 style: theme.textTheme.headline5!
                     .copyWith(fontWeight: FontWeight.bold)),
             const SizedBox(height: Space.medium),
-            itemNotification(
-                context, 1, "Starting to charge", "27/09/2022 16:33"),
-            itemNotification(context, 2, "Stop charging", "27/09/2022 16:33"),
-            itemNotification(
-                context, 3, "Verified account", "27/09/2022 16:33"),
+            if (controller.homeData.value.listNotification == null ||
+                controller.homeData.value.listNotification!.data!.isEmpty)
+              Expanded(
+                  child: Center(
+                      child: Text(
+                "No data found",
+                style: theme.textTheme.bodyLarge,
+              )))
+            else
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    for (var item
+                        in controller.homeData.value.listNotification?.data ??
+                            [])
+                      itemNotification(context, item)
+                  ],
+                ),
+              ),
           ]),
         ),
       ),
     );
   }
 
-  InkWell itemNotification(context, id, title, dateTime) {
+  InkWell itemNotification(context, NotificationModel data) {
     return InkWell(
       onTap: () {},
       child: Padding(
@@ -48,8 +67,7 @@ class NotificationPage extends StatelessWidget {
               ]),
           child: Row(
             children: [
-              SizedBox(
-                width: 100,
+              Expanded(
                 child: Container(
                   decoration: const BoxDecoration(
                     color: Colors.grey,
@@ -64,35 +82,33 @@ class NotificationPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         // Ionicons.document_text_outline
-                        getImage(id),
+                        getImage(data.typeId!),
                         const SizedBox(height: Space.superSmall),
-                        Text(getString(id))
+                        Text(getString(data.typeId!))
                       ]),
                 ),
               ),
-              Padding(
-                padding:
-                    EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
+              Container(
+                width: Get.width / 1.5,
+                padding: const EdgeInsets.only(
+                    left: 10, right: 10, bottom: 10, top: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
+                    Flexible(
                       child: Text(
-                        title,
+                        data.title ?? "",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 6,
-                    ),
                     Expanded(
                       child: Container(
                         alignment: Alignment.bottomRight,
                         child: Text(
-                          dateTime,
+                          (data.createdDate ?? 0).toString(),
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 11,

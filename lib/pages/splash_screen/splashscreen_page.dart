@@ -1,6 +1,8 @@
 import 'package:charge_car/constants/dimens.dart';
 import 'package:charge_car/constants/index.dart';
+import 'package:charge_car/services/model/booking_detail.dart';
 import 'package:charge_car/services/model/home.dart';
+import 'package:charge_car/services/model/notification.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -9,6 +11,7 @@ import 'package:get/get.dart';
 import '../../services/model/parking.dart';
 import '../../services/model/user.dart';
 import '../../services/servces.dart';
+import '../../utils/const.dart';
 import '../../utils/get_storage.dart';
 
 class SplashScreenPage extends StatefulWidget {
@@ -34,6 +37,19 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     }
   }
 
+  Future<bool?> getNotification(int page) async {
+    if (LocalDB.getUserID == 0) return true;
+
+    try {
+      var response = await HttpClientLocal().getListNotification(page);
+      homeModel.listNotification =
+          NotificationModel.getListNotificationResponse(response.data);
+      return true;
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<bool?> getListParking() async {
     try {
       var response =
@@ -46,8 +62,26 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     }
   }
 
+  Future<bool?> getListBookingDetail() async {
+    if (LocalDB.getUserID == 0) return true;
+
+    try {
+      var response = await HttpClientLocal().getListBookingDetail(100, 1);
+      homeModel.listBookingDetail =
+          BookingDetail.getListBookingDetailResponse(response.data);
+      return true;
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future onInitLoading() async {
-    var response = await Future.wait([getProfile(), getListParking()]);
+    var response = await Future.wait([
+      getProfile(),
+      getListParking(),
+      getNotification(1),
+      getListBookingDetail()
+    ]);
     if (!response.contains(null)) {
       Get.offAndToNamed("/", arguments: homeModel);
     }

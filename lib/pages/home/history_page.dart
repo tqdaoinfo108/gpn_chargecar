@@ -1,16 +1,19 @@
 import 'package:charge_car/constants/index.dart';
+import 'package:charge_car/pages/home/home_controller.dart';
 import 'package:flutter/material.dart';
 
-class HistoryPage extends StatelessWidget {
-  const HistoryPage({Key? key}) : super(key: key);
+import '../../services/model/booking_detail.dart';
 
+class HistoryPage extends StatelessWidget {
+  const HistoryPage(this.controller, {Key? key}) : super(key: key);
+  final HomeController controller;
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
-        child: Padding(
+        child: Container(
           padding: const EdgeInsets.all(Paddings.normal),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -18,34 +21,29 @@ class HistoryPage extends StatelessWidget {
                 style: theme.textTheme.headline5!
                     .copyWith(fontWeight: FontWeight.bold)),
             const SizedBox(height: Space.medium),
-            itemNotification(
-                context,
-                "GPN Charge car",
-                "27/09/2022 16:33 --> 27/09/2022 16:33",
-                "3kwh",
-                "368.000 đ",
-                "27/09/2022 16:33"),
-            itemNotification(
-                context,
-                "Stop charging",
-                "27/09/2022 16:33 --> 27/09/2022 16:33",
-                "3kwh",
-                "368.000 đ",
-                "27/09/2022 16:33"),
-            itemNotification(
-                context,
-                "Verified account",
-                "27/09/2022 16:33 --> 27/09/2022 16:33",
-                "3kwh",
-                "368.000 đ",
-                "27/09/2022 16:33"),
+            (controller.homeData.value.listBookingDetail == null ||
+                    controller.homeData.value.listBookingDetail!.data!.isEmpty)
+                ? Expanded(
+                    child: Center(
+                        child: Text(
+                    "No data found",
+                    style: theme.textTheme.bodyLarge,
+                  )))
+                : SingleChildScrollView(
+                    child: Column(children: [
+                      for (var item in controller
+                              .homeData.value.listBookingDetail?.data ??
+                          [])
+                        itemNotification(context, item),
+                    ]),
+                  ),
           ]),
         ),
       ),
     );
   }
 
-  InkWell itemNotification(context, title, timetotime, kwh,totalMoney , dateTime) {
+  InkWell itemNotification(context, BookingDetail data) {
     return InkWell(
       onTap: () {},
       child: Container(
@@ -66,7 +64,7 @@ class HistoryPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                title,
+                data.nameParking ?? "",
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium!
@@ -74,24 +72,29 @@ class HistoryPage extends StatelessWidget {
               ),
               const SizedBox(height: Space.medium),
               Text(
-                timetotime,
+                data.addressParking ?? "",
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               const SizedBox(height: Space.small),
               Text(
-                "Số Kwh: $kwh",
+                "${data.dateStart}-${data.dateEnd}",
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               const SizedBox(height: Space.small),
-               Text(
-                "Tổng tiền: $totalMoney",
+              Text(
+                "Số Kwh: ${data.powerConsumption ?? 0}",
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              const SizedBox(height: Space.small),
+              Text(
+                "Tổng tiền: ${data.amount ?? 0}",
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               const SizedBox(height: Space.small),
               Container(
                 alignment: Alignment.bottomRight,
                 child: Text(
-                  dateTime,
+                  data.dateBook.toString(),
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 11,

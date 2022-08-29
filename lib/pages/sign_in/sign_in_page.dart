@@ -16,8 +16,6 @@ class SignInPage extends GetView<SignInController> {
     var heightOfScreen = MediaQuery.of(context).size.height;
     var widthOfScreen = MediaQuery.of(context).size.width;
     ThemeData theme = Theme.of(context);
-    final signInFormKey = GlobalKey<FormState>();
-    final signUpFormKey = GlobalKey<FormState>();
 
     Widget buildLoginForm() {
       var widthOfScreen = MediaQuery.of(context).size.width;
@@ -57,7 +55,7 @@ class SignInPage extends GetView<SignInController> {
                 hintText: "Email",
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Field don't blank";
+                    return "Don't leave blank";
                   }
                   // if (!value.isEmail) {
                   //   return "Email don't incorect";
@@ -106,7 +104,7 @@ class SignInPage extends GetView<SignInController> {
                 hintText: "Password",
                 validator: (s) {
                   if (s == null || s.isEmpty) {
-                    return "Field don't blank";
+                    return "Don't leave blank";
                   }
 
                   if (s.length < 6) {
@@ -126,9 +124,10 @@ class SignInPage extends GetView<SignInController> {
                   textColor: Colors.white,
                   backgroundColor: theme.primaryColor,
                   press: () async {
-                    if (signInFormKey.currentState!.validate()) {
+                    if (controller.signInFormKey.value.currentState!
+                        .validate()) {
                       var result = await controller.signIn();
-                      if(result){
+                      if (result) {
                         Get.offAllNamed("/splash");
                       }
                     }
@@ -177,13 +176,12 @@ class SignInPage extends GetView<SignInController> {
                 hintText: "Email",
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Field don't blank";
+                    return "Don't leave blank";
                   }
 
                   if (!value.isEmail) {
                     return "Email don't incorect";
                   }
-                  return "";
                 },
                 onChanged: (s) {
                   controller.signUpEmail.value = s;
@@ -228,11 +226,11 @@ class SignInPage extends GetView<SignInController> {
                 hintText: "Password",
                 validator: (s) {
                   if (s == null || s.isEmpty) {
-                    return "Field don't blank";
+                    return "Don't leave blank";
                   }
 
                   if (s.length < 6) {
-                    return "length < 6";
+                    return "Password is more than 6 characters";
                   }
                 },
                 onChanged: (s) {
@@ -278,11 +276,16 @@ class SignInPage extends GetView<SignInController> {
                 hintText: "Password",
                 validator: (s) {
                   if (s == null || s.isEmpty) {
-                    return "Field don't blank";
+                    return "Don't leave blank";
                   }
 
                   if (s.length < 6) {
-                    return "length < 6";
+                    return "Password is more than 6 characters";
+                  }
+
+                  if (controller.signUpPassword.value !=
+                      controller.signUpPasswordConfirm.value) {
+                    return "Password incorrect";
                   }
                 },
                 onChanged: (s) {
@@ -291,14 +294,20 @@ class SignInPage extends GetView<SignInController> {
               ),
             ),
             const SizedBox(height: Space.superLarge),
-            Container(
+            SizedBox(
               width: widthOfScreen * 0.6,
               child: DefaultButton(
                   text: 'Register',
                   textColor: Colors.white,
                   backgroundColor: theme.primaryColor,
-                  press: () {
-                    if (signInFormKey.currentState!.validate()) {}
+                  press: () async {
+                    if (controller.signUpFormKey.value.currentState!
+                        .validate()) {
+                      var result = await controller.register();
+                      if (result) {
+                        Get.offAllNamed("/splash");
+                      }
+                    }
                   }),
             ),
           ],
@@ -307,17 +316,12 @@ class SignInPage extends GetView<SignInController> {
     }
 
     Widget _buildTabView(BuildContext context) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Expanded(
-            child: TabBarView(
-              children: [
-                Form(key: signInFormKey, child: buildLoginForm()),
-                Form(key: signUpFormKey, child: _buildRegisterForm(context)),
-              ],
-            ),
-          )
+      return TabBarView(
+        children: [
+          Form(key: controller.signInFormKey.value, child: buildLoginForm()),
+          Form(
+              key: controller.signUpFormKey.value,
+              child: _buildRegisterForm(context)),
         ],
       );
     }
