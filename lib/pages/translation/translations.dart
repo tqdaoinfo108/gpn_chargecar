@@ -43,7 +43,7 @@ class LanguageTranslations extends Translations {
           'language' : 'Language',
           'version' : 'Version',
           'app_version' : 'Application verion',
-
+          'full_name' : 'Full name',
         },
         'jp_JP': {
           'home': '家',

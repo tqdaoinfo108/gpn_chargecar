@@ -10,6 +10,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:map_launcher/map_launcher.dart' as MapLauncher;
 
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants/dimens.dart';
 import '../../third_library/search_page/search_page.dart';
@@ -174,7 +175,8 @@ class HomeChildPageOne extends StatelessWidget {
                                       final availableMaps = await MapLauncher
                                           .MapLauncher.installedMaps;
                                       if (availableMaps.isEmpty) {
-                                        EasyLoading.showToast('maps_app_not_found'.tr);
+                                        EasyLoading.showToast(
+                                            'maps_app_not_found'.tr);
                                         return;
                                       }
                                       await availableMaps.first.showMarker(
@@ -195,6 +197,13 @@ class HomeChildPageOne extends StatelessWidget {
                                 Expanded(
                                   flex: 3,
                                   child: DefaultButtonWidthDynamic(
+                                    press: () async {
+                                      final Uri launchUri = Uri(
+                                          scheme: 'tel',
+                                          path: controller.markLocaltionCurrent
+                                              .value!.phoneParking);
+                                      await launchUrl(launchUri);
+                                    },
                                     backgroundColor: theme.colorScheme.primary
                                         .withOpacity(0.2),
                                     widget: const Icon(Icons.phone),
@@ -267,7 +276,9 @@ class HomeChildPageOne extends StatelessWidget {
             mapController: mapController,
             options: MapOptions(
                 keepAlive: true,
-                center: controller.lstMarkLocaltion.length > 0 ? controller.lstMarkLocaltion[0].point : LatLng(0,0),
+                center: controller.lstMarkLocaltion.length > 0
+                    ? controller.lstMarkLocaltion[0].point
+                    : LatLng(0, 0),
                 onTap: (tapPosition, point) {
                   homeController.pageController.value.close();
                 },
@@ -316,8 +327,7 @@ class HomeChildPageOne extends StatelessWidget {
                       suggestion: Container(
                         color: Theme.of(context).cardColor,
                         child: Center(
-                          child: Text(
-                              'filter_name_or_address'.tr),
+                          child: Text('filter_name_or_address'.tr),
                         ),
                       ),
                       failure: Container(
@@ -356,7 +366,7 @@ class HomeChildPageOne extends StatelessWidget {
                         padding: const EdgeInsets.only(),
                         width: MediaQuery.of(context).size.width - 40,
                         child: ListTile(
-                          title:  Text(
+                          title: Text(
                             'search'.tr,
                             style: TextStyle(fontSize: 18),
                           ),

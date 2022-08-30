@@ -28,7 +28,9 @@ class CustomTextFormField extends StatelessWidget {
   final double? height;
   final EdgeInsetsGeometry? contentPadding;
   final EdgeInsetsGeometry? textFormFieldMargin;
-
+  final String? initialValue;
+  final bool? enabled;
+  final TextEditingController? controller;
   static const UnderlineInputBorder primaryInputBorder = UnderlineInputBorder(
     borderSide: BorderSide(
       color: Colors.red,
@@ -79,6 +81,9 @@ class CustomTextFormField extends StatelessWidget {
     this.inputFormatters,
     this.width,
     this.height,
+    this.initialValue,
+    this.enabled = true,
+    this.controller,
   });
 
   @override
@@ -99,6 +104,8 @@ class CustomTextFormField extends StatelessWidget {
           height: height,
           margin: textFormFieldMargin,
           child: TextFormField(
+            controller: controller,
+            readOnly: !enabled!,
             style: textStyle,
             keyboardType: textInputType,
             onChanged: onChanged,

@@ -101,7 +101,8 @@ class ProfilePage extends StatelessWidget {
                                 color: Colors.grey.withOpacity(.2)),
                             itemSetting("info_account".tr,
                                 value: controller
-                                    .homeData.value.userModel?.fullName),
+                                    .homeData.value.userModel?.fullName,
+                                onPressed: () => Get.toNamed("/info_account")),
                             Divider(
                                 thickness: 1,
                                 height: 1,

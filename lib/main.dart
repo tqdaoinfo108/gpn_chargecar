@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:charge_car/pages/home/home_controller.dart';
 import 'package:charge_car/pages/home/home_page.dart';
+import 'package:charge_car/pages/home/profile/info_account_page.dart';
 import 'package:charge_car/pages/qr/qr_scanner_controller.dart';
 import 'package:charge_car/pages/qr/qr_scanner_page.dart';
 import 'package:charge_car/pages/sign_in/sign_in_controller.dart';
@@ -87,9 +88,10 @@ class _MyAppState extends State<MyApp> {
         ),
         GetPage(
           name: "/charging",
-          page: () =>  const ChargingPage(),
+          page: () => const ChargingPage(),
           binding: ChargingPageBinding(),
         ),
+        GetPage(name: "/info_account", page: () => const InfoAccountPage()),
       ],
     );
   }

@@ -8,6 +8,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'profile/dark_mode_page.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -33,17 +34,21 @@ class HomeController extends GetxController {
 
   Rx<HomeModel> homeData = HomeModel().obs;
 
+  var isOpenCall = false.obs;
+
   @override
   void onInit() {
     super.onInit();
     homeData.value = Get.arguments;
     init();
+    canLaunchUrl(Uri(scheme: 'tel', path: '123')).then((bool result) {
+      isOpenCall.value = result;
+    });
   }
 
   init() async {
     var locationData = await Geolocator.getCurrentPosition();
-    var latlng =
-        LatLng(locationData.latitude , locationData.longitude );
+    var latlng = LatLng(locationData.latitude, locationData.longitude);
     mapController.value.move(latlng, 15);
     lstMarkLocaltion.add(Marker(
         width: 32,
@@ -63,7 +68,7 @@ class HomeController extends GetxController {
     );
 
     Geolocator.getPositionStream(locationSettings: locationSettings)
-            .listen((Position? position) {
+        .listen((Position? position) {
       var latlng = LatLng(position?.latitude ?? 0, position?.longitude ?? 0);
       lstMarkLocaltion[0] = Marker(
           width: 32,
@@ -121,7 +126,7 @@ class HomeController extends GetxController {
   changeDarkMode(ThemeMode theme) {
     LocalDB.setThemeMode =
         listDarkMode.firstWhere((element) => element.themeMode == theme).code;
-        listDarkMode.refresh();
+    listDarkMode.refresh();
     Get.changeThemeMode(theme);
     Get.back();
   }
