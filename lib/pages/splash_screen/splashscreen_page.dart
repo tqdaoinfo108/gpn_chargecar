@@ -3,11 +3,14 @@ import 'package:charge_car/constants/index.dart';
 import 'package:charge_car/services/model/booking_detail.dart';
 import 'package:charge_car/services/model/home.dart';
 import 'package:charge_car/services/model/notification.dart';
+import 'package:charge_car/third_library/button_default.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../services/model/parking.dart';
 import '../../services/model/user.dart';
@@ -23,7 +26,8 @@ class SplashScreenPage extends StatefulWidget {
 
 class _SplashScreenPageState extends State<SplashScreenPage> {
   HomeModel homeModel = HomeModel();
-
+  LatLng latlng = LatLng(0, 0);
+  bool isPermission = false;
   // PROFILE PAGE
   Future<bool?> getProfile() async {
     if (LocalDB.getUserID == 0) return true;
@@ -52,8 +56,9 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
 
   Future<bool?> getListParking() async {
     try {
-      var response =
-          await HttpClientLocal().getListChargeCarLocaltion("", 1, 1000);
+      var response = await HttpClientLocal().getListChargeCarLocaltion(
+          "", 1, 150,
+          lat: latlng.latitude, lng: latlng.longitude);
       homeModel.listParking =
           ParkingModel.getListParkingResponse(response.data).data;
       return true;
@@ -76,6 +81,43 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   }
 
   Future onInitLoading() async {
+    await [
+      Permission.location,
+      Permission.camera,
+      // Permission.photos,
+      // Permission.notification
+    ].request();
+
+    var isLocation = await Permission.location.request().isGranted;
+    var isCamera = await Permission.camera.request().isGranted;
+
+    if (!isLocation || !isCamera) {
+      setState(() {
+        isPermission = true;
+      });
+      return;
+    }
+
+    try {
+      var locationData = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.low);
+      latlng = LatLng(locationData.latitude, locationData.longitude);
+      // ignore: empty_catches
+    } catch (e) {}
+
+    if (LocalDB.getUserID == 0) {
+      await Future.delayed(const Duration(seconds: 1));
+      Get.offAndToNamed("/login");
+      return;
+    }
+
+    loadingIntoHome();
+  }
+
+  Future<bool> loadingIntoHome() async {
+    setState(() {
+      isPermission = false;
+    });
     var response = await Future.wait([
       getProfile(),
       getListParking(),
@@ -83,18 +125,25 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
       getListBookingDetail()
     ]);
 
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.location,
-      Permission.camera,
-      Permission.photos,
-      Permission.notification,
-    ].request();
-    if(statuses.values.firstWhere((element) => element == PermissionStatus.denied, orElse: () => PermissionStatus.granted) == PermissionStatus.denied){
-      openAppSettings();
-    }
-
     if (!response.contains(null)) {
-      Get.offAndToNamed(LocalDB.getUserID == 0 ? "/login" : "/", arguments: homeModel);
+      Get.offAndToNamed(LocalDB.getUserID == 0 ? "/login" : "/",
+          arguments: homeModel);
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> isCheckPermisstion() async {
+    var isLocation = await Permission.location.request().isGranted;
+    var isCamera = await Permission.camera.request().isGranted;
+    if (isLocation && isCamera) {
+      var locationData = await Geolocator.getCurrentPosition();
+      latlng = LatLng(locationData.latitude, locationData.longitude);
+      loadingIntoHome();
+      return true;
+    } else {
+      await openAppSettings();
+      return false;
     }
   }
 
@@ -120,9 +169,9 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                   transform: Matrix4.translationValues(
                       MediaQuery.of(context).size.width * .3, -20.0, 0.0),
                   child: Image.asset('assets/images/svg_splashscreen.png',
-                      width: 300)),
+                      width: 280)),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text("Charge\nAnywhere",
+                Text("EvStand\n充電システム",
                     style: theme.textTheme.headline4!.copyWith(
                         color: theme.primaryColor,
                         fontWeight: FontWeight.bold)),
@@ -135,15 +184,49 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                         fontWeight: FontWeight.normal)),
                 const SizedBox(height: Space.superLarge),
                 const SizedBox(height: Space.superLarge),
+                isPermission
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          DefaultButton(
+                            text: "open_settings".tr,
+                            backgroundColor: theme.primaryColor,
+                            textColor: Colors.white,
+                            press: () async {
+                              isCheckPermisstion();
+                            },
+                          ),
+                          const SizedBox(height: Space.medium),
+                          Text("grant_location_and_camera".tr,
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.subtitle2!
+                                  .copyWith(color: theme.dividerColor)),
+                          const SizedBox(height: Space.medium),
+                          GestureDetector(
+                            onTap: () => loadingIntoHome(),
+                            child: Padding(
+                              padding: const EdgeInsets.all(Space.small),
+                              child: Text(
+                                "Skip",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(color: Colors.blue),
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: [
+                          const CupertinoActivityIndicator(
+                            radius: RadiusSize.cardBorderRadius,
+                          ),
+                        ],
+                      ),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const CupertinoActivityIndicator(
-                      radius: RadiusSize.cardBorderRadius,
-                    ),
-                  ],
-                ),
                 // DefaultButton(
                 //     text: 'Get start',
                 //     textColor: theme.colorScheme.primary,

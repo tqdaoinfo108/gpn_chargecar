@@ -1,3 +1,5 @@
+import 'package:charge_car/utils/get_storage.dart';
+
 import 'response_base.dart';
 
 class BookingDetail {
@@ -129,5 +131,22 @@ class BookingDetail {
     } else {
       return ResponseBase(message: json["message"]);
     }
+  }
+
+  Map<String, dynamic> toInsertBookingJson(String qrCode, int parkingID2) {
+    final Map<String, dynamic> auth = <String, dynamic>{};
+    auth["UserID"] = LocalDB.getUserID;
+    auth["UUSerID"] = "";
+
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["ParkingID"] = parkingID2;
+    data["QRCode"] = qrCode;
+    data["TimeZoneName"] = LocalDB.getLanguagCode;
+
+    final Map<String, dynamic> result = <String, dynamic>{};
+    data["auth"] = auth;
+    data["data"] = data;
+
+    return result;
   }
 }

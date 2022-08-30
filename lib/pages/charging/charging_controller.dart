@@ -25,9 +25,9 @@ class ChargingPageController extends GetxController {
     ChargingModel("3H", false, const Duration(hours: 3)),
     ChargingModel("4H", false, const Duration(hours: 4)),
     ChargingModel("5H", false, const Duration(hours: 5)),
-    ChargingModel("FULL", true, const Duration(days: 9999)),
+    ChargingModel("full".tr, true, const Duration(days: 9999)),
   ].obs;
-  late var duration = ChargingModel("FULL", true, const Duration(hours: 999999)).obs;
+  late var duration = ChargingModel("full".tr, true, const Duration(hours: 999999)).obs;
 
   var isShowStop = false.obs;
   @override

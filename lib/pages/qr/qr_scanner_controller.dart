@@ -22,4 +22,8 @@ class QRScannerPageController extends GetxController {
       }
     });
   }
+
+  Future onInsertBooking() async{
+    
+  }
 }

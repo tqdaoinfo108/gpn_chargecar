@@ -318,6 +318,7 @@ class HomeChildPageOne extends StatelessWidget {
                     context: context,
                     useRootNavigator: true,
                     delegate: SearchPage<ParkingModel>(
+                      showItemsOnEmpty: true,
                       items: homeController.homeData.value.listParking ?? [],
                       barTheme: Theme.of(context).copyWith(
                           appBarTheme: AppBarTheme(
@@ -347,7 +348,7 @@ class HomeChildPageOne extends StatelessWidget {
                         child: ListTile(
                           title: Text(parking.nameParking!),
                           subtitle: Text(parking.addressParking!),
-                          trailing: Text(parking.distance.toString()),
+                          trailing: Text("${parking.distance} km"),
                         ),
                       ),
                     ),
@@ -368,7 +369,7 @@ class HomeChildPageOne extends StatelessWidget {
                         child: ListTile(
                           title: Text(
                             'search'.tr,
-                            style: TextStyle(fontSize: 18),
+                            style: Theme.of(context).textTheme.bodyText1,
                           ),
                           leading: Image.asset(
                             "assets/icons/icon_charging.png",

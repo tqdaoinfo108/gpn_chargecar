@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../third_library/custom_text_form_field.dart';
+import '../../utils/const.dart';
 import 'sign_in_controller.dart';
 
 class SignInPage extends GetView<SignInController> {
@@ -352,11 +353,11 @@ class SignInPage extends GetView<SignInController> {
                           width: 300)),
                   Transform(
                       transform: Matrix4.translationValues(
-                          MediaQuery.of(context).size.width * .42,
+                          MediaQuery.of(context).size.width * .35,
                           heightOfScreen / 2.6,
                           0.0),
                       child: Text(
-                        "ChargeCar v1.0.0",
+                        "EvStand充電システム v${Constants.APP_VERSION}",
                         style: theme.textTheme.bodyText1!
                             .copyWith(color: theme.dividerColor),
                       )),
@@ -376,8 +377,8 @@ class SignInPage extends GetView<SignInController> {
                       labelColor: Theme.of(context).primaryColor,
                       unselectedLabelColor: Theme.of(context).dividerColor,
                       tabs: [
-                        Tab(text: "Sign In"),
-                        Tab(text: "Register"),
+                        Tab(text: "login".tr),
+                        Tab(text: "register".tr),
                       ],
                     ),
                   ),

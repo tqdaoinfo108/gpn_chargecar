@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:charge_car/services/model/response_base.dart';
+import 'package:charge_car/utils/get_storage.dart';
 
 class UserModel {
   int? userID;
@@ -44,6 +45,26 @@ class UserModel {
     lastLogin = json['LastLogin'];
     languageCode = json['LanguageCode'];
   }
+
+  Map<String, dynamic> toUpdateUserJson(fullName,email,phone) {
+        final Map<String, dynamic> result = <String, dynamic>{};
+
+        final Map<String, dynamic> auth = <String, dynamic>{};
+        auth["UserID"] = LocalDB.getUserID;
+        auth["UUSerID"] = "";
+        result["auth"] = auth;
+
+        final Map<String, dynamic> data = <String, dynamic>{};
+        data["FullName"] = fullName;
+        data["Email"] = email;
+        data["Phone"] = phone;
+        data["LanguageCode"] = "ja";
+        data["LastLogin"] = DateTime.now().millisecondsSinceEpoch.toString();
+
+        result["data"] = data;
+        return result;
+  }
+
   static ResponseBase<UserModel> getUserResponse(Map<String, dynamic> json) {
     if (json["message"] == null) {
       return ResponseBase<UserModel>(data: UserModel.fromJson(json["data"]));

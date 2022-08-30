@@ -1,3 +1,5 @@
+import 'package:charge_car/services/model/booking_detail.dart';
+import 'package:charge_car/services/model/user.dart';
 import 'package:charge_car/utils/const.dart';
 import 'package:charge_car/utils/get_storage.dart';
 import 'package:dio/dio.dart';
@@ -18,9 +20,15 @@ class HttpClientLocal {
           body: {"Email": email, "PassWord": password});
 
   Future<Response> getListChargeCarLocaltion(
-          String keySearch, int page, int limit) =>
-      HttpClientHelper().getRequest("/api/parkinglot/get",
-          query: {"keySearch": keySearch, "page": page, "limit": limit});
+          String keySearch, int page, int limit,
+          {double? lat, double? lng}) =>
+      HttpClientHelper().getRequest("/api/parkinglot/get", query: {
+        "keySearch": keySearch,
+        "page": page,
+        "limit": limit,
+        "Latitude": lat ?? 0,
+        "Longitude": lng ?? 0
+      });
 
   Future<Response> getListNotification(int page) =>
       HttpClientHelper().getRequest("/api/notification/getlist", query: {
@@ -36,4 +44,21 @@ class HttpClientLocal {
         "page": page,
         "limit": Constants.PAGE_LIMIT
       });
+
+  Future<Response> postUpdateUser(
+          String fullName, String email, String phone) =>
+      HttpClientHelper().postRequest("/api/user/update",
+          body: UserModel(fullName: fullName, email: email, phone: phone)
+              .toUpdateUserJson(fullName, email, phone));
+
+  Future<Response> postInsertBooking(String qrCode, int parkingID) =>
+      HttpClientHelper().postRequest("/api/booking/insert",
+          body: BookingDetail().toInsertBookingJson(qrCode, parkingID));
+
+  Future<Response> postCheckQRCode(String qrCode, int parkingID) =>
+      HttpClientHelper().postRequest("/api/booking/insert",
+          body: BookingDetail().toInsertBookingJson(qrCode, parkingID));
+
+  Future<Response> postDeleteAccount(int userID) => HttpClientHelper()
+      .postRequest("/api/user/delete", body: {"UserID": LocalDB.getUserID});
 }

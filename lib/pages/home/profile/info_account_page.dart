@@ -18,10 +18,7 @@ class InfoAccountPage extends StatefulWidget {
 }
 
 class _InfoAccountPageState extends State<InfoAccountPage> {
-  String fullName = "";
-  String email = "";
-  String phone = "";
-
+  TextEditingController emailController = TextEditingController();
   TextEditingController fullNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
 
@@ -35,10 +32,32 @@ class _InfoAccountPageState extends State<InfoAccountPage> {
       userData = UserModel.getUserResponse(response.data).data!;
       fullNameController.text = userData.fullName ?? "";
       phoneController.text = userData.phone ?? "";
+      emailController.text = userData.email ?? "";
       setState(() {});
       return true;
     } catch (e) {
       return null;
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+  Future<bool> updateUser() async {
+    EasyLoading.show();
+    try {
+      var response = await HttpClientLocal().postUpdateUser(
+          fullNameController.text, emailController.text, phoneController.text);
+      userData = UserModel.getUserResponse(response.data).data!;
+      if( UserModel.getUserResponse(response.data).message == null){
+        EasyLoading.showSuccess("success".tr);
+        Get.back(result: userData);
+      }else{
+        EasyLoading.showSuccess("fail".tr);
+      }
+      return true;
+    } catch (e) {
+        EasyLoading.showSuccess("fail".tr);
+      return false;
     } finally {
       EasyLoading.dismiss();
     }
@@ -67,7 +86,7 @@ class _InfoAccountPageState extends State<InfoAccountPage> {
               padding: const EdgeInsets.only(
                   left: Paddings.normal, top: Paddings.normal),
               child: CustomTextFormField(
-                initialValue: userData.email,
+                controller: emailController,
                 enabled: false,
                 textInputType: TextInputType.none,
                 textFormFieldMargin: const EdgeInsets.only(
@@ -127,7 +146,7 @@ class _InfoAccountPageState extends State<InfoAccountPage> {
                 hasTitleIcon: true,
                 titleIcon: Padding(
                   padding: const EdgeInsets.only(right: 8),
-                  child: Icon(Icons.password_outlined,
+                  child: Icon(Icons.person,
                       color: Theme.of(context).primaryColor, size: 16),
                 ),
                 enabledBorder: const UnderlineInputBorder(
@@ -149,13 +168,6 @@ class _InfoAccountPageState extends State<InfoAccountPage> {
                   if (s == null || s.isEmpty) {
                     return 'dont_blank'.tr;
                   }
-
-                  if (s.length < 6) {
-                    return "more_than_6".tr;
-                  }
-                },
-                onChanged: (s) {
-                  fullName = s;
                 },
               ),
             ),
@@ -203,11 +215,13 @@ class _InfoAccountPageState extends State<InfoAccountPage> {
             SizedBox(
               width: widthOfScreen * 0.6,
               child: DefaultButton(
-                  text: 'Save'.tr,
+                  text: 'save'.tr,
                   textColor: Colors.white,
                   backgroundColor: theme.primaryColor,
                   press: () async {
-                    if (infoAccountKey.currentState!.validate()) {}
+                    if (infoAccountKey.currentState!.validate()) {
+                      updateUser();
+                    }
                   }),
             ),
           ],

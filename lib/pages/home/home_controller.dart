@@ -2,13 +2,16 @@ import 'dart:async';
 
 import 'package:charge_car/services/model/home.dart';
 import 'package:charge_car/services/model/parking.dart';
+import 'package:charge_car/services/model/response_base.dart';
 import 'package:charge_car/utils/get_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../services/servces.dart';
 import 'profile/dark_mode_page.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -47,40 +50,48 @@ class HomeController extends GetxController {
   }
 
   init() async {
-    var locationData = await Geolocator.getCurrentPosition();
-    var latlng = LatLng(locationData.latitude, locationData.longitude);
-    mapController.value.move(latlng, 15);
-    lstMarkLocaltion.add(Marker(
-        width: 32,
-        height: 32,
-        point: latlng,
-        builder: (ctx) => InkWell(
-              child: Image.asset("assets/icons/ic_current.png"),
-              onTap: () {
-                mapController.value
-                    .move(latlng, 15, id: DateTime.now().toString());
-              },
-            )));
-    // ignore: prefer_const_constructors
-    final LocationSettings locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
-    );
-
-    Geolocator.getPositionStream(locationSettings: locationSettings)
-        .listen((Position? position) {
-      var latlng = LatLng(position?.latitude ?? 0, position?.longitude ?? 0);
-      lstMarkLocaltion[0] = Marker(
+    try {
+      var locationData = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.medium);
+      var latlng = LatLng(locationData.latitude, locationData.longitude);
+      mapController.value.move(latlng, 15);
+      lstMarkLocaltion.add(Marker(
           width: 32,
           height: 32,
           point: latlng,
           builder: (ctx) => InkWell(
-              child: Image.asset("assets/icons/ic_current.png"),
-              onTap: () {
-                mapController.value
-                    .move(latlng, 15, id: DateTime.now().toString());
-              }));
-    });
+                child: Image.asset("assets/icons/ic_current.png"),
+                onTap: () {
+                  mapController.value
+                      .move(latlng, 15, id: DateTime.now().toString());
+                },
+              )));
+      // ignore: prefer_const_constructors
+      final LocationSettings locationSettings = LocationSettings(
+        accuracy: LocationAccuracy.medium,
+        distanceFilter: 100,
+      );
+
+      Geolocator.getPositionStream(locationSettings: locationSettings)
+          .listen((Position? position) {
+        var latlng = LatLng(position?.latitude ?? 0, position?.longitude ?? 0);
+        lstMarkLocaltion[0] = Marker(
+            width: 32,
+            height: 32,
+            point: latlng,
+            builder: (ctx) => InkWell(
+                child: Image.asset("assets/icons/ic_current.png"),
+                onTap: () {
+                  mapController.value
+                      .move(latlng, 15, id: DateTime.now().toString());
+                }));
+      });
+    } catch (e) {
+      mapController.value.move(
+          LatLng(homeData.value.listParking![0].latParking ?? 0,
+              homeData.value.listParking![0].ingParking ?? 0),
+          15);
+    }
 
     for (var element in homeData.value.listParking ?? []) {
       lstMarkLocaltion.add(Marker(
@@ -141,5 +152,23 @@ class HomeController extends GetxController {
     LocalDB.setLanguageCode = locale.languageCode;
     Get.updateLocale(locale);
     Get.back();
+  }
+
+  onLogout() async {
+    try {
+      EasyLoading.show();
+      var response =
+          await HttpClientLocal().postDeleteAccount(LocalDB.getUserID);
+      var isDelete = ResponseBase.fromJson(response.data);
+      if (isDelete.data) {
+        LocalDB.setUserID = 0;
+        Get.offAllNamed("/splash");
+      } else {
+        EasyLoading.showError("fail_again".tr);
+      }
+    } catch (e) {
+    } finally {
+      EasyLoading.dismiss();
+    }
   }
 }

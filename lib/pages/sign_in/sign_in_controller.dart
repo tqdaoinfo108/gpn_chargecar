@@ -31,15 +31,19 @@ class SignInController extends GetxController {
           .postLogin(signInEmail.value, signInPassword.value);
       var userModel = UserModel.getUserResponse(response.data);
       if (userModel.message == null) {
+        if (userModel.data!.confirmEmail == 0) {
+          EasyLoading.showError("account_nonactive".tr);
+          return false;
+        }
         LocalDB.setUserID = userModel.data?.userID ?? 0;
-        EasyLoading.showSuccess("Login success");
+        EasyLoading.showSuccess("login_success");
         return true;
       } else {
-        EasyLoading.showError(userModel.message ?? "");
+        EasyLoading.showError('user_pass_invalid'.tr);
         return false;
       }
     } catch (e) {
-      EasyLoading.showError("Operation failed, please try again later.");
+      EasyLoading.showError("fail_again".tr);
       return false;
     } finally {
       EasyLoading.dismiss();
@@ -54,14 +58,14 @@ class SignInController extends GetxController {
       var userModel = UserModel.getUserResponse(response.data);
       if (userModel.message == null) {
         LocalDB.setUserID = userModel.data?.userID ?? 0;
-        EasyLoading.showSuccess("Register success");
+        EasyLoading.showSuccess("register_success_message".tr);
         return true;
       } else {
         EasyLoading.showError(userModel.message ?? "");
         return false;
       }
     } catch (e) {
-      EasyLoading.showError("Operation failed, please try again later.");
+      EasyLoading.showError("fail_again".tr);
       return false;
     } finally {
       EasyLoading.dismiss();

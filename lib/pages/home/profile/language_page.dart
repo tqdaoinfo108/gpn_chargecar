@@ -21,7 +21,7 @@ class LanguagePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomSheetDefault(
-      title: "Language",
+      title: "language".tr,
       body: Column(
         children: [
           newMethod(context,controller.lstLanguage[0]),
