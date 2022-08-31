@@ -75,7 +75,12 @@ class _MyAppState extends State<MyApp> {
       getPages: [
         GetPage(name: "/splash", page: () => const SplashScreenPage()),
         GetPage(
-            name: "/", page: () => const HomePage(), binding: HomeBinding()),
+          name: "/",
+          page: () => const HomePage(),
+          binding: HomeBinding(),
+          opaque: false,
+          showCupertinoParallax: true,
+        ),
         GetPage(
           name: "/login",
           page: () => const SignInPage(),

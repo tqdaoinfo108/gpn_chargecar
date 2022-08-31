@@ -13,7 +13,7 @@ class SignInBinding implements Bindings {
   }
 }
 
-class SignInController extends GetxController {
+class SignInController extends GetxController with GetTickerProviderStateMixin {
   var signInEmail = "".obs;
   var signInPassword = "".obs;
 
@@ -23,6 +23,23 @@ class SignInController extends GetxController {
 
   final signInFormKey = GlobalKey<FormState>().obs;
   final signUpFormKey = GlobalKey<FormState>().obs;
+
+  final Rx<TextEditingController> signInEmailController =
+      Rx<TextEditingController>(TextEditingController());
+
+  final TextEditingController signUpEmailController = TextEditingController();
+  final TextEditingController signUpPasswordController =
+      TextEditingController();
+  final TextEditingController signUpConfirmPasswordController =
+      TextEditingController();
+
+  late Rx<TabController?> tabController = Rx(null);
+
+  @override
+  void onInit() {
+    super.onInit();
+    tabController.value = TabController(vsync: this, length: 2);
+  }
 
   Future<bool> signIn() async {
     EasyLoading.show();
@@ -57,8 +74,12 @@ class SignInController extends GetxController {
           .postRegister(signUpEmail.value, signUpPassword.value);
       var userModel = UserModel.getUserResponse(response.data);
       if (userModel.message == null) {
-        LocalDB.setUserID = userModel.data?.userID ?? 0;
         EasyLoading.showSuccess("register_success_message".tr);
+        tabController.value!.animateTo(0);
+        signInEmailController.value.text = signUpEmail.value;
+        signInEmailController.refresh();
+        signUpPasswordController.text = "";
+        signUpConfirmPasswordController.text = "";
         return true;
       } else {
         EasyLoading.showError(userModel.message ?? "");

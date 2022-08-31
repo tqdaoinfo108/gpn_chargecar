@@ -32,7 +32,7 @@ class HistoryPage extends StatelessWidget {
                     style: theme.textTheme.bodyLarge,
                   )))
                 : Expanded(
-                  child: SingleChildScrollView(
+                    child: SingleChildScrollView(
                       child: Column(children: [
                         for (var item in controller
                                 .homeData.value.listBookingDetail?.data ??
@@ -40,16 +40,15 @@ class HistoryPage extends StatelessWidget {
                           itemNotification(context, item),
                       ]),
                     ),
-                ),
+                  ),
           ]),
         ),
       ),
     );
   }
 
-  InkWell itemNotification(context, BookingDetail data) {
-    return InkWell(
-      onTap: () {},
+  GestureDetector itemNotification(context, BookingDetail data) {
+    return GestureDetector(
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: Paddings.minimum),
         decoration: BoxDecoration(

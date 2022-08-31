@@ -33,6 +33,7 @@ class SignInPage extends GetView<SignInController> {
               padding: const EdgeInsets.only(
                   left: Paddings.normal, top: Paddings.normal),
               child: CustomTextFormField(
+                controller: controller.signInEmailController.value,
                 textInputType: TextInputType.text,
                 textFormFieldMargin: const EdgeInsets.only(
                     left: Paddings.normal + Paddings.minimum),
@@ -112,6 +113,10 @@ class SignInPage extends GetView<SignInController> {
                   if (s.length < 6) {
                     return "more_than_6".tr;
                   }
+
+                  if (s.length > 32) {
+                    return "more_than_6".tr;
+                  }
                 },
                 onChanged: (s) {
                   controller.signInPassword.value = s;
@@ -155,6 +160,7 @@ class SignInPage extends GetView<SignInController> {
               padding: const EdgeInsets.only(
                   left: Paddings.normal, top: Paddings.normal),
               child: CustomTextFormField(
+                controller: controller.signUpEmailController,
                 textInputType: TextInputType.text,
                 textFormFieldMargin: const EdgeInsets.only(
                     left: Paddings.normal + Paddings.minimum),
@@ -202,6 +208,7 @@ class SignInPage extends GetView<SignInController> {
               ),
               padding: const EdgeInsets.only(left: 12, top: 12),
               child: CustomTextFormField(
+                controller: controller.signUpPasswordController,
                 textInputType: TextInputType.text,
                 textFormFieldMargin: const EdgeInsets.only(
                     left: Paddings.normal + Paddings.minimum),
@@ -235,6 +242,10 @@ class SignInPage extends GetView<SignInController> {
                     return 'dont_blank'.tr;
                   }
 
+                  if (s.length > 32) {
+                    return "more_than_6".tr;
+                  }
+
                   if (s.length < 6) {
                     return "more_than_6".tr;
                   }
@@ -252,6 +263,7 @@ class SignInPage extends GetView<SignInController> {
               ),
               padding: const EdgeInsets.only(left: 12, top: 12),
               child: CustomTextFormField(
+                controller: controller.signUpConfirmPasswordController,
                 textInputType: TextInputType.text,
                 textFormFieldMargin: const EdgeInsets.only(
                     left: Paddings.normal + Paddings.minimum),
@@ -288,7 +300,9 @@ class SignInPage extends GetView<SignInController> {
                   if (s.length < 6) {
                     return "more_than_6".tr;
                   }
-
+                  if (s.length > 32) {
+                    return "more_than_6".tr;
+                  }
                   if (controller.signUpPassword.value !=
                       controller.signUpPasswordConfirm.value) {
                     return "password_incorrect".tr;
@@ -320,6 +334,7 @@ class SignInPage extends GetView<SignInController> {
 
     Widget _buildTabView(BuildContext context) {
       return TabBarView(
+        controller: controller.tabController.value,
         children: [
           Form(key: controller.signInFormKey.value, child: buildLoginForm()),
           Form(
@@ -371,6 +386,7 @@ class SignInPage extends GetView<SignInController> {
                       right: widthOfScreen * 0.3,
                     ),
                     child: TabBar(
+                      controller: controller.tabController.value,
                       labelStyle: theme.textTheme.subtitle1!
                           .copyWith(color: Theme.of(context).dividerColor),
                       indicatorColor: Theme.of(context).primaryColor,

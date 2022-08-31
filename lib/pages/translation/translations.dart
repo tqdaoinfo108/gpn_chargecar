@@ -61,6 +61,8 @@ class LanguageTranslations extends Translations {
           'account_nonactive': 'Account not activated, activate to login',
           'user_pass_invalid': 'Email or password is invalid',
           'full': 'FULL',
+          'splash_screen_message':
+              'Using the EVstand charger is as easy as holding your smartphone over the QR code! It is a service application that can use chargers for electric vehicles \"EV/PHEV\" in general.',
         },
         'jp_JP': {
           'home': 'ホーム',
@@ -119,6 +121,8 @@ class LanguageTranslations extends Translations {
           'account_nonactive': 'Account not activated, activate to login',
           'user_pass_invalid': 'Email or password is invalid',
           'full': 'FULL',
+          'splash_screen_message':
+              'Using the EVstand charger is as easy as holding your smartphone over the QR code! It is a service application that can use chargers for electric vehicles \"EV/PHEV\" in general.',
         }
       };
 }

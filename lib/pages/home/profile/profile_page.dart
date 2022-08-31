@@ -137,7 +137,7 @@ class ProfilePage extends StatelessWidget {
                                           ],
                                         ),
                                       ),
-                                      actions: <Widget>[  
+                                      actions: <Widget>[
                                         TextButton(
                                           child: Text('no'.tr,
                                               style: Theme.of(context)
@@ -168,6 +168,7 @@ class ProfilePage extends StatelessWidget {
                                   color: Colors.grey.withOpacity(.2)),
                               itemSetting("sign_out".tr, onPressed: () {
                                 LocalDB.setUserID = 0;
+                                Get.delete<HomeController>(force: true);
                                 Get.offAllNamed("/splash");
                               }),
                               Container(

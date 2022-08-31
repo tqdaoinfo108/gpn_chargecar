@@ -126,7 +126,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     ]);
 
     if (!response.contains(null)) {
-      Get.offAndToNamed(LocalDB.getUserID == 0 ? "/login" : "/",
+      Get.offAllNamed(LocalDB.getUserID == 0 ? "/login" : "/",
           arguments: homeModel);
       return true;
     }
@@ -169,15 +169,14 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                   transform: Matrix4.translationValues(
                       MediaQuery.of(context).size.width * .3, -20.0, 0.0),
                   child: Image.asset('assets/images/svg_splashscreen.png',
-                      width: 280)),
+                      width: 250)),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text("EvStand\n充電システム",
                     style: theme.textTheme.headline4!.copyWith(
                         color: theme.primaryColor,
                         fontWeight: FontWeight.bold)),
                 const SizedBox(height: Space.superLarge),
-                Text(
-                    "Carcharge is peer-peer EV charging network that lets you access other electric vehicle owners chargers amd earn money be remtomg out yours",
+                Text("splash_screen_message".tr,
                     style: theme.textTheme.bodyText1!.copyWith(
                         color: theme.colorScheme.primary,
                         fontSize: FontSizes.subtitle1,

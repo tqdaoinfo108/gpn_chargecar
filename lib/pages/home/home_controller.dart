@@ -20,7 +20,7 @@ import 'profile/language_page.dart';
 class HomeBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<HomeController>(() => HomeController());
+    Get.put(HomeController());
   }
 }
 
@@ -43,6 +43,7 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     homeData.value = Get.arguments;
+    homeData.refresh();
     init();
     canLaunchUrl(Uri(scheme: 'tel', path: '123')).then((bool result) {
       isOpenCall.value = result;
