@@ -53,7 +53,7 @@ class SignInController extends GetxController with GetTickerProviderStateMixin {
           return false;
         }
         LocalDB.setUserID = userModel.data?.userID ?? 0;
-        EasyLoading.showSuccess("login_success");
+        EasyLoading.showSuccess("login_success".tr);
         return true;
       } else {
         EasyLoading.showError('user_pass_invalid'.tr);

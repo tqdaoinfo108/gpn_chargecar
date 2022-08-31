@@ -1,6 +1,7 @@
 import 'package:charge_car/constants/dimens.dart';
 import 'package:charge_car/constants/index.dart';
 import 'package:charge_car/services/model/booking_detail.dart';
+import 'package:charge_car/services/model/booking_insert.dart';
 import 'package:charge_car/services/model/home.dart';
 import 'package:charge_car/services/model/notification.dart';
 import 'package:charge_car/third_library/button_default.dart';
@@ -80,7 +81,33 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     }
   }
 
+  Future<BookingDetail?> checkBookingExist() async {
+    if (LocalDB.getUserID == 0) return null;
+
+    try {
+      var response =
+          await HttpClientLocal().getBookingExist(LocalDB.getUserID, 0);
+      var booking = BookingDetail.getBookingDetailResponse(response.data);
+      if (booking.message == null) {
+        return booking.data;
+      }
+    } catch (e) {
+      return null;
+    }
+    return null;
+  }
+
   Future onInitLoading() async {
+    // var isExist = await checkBookingExist();
+    // if (isExist != null) {
+    //   Get.offAllNamed("/charging",
+    //       arguments: BookingInsertModel(
+    //           bookingID: isExist.bookId,
+    //           bookingStart: isExist.dateStart,
+    //           duration: isExist.timeStopCharging));
+    //   return;
+    // }
+
     await [
       Permission.location,
       Permission.camera,

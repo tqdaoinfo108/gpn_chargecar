@@ -29,18 +29,20 @@ class NotificationPage extends StatelessWidget {
               Expanded(
                   child: Center(
                       child: Text(
-                "No data found",
+                'data_not_found'.tr,
                 style: theme.textTheme.bodyLarge,
               )))
             else
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    for (var item
-                        in controller.homeData.value.listNotification?.data ??
-                            [])
-                      itemNotification(context, item)
-                  ],
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      for (var item
+                          in controller.homeData.value.listNotification?.data ??
+                              [])
+                        itemNotification(context, item)
+                    ],
+                  ),
                 ),
               ),
           ]),
@@ -95,7 +97,7 @@ class NotificationPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Flexible(
+                    Expanded(
                       child: Text(
                         data.title ?? "",
                         style: const TextStyle(
@@ -104,7 +106,7 @@ class NotificationPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Expanded(
+                    Flexible(
                       child: Container(
                         alignment: Alignment.bottomRight,
                         child: Text(

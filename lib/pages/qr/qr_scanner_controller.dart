@@ -17,13 +17,21 @@ class QRScannerPageController extends GetxController {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
   late QRViewController controllerQRView;
+  int parkingID = 0;
+
+  @override
+  void onInit() {
+    super.onInit();
+    parkingID = int.parse(Get.parameters["parkingID"] ?? "0");
+  }
 
   void onQRViewCreated(QRViewController controllerQRView2) {
     controllerQRView = controllerQRView2;
     controllerQRView.resumeCamera();
     controllerQRView.scannedDataStream.listen((scanData) async {
       if (scanData.code != null && scanData.code != null) {
-        await onCheckQRCode(scanData.code!, 0);
+        await onCheckQRCode(scanData.code!, parkingID);
+        controllerQRView.resumeCamera();
       }
     });
   }
@@ -35,17 +43,15 @@ class QRScannerPageController extends GetxController {
       var response = await HttpClientLocal().postCheckQRCode(qrcode, parkingID);
       var result = BookingInsertModel.getBookingInsertResponse(response.data);
       if (result.message == null) {
-        Get.toNamed("/charging", arguments: result.data);
+        result.data?.qrCode = qrcode;
+        Get.offNamed("/charging", arguments: result.data);
       } else {
-        EasyLoading.showError("QR Code invalid");
+        EasyLoading.showError('qr_code_invalid'.tr);
       }
     } catch (e) {
-      EasyLoading.showError("fail_again".tr);
+      EasyLoading.showError('qr_code_invalid'.tr);
     } finally {
-      controllerQRView.resumeCamera();
       EasyLoading.dismiss();
     }
   }
-
-  Future onInsertBooking() async {}
 }

@@ -38,22 +38,22 @@ class LanguageTranslations extends Translations {
           'not_verified': 'Not Verified',
           'info_account': 'Infomation account',
           'delete_account': 'Delete account',
-          'sign_out': 'SignOut',
+          'sign_out': 'Sign out',
           'settings': 'SETTINGS',
           'system': 'System',
           'language': 'Language',
           'version': 'Version',
           'app_version': 'Application verion',
           'full_name': 'Full name',
-          'success': 'Sccuess',
+          'success': 'Succuess',
           'fail': 'Fail',
           'open_settings': 'Open settings & Refresh',
           'grant_location_and_camera':
               "Grant location and camera permissions so we can better serve you",
           'delete_account_message':
               'Are you sure to permanently delete your account, your data will not be restored.',
-          'yes': 'yes',
-          'no': 'no',
+          'yes': 'Yes',
+          'no': 'No',
           'register_success_message':
               'Successful account creation, check email to activate the account.',
           'fail_again': 'Operation failed, please try again later.',
@@ -62,7 +62,9 @@ class LanguageTranslations extends Translations {
           'user_pass_invalid': 'Email or password is invalid',
           'full': 'FULL',
           'splash_screen_message':
-              'Using the EVstand charger is as easy as holding your smartphone over the QR code! It is a service application that can use chargers for electric vehicles \"EV/PHEV\" in general.',
+              'Using the EVstand charger is as easy as holding your smartphone over the QR code! It is a service application that can use chargers for electric vehicles "EV/PHEV" in general.',
+          'qr_code_invalid': 'Invalid QR code or charging hole is in use',
+          'charge_within': "Charge within",
         },
         'jp_JP': {
           'home': 'ホーム',
@@ -108,21 +110,22 @@ class LanguageTranslations extends Translations {
           'success': 'Sccuess',
           'fail': 'Fail',
           'open_settings': 'Open settings & Refresh',
-          'grant_location_and_camera':
-              "Grant location and camera permissions so we can better serve you",
+          'grant_location_and_camera': 'EvStand充電システム"がカメラ及び位置情報の利用を許可しますか？',
           'delete_account_message':
-              'Are you sure to permanently delete your account, your data will not be restored.',
-          'yes': 'yes',
-          'no': 'no',
+              'アカウント削除しますか？\nこのアプリの全てのデータ（設定、アカウント、データベースを含む）が完全に削除されます。',
+          'yes': 'OK',
+          'no': 'キャンセル',
           'register_success_message':
-              'Successful account creation, check email to activate the account.',
-          'fail_again': 'Operation failed, please try again later.',
-          'login_success': 'Login success',
-          'account_nonactive': 'Account not activated, activate to login',
-          'user_pass_invalid': 'Email or password is invalid',
-          'full': 'FULL',
+              'ご登録頂いたメールアドレスに認証メールを送りました。20分以内にメール記載のURLをクリックして認証を行なってください。',
+          'fail_again': '要求された操作は失敗しました。',
+          'login_success': 'ログインに成功しました。',
+          'account_nonactive': 'このアカウントは認証されていません。',
+          'user_pass_invalid': 'ご入力されたメールアドレスが登録されていません。ご確認の上再度入力してください。',
+          'full': '満タン',
           'splash_screen_message':
-              'Using the EVstand charger is as easy as holding your smartphone over the QR code! It is a service application that can use chargers for electric vehicles \"EV/PHEV\" in general.',
+              'Using the EVstand charger is as easy as holding your smartphone over the QR code! It is a service application that can use chargers for electric vehicles "EV/PHEV" in general.',
+          'qr_code_invalid': '無効な QR コードまたは充電ホールが使用されています',
+          'charge_within': "以内に充電",
         }
       };
 }

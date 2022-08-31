@@ -51,13 +51,20 @@ class HttpClientLocal {
           body: UserModel(fullName: fullName, email: email, phone: phone)
               .toUpdateUserJson(fullName, email, phone));
 
-  Future<Response> postInsertBooking(String qrCode, int parkingID) =>
+  Future<Response> postInsertBooking(String qrCode, int parkingID, int time) =>
       HttpClientHelper().postRequest("/api/booking/insert",
-          body: BookingDetail().toInsertBookingJson(qrCode, parkingID));
+          body: BookingDetail().toInsertBookingJson(qrCode, parkingID, time));
+
+  Future<Response> postBookingUpdate(int bookingID) => HttpClientHelper()
+      .postRequest("/api/booking/updatestatus", query: {"bookID": bookingID});
 
   Future<Response> postCheckQRCode(String qrCode, int parkingID) =>
-      HttpClientHelper().postRequest("/api/booking/insert",
-          body: BookingDetail().toInsertBookingJson(qrCode, parkingID));
+      HttpClientHelper().postRequest("/api/booking/checkqrcode",
+          body: BookingDetail().toInsertBookingJson(qrCode, parkingID, 0));
+
+  Future<Response> getBookingExist(int userID, int status) =>
+      HttpClientHelper().getRequest("/api/booking/gebookingbyuseridandstatus",
+          query: {"UserID": LocalDB.getUserID, "status": status});
 
   Future<Response> postDeleteAccount(int userID) => HttpClientHelper()
       .postRequest("/api/user/delete", body: {"UserID": LocalDB.getUserID});

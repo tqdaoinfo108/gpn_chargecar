@@ -24,7 +24,11 @@ class BookingInsertModel {
   String? powerSocketIdMqtt;
   String? powerSocketName;
   int? statusCPowerSocket;
-
+  int? timeStopCharging;
+  String? qrCode;
+  int? bookingStart;
+  int? bookingID;
+  int? duration;
   BookingInsertModel(
       {this.parkingId,
       codeParking,
@@ -47,7 +51,11 @@ class BookingInsertModel {
       powerSocketId,
       powerSocketIdMqtt,
       powerSocketName,
-      statusCPowerSocket});
+      statusCPowerSocket,
+      qrCode,
+      this.bookingID,
+      this.bookingStart,
+      this.duration});
 
   BookingInsertModel.fromJson(Map<String, dynamic> json) {
     parkingId = json["ParkingID"];
@@ -72,6 +80,7 @@ class BookingInsertModel {
     powerSocketIdMqtt = json["PowerSocketID_MQTT"];
     powerSocketName = json["PowerSocketName"];
     statusCPowerSocket = json["StatusCPowerSocket"];
+    timeStopCharging = json["TimeStopCharging"];
   }
 
   static ResponseBase<BookingInsertModel> getBookingInsertResponse(

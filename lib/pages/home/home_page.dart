@@ -214,7 +214,8 @@ class HomeChildPageOne extends StatelessWidget {
                                     flex: 12,
                                     child: DefaultButtonWidthDynamic(
                                       backgroundColor: theme.primaryColor,
-                                      press: () => Get.toNamed("/qr"),
+                                      press: () => Get.toNamed("/qr", parameters: {"parkingID" : controller.markLocaltionCurrent
+                                              .value!.parkingID.toString()}),
                                       widget: Text('booking'.tr,
                                           style: theme.textTheme.headline6!
                                               .copyWith(
