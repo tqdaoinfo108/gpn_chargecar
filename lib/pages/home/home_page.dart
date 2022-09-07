@@ -94,8 +94,8 @@ class HomeChildPageOne extends StatelessWidget {
         parallaxEnabled: true,
         parallaxOffset: 0.5,
         color: Colors.transparent,
-        minHeight: homeController.markLocaltionCurrent.value == null ? 0 : 80,
-        maxHeight: 250,
+        minHeight: homeController.markLocaltionCurrent.value == null ? 0 : 81,
+        maxHeight: 251,
         panel: homeController.markLocaltionCurrent.value == null
             ? const SizedBox()
             : MediaQuery.removePadding(
@@ -214,13 +214,17 @@ class HomeChildPageOne extends StatelessWidget {
                                     flex: 12,
                                     child: DefaultButtonWidthDynamic(
                                       backgroundColor: theme.primaryColor,
-                                      press: () => Get.toNamed("/qr", parameters: {"parkingID" : controller.markLocaltionCurrent
-                                              .value!.parkingID.toString()}),
+                                      press: () => Get.toNamed("/qr",
+                                          parameters: {
+                                            "parkingID": controller
+                                                .markLocaltionCurrent
+                                                .value!
+                                                .parkingID
+                                                .toString()
+                                          }),
                                       widget: Text('booking'.tr,
                                           style: theme.textTheme.headline6!
-                                              .copyWith(
-                                                  color: theme
-                                                      .colorScheme.primary)),
+                                              .copyWith(color: Colors.white)),
                                     ))
                               ],
                             )

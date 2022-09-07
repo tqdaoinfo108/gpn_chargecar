@@ -7,11 +7,13 @@ import '../../services/model/booking_detail.dart';
 import '../../utils/func.dart';
 
 class HistoryPage extends StatelessWidget {
-  const HistoryPage(this.controller, {Key? key}) : super(key: key);
-  final HomeController controller;
+  const HistoryPage(this.controller2, {Key? key}) : super(key: key);
+  final HomeController controller2;
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    final controller = Get.put(HomeController());
+
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(

@@ -87,12 +87,7 @@ class HomeController extends GetxController {
                       .move(latlng, 15, id: DateTime.now().toString());
                 }));
       });
-    } catch (e) {
-      mapController.value.move(
-          LatLng(homeData.value.listParking![0].latParking ?? 0,
-              homeData.value.listParking![0].ingParking ?? 0),
-          15);
-    }
+    } catch (e) {}
 
     for (var element in homeData.value.listParking ?? []) {
       lstMarkLocaltion.add(Marker(

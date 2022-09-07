@@ -7,12 +7,14 @@ import '../../utils/func.dart';
 import 'home_controller.dart';
 
 class NotificationPage extends StatelessWidget {
-  const NotificationPage(this.controller, {Key? key}) : super(key: key);
+  const NotificationPage(this.controller2, {Key? key}) : super(key: key);
 
-  final HomeController controller;
+  final HomeController controller2;
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    final controller = Get.put(HomeController());
+
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
@@ -86,7 +88,13 @@ class NotificationPage extends StatelessWidget {
                         // Ionicons.document_text_outline
                         getImage(data.typeId!),
                         const SizedBox(height: Space.superSmall),
-                        Text(getString(data.typeId!))
+                        Text(
+                          getString(data.typeId!),
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle2!
+                              .copyWith(fontSize: 11),
+                        )
                       ]),
                 ),
               ),
@@ -102,7 +110,7 @@ class NotificationPage extends StatelessWidget {
                         data.title ?? "",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontSize: 14,
                         ),
                       ),
                     ),

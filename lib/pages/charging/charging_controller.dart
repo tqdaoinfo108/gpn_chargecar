@@ -10,7 +10,7 @@ import '../../third_library/count_down/circular_countdown_timer.dart';
 class ChargingPageBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<ChargingPageController>(() => ChargingPageController());
+    Get.put<ChargingPageController>(ChargingPageController());
   }
 }
 

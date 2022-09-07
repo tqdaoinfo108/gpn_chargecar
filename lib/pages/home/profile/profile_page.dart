@@ -10,11 +10,12 @@ import '../../../utils/get_storage.dart';
 import 'dark_mode_page.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage(this.controller, {Key? key}) : super(key: key);
-  final HomeController controller;
+  const ProfilePage(this.controller2, {Key? key}) : super(key: key);
+  final HomeController controller2;
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    final controller = Get.put(HomeController());
     return Obx(
       () => Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,

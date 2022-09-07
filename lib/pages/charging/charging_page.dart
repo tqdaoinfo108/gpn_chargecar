@@ -1,3 +1,4 @@
+import 'package:charge_car/constants/dimens.dart';
 import 'package:charge_car/constants/index.dart';
 import 'package:charge_car/third_library/scaffold_default.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +14,18 @@ class ChargingPage extends GetView<ChargingPageController> {
   Widget build(BuildContext context) {
     return Obx(() => WillPopScope(
           onWillPop: () async => false,
-          child: ScaffoldDefault(
-              "",
-              Padding(
+          child: Scaffold(
+              appBar: AppBar(
+                leading: Padding(
+                  padding: const EdgeInsets.all(Paddings.minimum),
+                  child: Text('time'.tr,
+                      style: Theme.of(context).textTheme.titleMedium),
+                ),
+                leadingWidth: 100,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+              ),
+              body: Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: Paddings.kDialogContentPadding),
                 child: Column(
@@ -33,7 +43,7 @@ class ChargingPage extends GetView<ChargingPageController> {
                         initialDuration: controller.initialDuration.value,
                         controller: controller.countController.value,
                         width: MediaQuery.of(context).size.width / 2,
-                        height: MediaQuery.of(context).size.height / 2,
+                        height: MediaQuery.of(context).size.height / 2.3,
                         ringColor: Colors.grey[300]!,
                         ringGradient: null,
                         fillColor: Theme.of(context).primaryColor,
@@ -56,6 +66,17 @@ class ChargingPage extends GetView<ChargingPageController> {
                         onChange: (String timeStamp) {},
                       ),
                     ),
+                    if (controller.isShowStop.value)
+                      Column(
+                        children: [
+                          Text('charging'.tr,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(fontWeight: FontWeight.bold)),
+                          const SizedBox(height: Space.superLarge),
+                        ],
+                      ),
                     Wrap(
                       alignment: WrapAlignment.center,
                       spacing: Space.medium,
