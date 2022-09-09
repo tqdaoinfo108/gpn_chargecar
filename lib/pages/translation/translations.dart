@@ -68,6 +68,9 @@ class LanguageTranslations extends Translations {
           'register_on_failed':
               'We cannot confirm your authorization! To use it, please contact the facility manager displayed on the charging facility.',
           'time': 'Time',
+          'h' :'H',
+          'start' : 'Start',
+          'cancel' : 'Cancel',
         },
         'jp_JP': {
           'home': 'ホーム',
@@ -89,7 +92,7 @@ class LanguageTranslations extends Translations {
           'phone': '連絡先',
           'power_socket_available': '充電器利用可能',
           'maps_app_not_found': '地図アプリ見つかりませんでした。',
-          'booking': '予約',
+          'booking': 'QRスキャン',
           'search': '検索',
           'filter_name_or_address': '充電スタンドを場所か名前で分別します。',
           'data_not_found': 'データを見つかりませんでした。',
@@ -109,10 +112,10 @@ class LanguageTranslations extends Translations {
           'language': '言語',
           'version': 'バージョン',
           'app_version': 'アプリケーションバージョン',
-          'full_name': 'Full name',
-          'success': 'Sccuess',
-          'fail': 'Fail',
-          'open_settings': 'Open settings & Refresh',
+          'full_name': '氏名',
+          'success': '成功',
+          'fail': '失敗',
+          'open_settings': '設定を開く',
           'grant_location_and_camera': 'EvStand充電システム"がカメラ及び位置情報の利用を許可しますか？',
           'delete_account_message':
               'アカウント削除しますか？\nこのアプリの全てのデータ（設定、アカウント、データベースを含む）が完全に削除されます。',
@@ -131,7 +134,10 @@ class LanguageTranslations extends Translations {
           'charge_within': "以内に充電",
           'register_on_failed':
               'お客様のご利用権限が確認できません！ご利用頂くには充電器設備に表示されている施設管理者にお問い合わせ下さい。',
-          'time': "時間"
+          'time': "時間",
+          'h' :'時間',
+          'start' : '充電開始',
+          'cancel' : 'キャンセル',
         }
       };
 }

@@ -214,14 +214,31 @@ class HomeChildPageOne extends StatelessWidget {
                                     flex: 12,
                                     child: DefaultButtonWidthDynamic(
                                       backgroundColor: theme.primaryColor,
-                                      press: () => Get.toNamed("/qr",
-                                          parameters: {
-                                            "parkingID": controller
-                                                .markLocaltionCurrent
-                                                .value!
-                                                .parkingID
-                                                .toString()
-                                          }),
+                                      press: () async {
+                                        var result = await Get.toNamed("/qr",
+                                            arguments: {
+                                              "parkingID": controller
+                                                  .markLocaltionCurrent
+                                                  .value!
+                                                  .parkingID
+                                            });
+                                        if (result != null) {
+                                          var result2 = await Get.toNamed(
+                                              "/charging",
+                                              arguments: result);
+                                          if (result2 != null) {
+                                            if (result2["page"] != null &&
+                                                result2["page"] != "") {
+                                              EasyLoading.show();
+                                              controller.onChangePageScreen(
+                                                  int.parse(result2["page"]!));
+                                              await controller
+                                                  .getListBookingDetail();
+                                              EasyLoading.dismiss();
+                                            }
+                                          }
+                                        }
+                                      },
                                       widget: Text('booking'.tr,
                                           style: theme.textTheme.headline6!
                                               .copyWith(color: Colors.white)),

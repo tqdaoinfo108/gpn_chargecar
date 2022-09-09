@@ -3,12 +3,13 @@ import 'package:charge_car/services/model/notification.dart';
 import 'package:charge_car/services/model/parking.dart';
 import 'package:charge_car/services/model/response_base.dart';
 import 'package:charge_car/services/model/user.dart';
+import 'package:get/state_manager.dart';
 
 class HomeModel {
   UserModel? userModel;
   List<ParkingModel>? listParking;
   ResponseBase<List<NotificationModel>>? listNotification;
-  ResponseBase<List<BookingDetail>>? listBookingDetail;
+  ResponseBase<RxList<BookingDetail>>? listBookingDetail;
 
   HomeModel(
       {this.userModel,

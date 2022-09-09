@@ -402,7 +402,7 @@ class SignInPage extends GetView<SignInController> {
                     height: (heightOfScreen * 0.05),
                   ),
                   SizedBox(
-                    height: 400,
+                    height: 500,
                     child: _buildTabView(context),
                   )
                 ],

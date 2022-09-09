@@ -14,36 +14,39 @@ class HistoryPage extends StatelessWidget {
     var theme = Theme.of(context);
     final controller = Get.put(HomeController());
 
-    return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.all(Paddings.normal),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text("history".tr,
-                style: theme.textTheme.headline5!
-                    .copyWith(fontWeight: FontWeight.bold)),
-            const SizedBox(height: Space.medium),
-            (controller.homeData.value.listBookingDetail == null ||
-                    controller.homeData.value.listBookingDetail!.data!.isEmpty)
-                ? Expanded(
-                    child: Center(
-                        child: Text(
-                    'data_not_found'.tr,
-                    style: theme.textTheme.bodyLarge,
-                  )))
-                : Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(children: [
-                        for (var item in controller
-                                .homeData.value.listBookingDetail?.data ??
-                            [])
-                          itemNotification(context, item),
-                      ]),
+    return Obx(
+      () => Scaffold(
+        backgroundColor: theme.scaffoldBackgroundColor,
+        body: SafeArea(
+          child: Container(
+            padding: const EdgeInsets.all(Paddings.normal),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text("history".tr,
+                  style: theme.textTheme.headline5!
+                      .copyWith(fontWeight: FontWeight.bold)),
+              const SizedBox(height: Space.medium),
+              (controller.homeData.value.listBookingDetail == null ||
+                      controller
+                          .homeData.value.listBookingDetail!.data!.isEmpty)
+                  ? Expanded(
+                      child: Center(
+                          child: Text(
+                      'data_not_found'.tr,
+                      style: theme.textTheme.bodyLarge,
+                    )))
+                  : Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(children: [
+                          for (var item in controller
+                                  .homeData.value.listBookingDetail?.data ??
+                              [])
+                            itemNotification(context, item),
+                        ]),
+                      ),
                     ),
-                  ),
-          ]),
+            ]),
+          ),
         ),
       ),
     );

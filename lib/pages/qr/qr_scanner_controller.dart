@@ -22,17 +22,18 @@ class QRScannerPageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    parkingID = int.parse(Get.parameters["parkingID"] ?? "0");
+    parkingID = Get.arguments["parkingID"] ?? "0";
   }
 
   void onQRViewCreated(QRViewController controllerQRView2) {
     controllerQRView = controllerQRView2;
     controllerQRView.resumeCamera();
     controllerQRView.scannedDataStream.listen((scanData) async {
-      if (scanData.code != null && scanData.code != null) {
+      if (scanData.code != null && scanData.code != "") {
         await onCheckQRCode(scanData.code!, parkingID);
         controllerQRView.resumeCamera();
       }
+      return;
     });
   }
 
@@ -44,7 +45,7 @@ class QRScannerPageController extends GetxController {
       var result = BookingInsertModel.getBookingInsertResponse(response.data);
       if (result.message == null) {
         result.data?.qrCode = qrcode;
-        Get.offNamed("/charging", arguments: result.data);
+                Get.back(result: result.data);
       } else {
         EasyLoading.showError('qr_code_invalid'.tr);
       }

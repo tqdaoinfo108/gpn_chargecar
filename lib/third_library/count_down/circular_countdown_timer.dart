@@ -72,6 +72,7 @@ class CircularCountDownTimer extends StatefulWidget {
   /// Handles the timer start.
   final bool autoStart;
 
+
   CircularCountDownTimer({
     required this.width,
     required this.height,
@@ -96,6 +97,7 @@ class CircularCountDownTimer extends StatefulWidget {
     this.autoStart = true,
     this.textFormat,
     this.controller,
+    
   })  : assert(initialDuration <= duration),
         super(key: key);
 
@@ -173,7 +175,7 @@ class CircularCountDownTimerState extends State<CircularCountDownTimer>
   }
 
   String _getTime(Duration duration) {
-    return _defaultFormat(duration);
+    return !countDownController!.isShow ? "" :  _defaultFormat(duration);
 
     // For HH:mm:ss format
     if (widget.textFormat == CountdownTextFormat.HH_MM_SS) {
@@ -323,7 +325,7 @@ class CountDownController {
   late bool _isReverse;
   bool isStarted = false, isPaused = false, isResumed = false;
   int? _initialDuration, _duration;
-
+  late bool isShow = false;
   /// This Method Starts the Countdown Timer
   void start() {
     if (_isReverse) {

@@ -11,6 +11,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../services/model/booking_detail.dart';
 import '../../services/servces.dart';
 import 'profile/dark_mode_page.dart';
 import 'package:latlong2/latlong.dart';
@@ -42,7 +43,9 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    homeData.value = Get.arguments;
+    if (Get.arguments != null) {
+      homeData.value = Get.arguments;
+    }
     homeData.refresh();
     init();
     canLaunchUrl(Uri(scheme: 'tel', path: '123')).then((bool result) {
@@ -70,7 +73,7 @@ class HomeController extends GetxController {
       // ignore: prefer_const_constructors
       final LocationSettings locationSettings = LocationSettings(
         accuracy: LocationAccuracy.medium,
-        distanceFilter: 100,
+        distanceFilter: 60,
       );
 
       Geolocator.getPositionStream(locationSettings: locationSettings)
@@ -141,7 +144,7 @@ class HomeController extends GetxController {
   // change Language
   RxList<LocaleModel> lstLanguage = [
     LocaleModel("English", const Locale('en')),
-    LocaleModel("Japan", const Locale('jp'))
+    LocaleModel("日本語", const Locale('jp'))
   ].obs;
 
   changeLanguage(Locale locale) {
@@ -165,6 +168,23 @@ class HomeController extends GetxController {
     } catch (e) {
     } finally {
       EasyLoading.dismiss();
+    }
+  }
+
+  // get history
+  Future<bool?> getListBookingDetail() async {
+    if (LocalDB.getUserID == 0) return true;
+
+    try {
+      var response = await HttpClientLocal().getListBookingDetail(-100, 1);
+      homeData.value.listBookingDetail = ResponseBase(data: RxList(
+          BookingDetail.getListBookingDetailResponse(response.data).data!));
+      homeData.value.listBookingDetail!.data!.refresh();
+      homeData.refresh();
+      update();
+      return true;
+    } catch (e) {
+      return null;
     }
   }
 }

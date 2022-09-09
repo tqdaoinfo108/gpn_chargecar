@@ -24,14 +24,14 @@ class ChargingModel {
 }
 
 class ChargingPageController extends GetxController {
-  final countController = CountDownController().obs;
+  var countController = CountDownController().obs;
 
   var listChargingModel = [
-    ChargingModel("1H", false, const Duration(hours: 1), 1),
-    ChargingModel("2H", false, const Duration(hours: 2), 2),
-    ChargingModel("3H", false, const Duration(hours: 3), 3),
-    ChargingModel("4H", false, const Duration(hours: 4), 4),
-    ChargingModel("5H", false, const Duration(hours: 5), 5),
+    ChargingModel("1${'h'.tr}", false, const Duration(hours: 1), 1),
+    ChargingModel("2${'h'.tr}", false, const Duration(hours: 2), 2),
+    ChargingModel("3${'h'.tr}", false, const Duration(hours: 3), 3),
+    ChargingModel("4${'h'.tr}", false, const Duration(hours: 4), 4),
+    ChargingModel("5${'h'.tr}", false, const Duration(hours: 5), 5),
     ChargingModel("full".tr, true, const Duration(days: 9999), 0),
   ].obs;
 
@@ -64,11 +64,11 @@ class ChargingPageController extends GetxController {
   }
 
   onChoose(ChargingModel choose) {
-    listChargingModel.value.forEach((element) {
+    for (var element in listChargingModel) {
       element.isChoose = false;
-    });
+    }
     duration.value = choose;
-    listChargingModel.value.firstWhere((p0) => p0 == choose).isChoose = true;
+    listChargingModel.firstWhere((p0) => p0 == choose).isChoose = true;
     listChargingModel.refresh();
   }
 
@@ -82,9 +82,10 @@ class ChargingPageController extends GetxController {
       var result = BookingDetail.getBookingDetailResponse(response.data);
       if (result.message == null) {
         booking = result.data!;
-        countController.value.start();
+        update();
         isShowStop.value = true;
-        Get.offNamed("/charging", arguments: result.data);
+        countController.value.isShow = true;
+        countController.value.start();
       } else {
         EasyLoading.showError('qr_code_invalid'.tr);
       }
@@ -101,7 +102,7 @@ class ChargingPageController extends GetxController {
       var response = await HttpClientLocal().postBookingUpdate(booking.bookId!);
       var result = BookingInsertModel.getBookingInsertResponse(response.data);
       if (result.message == null) {
-        Get.back();
+        Get.back(result: {"page": "1"});
         EasyLoading.showSuccess("success".tr);
       } else {
         EasyLoading.showError("fail_again".tr);

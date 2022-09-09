@@ -4,6 +4,7 @@ import 'package:charge_car/services/model/booking_detail.dart';
 import 'package:charge_car/services/model/booking_insert.dart';
 import 'package:charge_car/services/model/home.dart';
 import 'package:charge_car/services/model/notification.dart';
+import 'package:charge_car/services/model/response_base.dart';
 import 'package:charge_car/third_library/button_default.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -73,8 +74,9 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
 
     try {
       var response = await HttpClientLocal().getListBookingDetail(-100, 1);
-      homeModel.listBookingDetail =
-          BookingDetail.getListBookingDetailResponse(response.data);
+      homeModel.listBookingDetail =ResponseBase(data: RxList(
+          BookingDetail.getListBookingDetailResponse(response.data).data!));
+        
       return true;
     } catch (e) {
       return null;
