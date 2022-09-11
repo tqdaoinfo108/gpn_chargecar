@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
       getPages: [
         GetPage(
             name: "/splash",
-            page: () => SplashScreenPage(),
+            page: () => const SplashScreenPage(),
             binding: SplashScreenBinding()),
         GetPage(
           name: "/",

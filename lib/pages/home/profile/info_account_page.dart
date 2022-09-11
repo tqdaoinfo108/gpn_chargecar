@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:charge_car/third_library/scaffold_default.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../constants/dimens.dart';
 import '../../../services/model/user.dart';
@@ -21,9 +24,10 @@ class _InfoAccountPageState extends State<InfoAccountPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController fullNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
 
   final GlobalKey<FormState> infoAccountKey = GlobalKey<FormState>();
-  UserModel userData = UserModel();
+  UserModel userData = UserModel(imagesPaths: "");
 
   Future<bool?> getProfile() async {
     EasyLoading.show();
@@ -48,15 +52,36 @@ class _InfoAccountPageState extends State<InfoAccountPage> {
       var response = await HttpClientLocal().postUpdateUser(
           fullNameController.text, emailController.text, phoneController.text);
       userData = UserModel.getUserResponse(response.data).data!;
-      if( UserModel.getUserResponse(response.data).message == null){
+      if (UserModel.getUserResponse(response.data).message == null) {
         EasyLoading.showSuccess("success".tr);
         Get.back(result: userData);
-      }else{
+      } else {
         EasyLoading.showSuccess("fail".tr);
       }
       return true;
     } catch (e) {
+      EasyLoading.showSuccess("fail".tr);
+      return false;
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+  Future<bool> updateAvatar(String base64Image) async {
+    EasyLoading.show();
+    try {
+      var response = await HttpClientLocal().postUpdateAvatar(
+          fullNameController.text, base64Image);
+      userData = UserModel.getUserResponse(response.data).data!;
+      if (UserModel.getUserResponse(response.data).message == null) {
+        EasyLoading.showSuccess("success".tr);
+        Get.back(result: userData);
+      } else {
         EasyLoading.showSuccess("fail".tr);
+      }
+      return true;
+    } catch (e) {
+      EasyLoading.showSuccess("fail".tr);
       return false;
     } finally {
       EasyLoading.dismiss();
@@ -78,6 +103,72 @@ class _InfoAccountPageState extends State<InfoAccountPage> {
         margin: const EdgeInsets.symmetric(horizontal: Paddings.normal),
         child: Column(
           children: <Widget>[
+            GestureDetector(
+              onTap: () async {
+                try {
+                  final XFile? pickedFile = await _picker.pickImage(
+                    source: ImageSource.gallery,
+                    maxWidth: 600,
+                    maxHeight: 600,
+                    imageQuality: 80,
+                  );
+                  if(pickedFile != null){
+                    await updateAvatar(base64Encode(await pickedFile.readAsBytes()));
+                  }
+                // ignore: empty_catches
+                } catch (e) {}
+              },
+              child: Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  userData.imagesPaths!.isNotEmpty
+                      ? Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 10,
+                                  color: Colors.grey.shade300,
+                                  spreadRadius: 5)
+                            ],
+                          ),
+                          child: CircleAvatar(
+                            radius: 48.0,
+                            backgroundImage: MemoryImage(
+                                base64Decode(userData.imagesPaths!)),
+                            backgroundColor: Colors.transparent,
+                          ),
+                        )
+                      : Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 10,
+                                  color: Colors.grey.shade300,
+                                  spreadRadius: 5)
+                            ],
+                          ),
+                          child: const CircleAvatar(
+                            radius: 48.0,
+                            backgroundImage:
+                                AssetImage("assets/images/profile.png"),
+                            backgroundColor: Colors.transparent,
+                          ),
+                        ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.camera_enhance,
+                      color: theme.colorScheme.primary.withOpacity(0.7),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(height: Space.superLarge),
             Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,

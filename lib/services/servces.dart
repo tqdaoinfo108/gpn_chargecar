@@ -68,4 +68,11 @@ class HttpClientLocal {
 
   Future<Response> postDeleteAccount(int userID) => HttpClientHelper()
       .postRequest("/api/user/delete", body: {"UserID": LocalDB.getUserID});
+
+  Future<Response> postUpdateAvatar(String userName, String imageSource) =>
+      HttpClientHelper().postRequest("/api/user/delete", body: {
+        "UserID": LocalDB.getUserID,
+        "UserName": userName,
+        "ImagesPaths": imageSource
+      });
 }

@@ -25,10 +25,11 @@ dependencies:
   geolocator: ^9.0.1
   permission_handler: ^10.0.0
   url_launcher: ^6.1.5
-  # mqtt_client: ^9.7.2
-  uni_links: ^0.5.1
+  mqtt_client: ^9.7.2
+  # uni_links: ^0.5.1
   loadmore: ^2.0.1
-
+  image_picker: ^0.8.5+3
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
