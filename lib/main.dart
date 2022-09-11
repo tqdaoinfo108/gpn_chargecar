@@ -5,6 +5,7 @@ import 'package:charge_car/pages/qr/qr_scanner_controller.dart';
 import 'package:charge_car/pages/qr/qr_scanner_page.dart';
 import 'package:charge_car/pages/sign_in/sign_in_controller.dart';
 import 'package:charge_car/pages/sign_in/sign_in_page.dart';
+import 'package:charge_car/pages/splash_screen/splashscreen_controller.dart';
 import 'package:charge_car/pages/splash_screen/splashscreen_page.dart';
 import 'package:charge_car/pages/translation/translations.dart';
 import 'package:charge_car/utils/get_storage.dart';
@@ -34,7 +35,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
     super.initState();
@@ -61,8 +61,12 @@ class _MyAppState extends State<MyApp> {
       locale: Locale(LocalDB.getLanguagCode),
       builder: EasyLoading.init(),
       initialRoute: "/splash",
+      initialBinding: SplashScreenBinding(),
       getPages: [
-        GetPage(name: "/splash", page: () => const SplashScreenPage()),
+        GetPage(
+            name: "/splash",
+            page: () => SplashScreenPage(),
+            binding: SplashScreenBinding()),
         GetPage(
           name: "/",
           page: () => const HomePage(),
@@ -73,7 +77,7 @@ class _MyAppState extends State<MyApp> {
         GetPage(
           name: "/login",
           page: () => const SignInPage(),
-          binding: SignInBinding(), 
+          binding: SignInBinding(),
         ),
         GetPage(
           name: "/qr",

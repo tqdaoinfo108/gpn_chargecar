@@ -32,7 +32,7 @@ class NotificationModel {
         });
       }
       return ResponseBase<List<NotificationModel>>(
-        totals: json['totals'],
+        totals: json['totals'] ?? json['total'],
         data: list,
       );
     } else {

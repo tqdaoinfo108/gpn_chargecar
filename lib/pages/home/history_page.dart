@@ -2,55 +2,14 @@ import 'package:charge_car/constants/index.dart';
 import 'package:charge_car/pages/home/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loadmore/loadmore.dart';
 
 import '../../services/model/booking_detail.dart';
 import '../../utils/func.dart';
 
-class HistoryPage extends StatelessWidget {
-  const HistoryPage(this.controller2, {Key? key}) : super(key: key);
-  final HomeController controller2;
-  @override
-  Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    final controller = Get.put(HomeController());
-
-    return Obx(
-      () => Scaffold(
-        backgroundColor: theme.scaffoldBackgroundColor,
-        body: SafeArea(
-          child: Container(
-            padding: const EdgeInsets.all(Paddings.normal),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text("history".tr,
-                  style: theme.textTheme.headline5!
-                      .copyWith(fontWeight: FontWeight.bold)),
-              const SizedBox(height: Space.medium),
-              (controller.homeData.value.listBookingDetail == null ||
-                      controller
-                          .homeData.value.listBookingDetail!.data!.isEmpty)
-                  ? Expanded(
-                      child: Center(
-                          child: Text(
-                      'data_not_found'.tr,
-                      style: theme.textTheme.bodyLarge,
-                    )))
-                  : Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(children: [
-                          for (var item in controller
-                                  .homeData.value.listBookingDetail?.data ??
-                              [])
-                            itemNotification(context, item),
-                        ]),
-                      ),
-                    ),
-            ]),
-          ),
-        ),
-      ),
-    );
-  }
+Widget historyPage(BuildContext context, HomeController controller) {
+  var theme = Theme.of(context);
+  final controller = Get.put(HomeController());
 
   GestureDetector itemNotification(context, BookingDetail data) {
     return GestureDetector(
@@ -115,4 +74,57 @@ class HistoryPage extends StatelessWidget {
       ),
     );
   }
+
+  return Obx(
+    () => Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
+      body: SafeArea(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Padding(
+            padding: const EdgeInsets.only(
+                top: Paddings.normal,
+                right: Paddings.normal,
+                left: Paddings.normal),
+            child: Text("history".tr,
+                style: theme.textTheme.headline5!
+                    .copyWith(fontWeight: FontWeight.bold)),
+          ),
+          const SizedBox(height: Space.medium),
+          (controller.homeData.value.listBookingDetail == null ||
+                  controller.homeData.value.listBookingDetail!.data!.isEmpty)
+              ? Expanded(
+                  child: Center(
+                      child: Text(
+                  'data_not_found'.tr,
+                  style: theme.textTheme.bodyLarge,
+                )))
+              : Expanded(
+                  child: LoadMore(
+                    textBuilder: (status) => "",
+                    isFinish: controller
+                            .homeData.value.listBookingDetail!.data!.length >=
+                        controller.homeData.value.listBookingDetail!.totals!,
+                    onLoadMore: () async => await controller.getListNotifition(
+                        page:
+                            controller.homeData.value.listBookingDetail!.page!),
+                    child: ListView.builder(
+                      itemCount: controller
+                          .homeData.value.listBookingDetail!.data!.length,
+                      itemBuilder: ((context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Paddings.normal),
+                          child: itemNotification(
+                              context,
+                              controller.homeData.value.listBookingDetail!
+                                  .data![index]),
+                        );
+                      }),
+                    ),
+                  ),
+                ),
+        ]),
+      ),
+    ),
+  );
 }

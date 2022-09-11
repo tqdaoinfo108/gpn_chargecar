@@ -8,7 +8,7 @@ import 'package:get/state_manager.dart';
 class HomeModel {
   UserModel? userModel;
   List<ParkingModel>? listParking;
-  ResponseBase<List<NotificationModel>>? listNotification;
+  ResponseBase<RxList<NotificationModel>>? listNotification;
   ResponseBase<RxList<BookingDetail>>? listBookingDetail;
 
   HomeModel(

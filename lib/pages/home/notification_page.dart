@@ -1,56 +1,38 @@
 import 'package:charge_car/constants/index.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loadmore/loadmore.dart';
 
 import '../../services/model/notification.dart';
 import '../../utils/func.dart';
 import 'home_controller.dart';
 
-class NotificationPage extends StatelessWidget {
-  const NotificationPage(this.controller2, {Key? key}) : super(key: key);
+Widget notificationPage(BuildContext context, HomeController controller) {
+  var theme = Theme.of(context);
+  final controller = Get.put(HomeController());
 
-  final HomeController controller2;
-  @override
-  Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    final controller = Get.put(HomeController());
+  Image getImage(int id) {
+    if (id == 1) {
+      return Image.asset("assets/icons/charging.png", width: 42);
+    } else if (id == 2) {
+      return Image.asset("assets/icons/low_battery.png", width: 42);
+    } else if (id == 3) {
+      return Image.asset("assets/icons/email_verified.png", width: 42);
+    } else {
+      return Image.asset("assets/icons/charging.png", width: 42);
+    }
+  }
 
-    return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(Paddings.normal),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text("notification".tr,
-                style: theme.textTheme.headline5!
-                    .copyWith(fontWeight: FontWeight.bold)),
-            const SizedBox(height: Space.medium),
-            if (controller.homeData.value.listNotification == null ||
-                controller.homeData.value.listNotification!.data!.isEmpty)
-              Expanded(
-                  child: Center(
-                      child: Text(
-                'data_not_found'.tr,
-                style: theme.textTheme.bodyLarge,
-              )))
-            else
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      for (var item
-                          in controller.homeData.value.listNotification?.data ??
-                              [])
-                        itemNotification(context, item)
-                    ],
-                  ),
-                ),
-              ),
-          ]),
-        ),
-      ),
-    );
+  String getString(id) {
+    if (id == 1) {
+      return 'charging'.tr;
+    } else if (id == 2) {
+      return 'stop_charging'.tr;
+    } else if (id == 3) {
+      return "Verified";
+    } else {
+      return "";
+    }
   }
 
   GestureDetector itemNotification(context, NotificationModel data) {
@@ -122,7 +104,7 @@ class NotificationPage extends StatelessWidget {
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 11,
-                              color: Color(0xff67727d).withOpacity(0.6)),
+                              color: const Color(0xff67727d).withOpacity(0.6)),
                         ),
                       ),
                     ),
@@ -136,27 +118,55 @@ class NotificationPage extends StatelessWidget {
     );
   }
 
-  Image getImage(int id) {
-    if (id == 1) {
-      return Image.asset("assets/icons/charging.png", width: 42);
-    } else if (id == 2) {
-      return Image.asset("assets/icons/low_battery.png", width: 42);
-    } else if (id == 3) {
-      return Image.asset("assets/icons/email_verified.png", width: 42);
-    } else {
-      return Image.asset("assets/icons/charging.png", width: 42);
-    }
-  }
-
-  String getString(id) {
-    if (id == 1) {
-      return 'charging'.tr;
-    } else if (id == 2) {
-      return 'stop_charging'.tr;
-    } else if (id == 3) {
-      return "Verified";
-    } else {
-      return "";
-    }
-  }
+  return Scaffold(
+    backgroundColor: theme.scaffoldBackgroundColor,
+    body: SafeArea(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Padding(
+          padding: const EdgeInsets.only(
+              top: Paddings.normal,
+              right: Paddings.normal,
+              left: Paddings.normal),
+          child: Text("notification".tr,
+              style: theme.textTheme.headline5!
+                  .copyWith(fontWeight: FontWeight.bold)),
+        ),
+        const SizedBox(height: Space.medium),
+        if (controller.homeData.value.listNotification == null ||
+            controller.homeData.value.listNotification!.data!.isEmpty)
+          Expanded(
+              child: Center(
+                  child: Text(
+            'data_not_found'.tr,
+            style: theme.textTheme.bodyLarge,
+          )))
+        else
+          Expanded(
+            child: LoadMore(
+              textBuilder: (status) => "",
+              isFinish:
+                  controller.homeData.value.listNotification!.data!.length >=
+                      controller.homeData.value.listNotification!.totals!,
+              onLoadMore: () async => await controller.getListNotifition(
+                  page: controller.homeData.value.listNotification!.page!),
+              child: ListView.builder(
+                itemCount:
+                    controller.homeData.value.listNotification!.data!.length,
+                itemBuilder: ((context, index) {
+                  return Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: Paddings.normal),
+                    child: itemNotification(
+                        context,
+                        controller
+                            .homeData.value.listNotification!.data![index]),
+                  );
+                }),
+              ),
+            ),
+          ),
+      ]),
+    ),
+  );
 }
+                      // 

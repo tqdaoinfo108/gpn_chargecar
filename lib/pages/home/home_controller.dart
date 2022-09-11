@@ -9,9 +9,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../services/model/booking_detail.dart';
+import '../../services/model/notification.dart';
 import '../../services/servces.dart';
 import 'profile/dark_mode_page.dart';
 import 'package:latlong2/latlong.dart';
@@ -53,11 +55,25 @@ class HomeController extends GetxController {
     });
   }
 
+  Future<LatLng> getLocation() async {
+    var isLocation = await Permission.location.request().isGranted;
+    if (isLocation) {
+      try {
+        var locationData = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.medium);
+        return LatLng(locationData.latitude, locationData.longitude);
+      } catch (e) {
+        return LatLng(homeData.value.listParking![0].latParking!,
+            homeData.value.listParking![0].ingParking!);
+      }
+    }
+    return LatLng(homeData.value.listParking![0].latParking!,
+        homeData.value.listParking![0].ingParking!);
+  }
+
   init() async {
     try {
-      var locationData = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.medium);
-      var latlng = LatLng(locationData.latitude, locationData.longitude);
+      var latlng = await getLocation();
       mapController.value.move(latlng, 15);
       lstMarkLocaltion.add(Marker(
           width: 32,
@@ -94,8 +110,8 @@ class HomeController extends GetxController {
 
     for (var element in homeData.value.listParking ?? []) {
       lstMarkLocaltion.add(Marker(
-        width: 32,
-        height: 32,
+        width: 36,
+        height: 36,
         point: element.getLatLng,
         builder: (ctx) => InkWell(
           child: Image.asset("assets/icons/icon_charging.png"),
@@ -117,6 +133,10 @@ class HomeController extends GetxController {
 
     if (pageNumber == 0) {
       mapController.value = MapController();
+    } else if (pageNumber == 1) {
+      getListBookingDetail();
+    } else if (pageNumber == 2) {
+      getListNotifition();
     }
   }
 
@@ -172,19 +192,49 @@ class HomeController extends GetxController {
   }
 
   // get history
-  Future<bool?> getListBookingDetail() async {
+  Future<bool?> getListBookingDetail({int page = 1}) async {
     if (LocalDB.getUserID == 0) return true;
 
     try {
-      var response = await HttpClientLocal().getListBookingDetail(-100, 1);
-      homeData.value.listBookingDetail = ResponseBase(data: RxList(
-          BookingDetail.getListBookingDetailResponse(response.data).data!));
+      var response = await HttpClientLocal().getListBookingDetail(-100, page);
+      if (page == 1) {
+        homeData.value.listBookingDetail!.data!.clear();
+      }
+      var rawReponse =
+          BookingDetail.getListBookingDetailResponse(response.data);
+      homeData.value.listBookingDetail!.data!.addAll(rawReponse.data!);
+      homeData.value.listBookingDetail!.page = page + 1;
+      homeData.value.listBookingDetail!.totals = rawReponse.totals;
       homeData.value.listBookingDetail!.data!.refresh();
       homeData.refresh();
       update();
       return true;
     } catch (e) {
       return null;
+    }
+  }
+
+  // get list notification
+  Future<bool> getListNotifition({int page = 1}) async {
+    if (LocalDB.getUserID == 0) return true;
+
+    try {
+      var response = await HttpClientLocal().getListNotification(page);
+      if (page == 1) {
+        homeData.value.listNotification!.data!.clear();
+      }
+      var rawResponse =
+          NotificationModel.getListNotificationResponse(response.data);
+
+      homeData.value.listNotification!.data!.addAll(rawResponse.data!);
+      homeData.value.listNotification!.page = page + 1;
+      homeData.value.listNotification!.totals = rawResponse.totals;
+      homeData.value.listNotification!.data!.refresh();
+      homeData.refresh();
+      update();
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }

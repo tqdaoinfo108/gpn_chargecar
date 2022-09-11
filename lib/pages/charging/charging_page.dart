@@ -111,7 +111,7 @@ class ChargingPage extends GetView<ChargingPageController> {
                                     .primary
                                     .withOpacity(0.2),
                                 widget: Text(
-                                  "Cancel",
+                                  "cancel".tr,
                                   style: Theme.of(context).textTheme.labelLarge,
                                 ),
                                 press: () async {
@@ -124,7 +124,7 @@ class ChargingPage extends GetView<ChargingPageController> {
                               child: DefaultButtonWidthDynamic(
                                 backgroundColor: Theme.of(context).primaryColor,
                                 widget: Text(
-                                  "Start",
+                                  "start".tr,
                                   style: Theme.of(context)
                                       .textTheme
                                       .labelLarge!

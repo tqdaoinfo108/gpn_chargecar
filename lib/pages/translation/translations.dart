@@ -68,9 +68,12 @@ class LanguageTranslations extends Translations {
           'register_on_failed':
               'We cannot confirm your authorization! To use it, please contact the facility manager displayed on the charging facility.',
           'time': 'Time',
-          'h' :'H',
-          'start' : 'Start',
-          'cancel' : 'Cancel',
+          'h': 'H',
+          'start': 'Start',
+          'cancel': 'Cancel',
+          'skip': 'Skip',
+          'server_busy': "The server is busy, please try again",
+          'retry': 'Retry'
         },
         'jp_JP': {
           'home': 'ホーム',
@@ -135,9 +138,12 @@ class LanguageTranslations extends Translations {
           'register_on_failed':
               'お客様のご利用権限が確認できません！ご利用頂くには充電器設備に表示されている施設管理者にお問い合わせ下さい。',
           'time': "時間",
-          'h' :'時間',
-          'start' : '充電開始',
-          'cancel' : 'キャンセル',
+          'h': '時間',
+          'start': '充電開始',
+          'cancel': 'キャンセル',
+          'skip': 'Skip',
+          'server_busy': "The server is busy, please try again",
+          'retry': 'Retry'
         }
       };
 }
