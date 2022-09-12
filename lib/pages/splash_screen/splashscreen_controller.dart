@@ -1,3 +1,4 @@
+import 'package:charge_car/services/model/config.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:geolocator/geolocator.dart';
@@ -93,6 +94,30 @@ class SplashScreenController extends GetxController {
     isRetry.value = true;
     EasyLoading.showToast('server_busy'.tr);
     return false;
+  }
+
+  Future<bool?> getConfig() async {
+    if (LocalDB.getUserID == 0) return true;
+
+    try {
+      var response = await HttpClientLocal().getListConfig();
+      var listConfig = ConfigModel.getListConfigResponse(response.data);
+      LocalDB.setMqttServer = listConfig
+          .firstWhere((element) => element.configKey == "MQTT_Server")
+          .configValue!;
+      LocalDB.setMqttPort = int.parse(listConfig
+          .firstWhere((element) => element.configKey == "MQTT_Port")
+          .configValue!);
+      LocalDB.setMqttServer = listConfig
+          .firstWhere((element) => element.configKey == "MQTT_UserName")
+          .configValue!;
+      LocalDB.setMqttServer = listConfig
+          .firstWhere((element) => element.configKey == "MQTT_Password")
+          .configValue!;
+      return true;
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<bool?> getProfile() async {

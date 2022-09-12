@@ -3,8 +3,10 @@ import 'package:charge_car/services/model/booking_insert.dart';
 import 'package:charge_car/services/servces.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:mqtt_client/mqtt_client.dart';
 
 import '../../services/model/booking_detail.dart';
+import '../../services/mqtt_client.dart';
 import '../../third_library/count_down/circular_countdown_timer.dart';
 
 class ChargingPageBinding implements Bindings {
@@ -25,6 +27,8 @@ class ChargingModel {
 
 class ChargingPageController extends GetxController {
   var countController = CountDownController().obs;
+
+  MqttClientLocal mqttClient = MqttClientLocal();
 
   var listChargingModel = [
     ChargingModel("1${'h'.tr}", false, const Duration(hours: 1), 1),
@@ -74,6 +78,10 @@ class ChargingPageController extends GetxController {
 
   Future insertQRCode() async {
     try {
+      await mqttClient.init((p0) => onMQTTCalled(p0));
+      mqttClient.client.subscribe(
+          bookingInsertModel.value.topicName ?? "#", MqttQos.atLeastOnce);
+
       EasyLoading.show();
       var response = await HttpClientLocal().postInsertBooking(
           bookingInsertModel.value.qrCode ?? "",
@@ -96,6 +104,21 @@ class ChargingPageController extends GetxController {
     }
   }
 
+  void onMQTTCalled(List<MqttReceivedMessage<MqttMessage>> c) {
+    String powerSocketID = c[0].topic[0].split(':')[0];
+    if (int.parse(powerSocketID) == bookingInsertModel.value.powerSocketId) {
+      final MqttPublishMessage recMess = c[0].payload as MqttPublishMessage;
+      final pt =
+          MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    mqttClient.client.disconnect();
+  }
+
   Future onStopBooking() async {
     try {
       EasyLoading.show();
@@ -104,6 +127,7 @@ class ChargingPageController extends GetxController {
       if (result.message == null) {
         Get.back(result: {"page": "1"});
         EasyLoading.showSuccess("success".tr);
+        mqttClient.client.disconnect();
       } else {
         EasyLoading.showError("fail_again".tr);
       }

@@ -4,10 +4,13 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 
 class MqttClientLocal {
   late MqttServerClient client;
-  static Future<MqttServerClient> init() async {
-    MqttServerClient client =
-        MqttServerClient.withPort('gpn-advance-tech.com', 'user${LocalDB.getUserID}', 1883);
-    
+  late Function(List<MqttReceivedMessage<MqttMessage>>) onCalled;
+
+  Future<MqttServerClient> init(
+      Function(List<MqttReceivedMessage<MqttMessage>>) onCalled) async {
+    client = MqttServerClient.withPort(LocalDB.getMqttServer,
+        'Mobile_client_user${LocalDB.getUserID}', LocalDB.getMqttPort);
+
     // client.logging(on: true);
     // client.onConnected = onConnected;
     // client.onDisconnected = onDisconnected;
@@ -15,23 +18,24 @@ class MqttClientLocal {
     // client.onSubscribed = onSubscribed;
     // client.onSubscribeFail = onSubscribeFail;
     // client.pongCallback = pong;
-    client.port = 1883;
+    client.port = LocalDB.getMqttPort;
     final connMessage = MqttConnectMessage()
-        .authenticateAs('gdev', 'gdev12345')
+        .authenticateAs(LocalDB.getMqttUserName, LocalDB.getMqttPassword)
         .withClientIdentifier('user${LocalDB.getUserID}')
         .withWillQos(MqttQos.atMostOnce);
+    this.onCalled = onCalled;
+
     client.connectionMessage = connMessage;
     try {
       await client.connect();
-    } catch ( e) {
-      print('Exception: $e');
+    } catch (e) {
       client.disconnect();
     }
     client.subscribe("topic/test", MqttQos.atMostOnce);
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
-      final MqttMessage message = c[0].payload;
-
-      print('Received message:$message from topic: ${c[0].topic}>');
+      // final MqttMessage message = c[0].payload;
+      onCalled.call(c);
+      // print('Received message:$message from topic: ${c[0].topic}>');
     });
 
     return client;

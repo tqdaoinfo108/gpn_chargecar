@@ -70,11 +70,12 @@ class _InfoAccountPageState extends State<InfoAccountPage> {
   Future<bool> updateAvatar(String base64Image) async {
     EasyLoading.show();
     try {
-      var response = await HttpClientLocal().postUpdateAvatar(
-          fullNameController.text, base64Image);
-      userData = UserModel.getUserResponse(response.data).data!;
-      if (UserModel.getUserResponse(response.data).message == null) {
+      var response = await HttpClientLocal()
+          .postUpdateAvatar(fullNameController.text, base64Image);
+      var result = UserModel.getUserUploadAvatarResponse(response.data);
+      if (result.message == null && (result.data ?? false)) {
         EasyLoading.showSuccess("success".tr);
+        await getProfile();
         Get.back(result: userData);
       } else {
         EasyLoading.showSuccess("fail".tr);
@@ -112,16 +113,17 @@ class _InfoAccountPageState extends State<InfoAccountPage> {
                     maxHeight: 600,
                     imageQuality: 80,
                   );
-                  if(pickedFile != null){
-                    await updateAvatar(base64Encode(await pickedFile.readAsBytes()));
+                  if (pickedFile != null) {
+                    await updateAvatar(
+                        base64Encode(await pickedFile.readAsBytes()));
                   }
-                // ignore: empty_catches
+                  // ignore: empty_catches
                 } catch (e) {}
               },
               child: Stack(
                 alignment: Alignment.bottomRight,
                 children: [
-                  userData.imagesPaths!.isNotEmpty
+                  (userData.imagesPaths?.isNotEmpty ?? false)
                       ? Container(
                           decoration: BoxDecoration(
                             color: Colors.white,

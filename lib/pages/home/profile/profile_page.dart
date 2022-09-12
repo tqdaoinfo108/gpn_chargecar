@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:charge_car/constants/dimens.dart';
 import 'package:charge_car/constants/index.dart';
 import 'package:charge_car/pages/home/home_controller.dart';
@@ -46,11 +48,43 @@ Widget profilePage(BuildContext context, HomeController controller) {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const CircleAvatar(
-                    radius: 32.0,
-                    backgroundImage: AssetImage("assets/images/profile.png"),
-                    backgroundColor: Colors.transparent,
-                  ),
+                  controller.homeData.value.userModel!.imagesPaths!.isNotEmpty
+                      ? Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 10,
+                                  color: Colors.grey.shade300,
+                                  spreadRadius: 5)
+                            ],
+                          ),
+                          child: CircleAvatar(
+                            radius: 32.0,
+                            backgroundImage: MemoryImage(base64Decode(controller
+                                .homeData.value.userModel!.imagesPaths!)),
+                            backgroundColor: Colors.transparent,
+                          ),
+                        )
+                      : Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 10,
+                                  color: Colors.grey.shade300,
+                                  spreadRadius: 5)
+                            ],
+                          ),
+                          child: const CircleAvatar(
+                            radius: 32.0,
+                            backgroundImage:
+                                AssetImage("assets/images/profile.png"),
+                            backgroundColor: Colors.transparent,
+                          ),
+                        ),
                   const SizedBox(width: Space.large),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

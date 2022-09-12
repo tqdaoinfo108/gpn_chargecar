@@ -29,6 +29,8 @@ class BookingInsertModel {
   int? bookingStart;
   int? bookingID;
   int? duration;
+  String? topicName;
+
   BookingInsertModel(
       {this.parkingId,
       codeParking,
@@ -81,6 +83,7 @@ class BookingInsertModel {
     powerSocketName = json["PowerSocketName"];
     statusCPowerSocket = json["StatusCPowerSocket"];
     timeStopCharging = json["TimeStopCharging"];
+    topicName = json["topicName"];
   }
 
   static ResponseBase<BookingInsertModel> getBookingInsertResponse(
