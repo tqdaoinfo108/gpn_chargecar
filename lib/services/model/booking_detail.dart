@@ -8,7 +8,7 @@ class BookingDetail {
   int? dateBook;
   int? dateStart;
   int? dateEnd;
-  int? powerConsumption;
+  double? powerConsumption;
   double? unitPrice;
   double? amount;
   int? userId;

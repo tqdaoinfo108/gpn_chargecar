@@ -104,12 +104,22 @@ class ChargingPageController extends GetxController {
     }
   }
 
-  void onMQTTCalled(List<MqttReceivedMessage<MqttMessage>> c) {
-    String powerSocketID = c[0].topic[0].split(':')[0];
-    if (int.parse(powerSocketID) == bookingInsertModel.value.powerSocketId) {
-      final MqttPublishMessage recMess = c[0].payload as MqttPublishMessage;
-      final pt =
-          MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+  void onMQTTCalled(List<MqttReceivedMessage<MqttMessage>> c) async {
+    final MqttPublishMessage recMess = c[0].payload as MqttPublishMessage;
+    final pt =
+        MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+    String powerSocketID = pt
+        .replaceAll("chrsys", "")
+        .replaceAll("cmnd", "")
+        .replaceAll(",", "")
+        .replaceAll(bookingInsertModel.value.areaIdMqtt!, "");
+    var values = powerSocketID.split("/");
+    if (values.length == 3 &&
+        values[0] == bookingInsertModel.value.charingPostIdMqtt &&
+        values[0] == "OFF" &&
+        values[2] == bookingInsertModel.value.charingPostId_Child) {
+      mqttClient.client.disconnect();
+      Get.back(result: {"page": "1"});
     }
   }
 
@@ -122,6 +132,14 @@ class ChargingPageController extends GetxController {
   Future onStopBooking() async {
     try {
       EasyLoading.show();
+      final builder = MqttClientPayloadBuilder();
+      builder.addString('Hello from mqtt_client');
+
+      mqttClient.client.publishMessage(
+          "chrsys/cmnd/${bookingInsertModel.value.areaIdMqtt}",
+          MqttQos.atMostOnce,
+          builder.payload!);
+          
       var response = await HttpClientLocal().postBookingUpdate(booking.bookId!);
       var result = BookingInsertModel.getBookingInsertResponse(response.data);
       if (result.message == null) {

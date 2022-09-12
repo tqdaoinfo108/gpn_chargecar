@@ -18,6 +18,7 @@ class BookingInsertModel {
   int? statusArea;
   int? charingPostId;
   String? charingPostIdMqtt;
+  String? charingPostId_Child;
   String? chargingPostName;
   int? statusChargingPost;
   int? powerSocketId;
@@ -55,6 +56,7 @@ class BookingInsertModel {
       powerSocketName,
       statusCPowerSocket,
       qrCode,
+      this.charingPostId_Child,
       this.bookingID,
       this.bookingStart,
       this.duration});
@@ -84,6 +86,7 @@ class BookingInsertModel {
     statusCPowerSocket = json["StatusCPowerSocket"];
     timeStopCharging = json["TimeStopCharging"];
     topicName = json["topicName"];
+    charingPostId_Child = json[""];
   }
 
   static ResponseBase<BookingInsertModel> getBookingInsertResponse(

@@ -1,7 +1,6 @@
 import 'package:charge_car/services/model/config.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 // ignore: depend_on_referenced_packages
 import 'package:latlong2/latlong.dart';
@@ -15,7 +14,6 @@ import '../../services/model/parking.dart';
 import '../../services/model/user.dart';
 import '../../services/servces.dart';
 import '../../utils/get_storage.dart';
-import '../../services/model/home.dart';
 
 class SplashScreenBinding implements Bindings {
   @override

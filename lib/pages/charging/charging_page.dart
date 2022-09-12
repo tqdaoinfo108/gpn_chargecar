@@ -32,7 +32,7 @@ class ChargingPage extends GetView<ChargingPageController> {
                       if (controller.isShowStop.value)
                         const SizedBox(height: Space.superLarge),
                       Text(
-                          "${controller.bookingInsertModel.value.nameArea!} - ${controller.bookingInsertModel.value.chargingPostName!} - ${controller.bookingInsertModel.value.powerSocketName!}",
+                          "${controller.bookingInsertModel.value.nameArea!} - ${controller.bookingInsertModel.value.chargingPostName!}",
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium!

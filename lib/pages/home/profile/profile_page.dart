@@ -55,9 +55,9 @@ Widget profilePage(BuildContext context, HomeController controller) {
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                  blurRadius: 10,
-                                  color: Colors.grey.shade300,
-                                  spreadRadius: 5)
+                                  blurRadius: 3,
+                                  color: Colors.grey.shade500,
+                                  spreadRadius: 1)
                             ],
                           ),
                           child: CircleAvatar(
@@ -73,9 +73,9 @@ Widget profilePage(BuildContext context, HomeController controller) {
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                  blurRadius: 10,
-                                  color: Colors.grey.shade300,
-                                  spreadRadius: 5)
+                                  blurRadius: 3,
+                                  color: Colors.grey.shade500,
+                                  spreadRadius: 1)
                             ],
                           ),
                           child: const CircleAvatar(

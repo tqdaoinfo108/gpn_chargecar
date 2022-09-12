@@ -72,10 +72,10 @@ class _InfoAccountPageState extends State<InfoAccountPage> {
     try {
       var response = await HttpClientLocal()
           .postUpdateAvatar(fullNameController.text, base64Image);
-      var result = UserModel.getUserUploadAvatarResponse(response.data);
-      if (result.message == null && (result.data ?? false)) {
+      var result = UserModel.getUserResponse(response.data);
+      if (result.message == null ) {
+        userData = result.data!;
         EasyLoading.showSuccess("success".tr);
-        await getProfile();
         Get.back(result: userData);
       } else {
         EasyLoading.showSuccess("fail".tr);
@@ -126,13 +126,13 @@ class _InfoAccountPageState extends State<InfoAccountPage> {
                   (userData.imagesPaths?.isNotEmpty ?? false)
                       ? Container(
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Colors.grey.shade300,
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                  blurRadius: 10,
-                                  color: Colors.grey.shade300,
-                                  spreadRadius: 5)
+                                  blurRadius: 3,
+                                  color: Colors.grey.shade500,
+                                  spreadRadius: 1)
                             ],
                           ),
                           child: CircleAvatar(
@@ -148,9 +148,9 @@ class _InfoAccountPageState extends State<InfoAccountPage> {
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                  blurRadius: 10,
-                                  color: Colors.grey.shade300,
-                                  spreadRadius: 5)
+                                  blurRadius: 3,
+                                  color: Colors.grey.shade500,
+                                  spreadRadius: 1)
                             ],
                           ),
                           child: const CircleAvatar(
