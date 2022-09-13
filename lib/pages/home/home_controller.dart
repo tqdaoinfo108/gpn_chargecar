@@ -11,13 +11,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:mqtt_client/mqtt_client.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../services/model/booking_detail.dart';
 import '../../services/model/notification.dart';
-import '../../services/mqtt_client.dart';
 import '../../services/servces.dart';
 import 'profile/dark_mode_page.dart';
 import 'package:latlong2/latlong.dart';
@@ -91,25 +89,25 @@ class HomeController extends GetxController {
                 },
               )));
       // ignore: prefer_const_constructors
-      final LocationSettings locationSettings = LocationSettings(
-        accuracy: LocationAccuracy.medium,
-        distanceFilter: 60,
-      );
+      // final LocationSettings locationSettings = LocationSettings(
+      //   accuracy: LocationAccuracy.medium,
+      //   distanceFilter: 60,
+      // );
 
-      Geolocator.getPositionStream(locationSettings: locationSettings)
-          .listen((Position? position) {
-        var latlng = LatLng(position?.latitude ?? 0, position?.longitude ?? 0);
-        lstMarkLocaltion[0] = Marker(
-            width: 32,
-            height: 32,
-            point: latlng,
-            builder: (ctx) => InkWell(
-                child: Image.asset("assets/icons/ic_current.png"),
-                onTap: () {
-                  mapController.value
-                      .move(latlng, 15, id: DateTime.now().toString());
-                }));
-      });
+      //   Geolocator.getPositionStream(locationSettings: locationSettings)
+      //       .listen((Position? position) {
+      //     var latlng = LatLng(position?.latitude ?? 0, position?.longitude ?? 0);
+      //     lstMarkLocaltion[0] = Marker(
+      //         width: 32,
+      //         height: 32,
+      //         point: latlng,
+      //         builder: (ctx) => InkWell(
+      //             child: Image.asset("assets/icons/ic_current.png"),
+      //             onTap: () {
+      //               mapController.value
+      //                   .move(latlng, 15, id: DateTime.now().toString());
+      //             }));
+      //   });
     } catch (e) {}
 
     for (var element in homeData.value.listParking ?? []) {

@@ -108,18 +108,20 @@ class ChargingPageController extends GetxController {
     final MqttPublishMessage recMess = c[0].payload as MqttPublishMessage;
     final pt =
         MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-    String powerSocketID = pt
-        .replaceAll("chrsys", "")
-        .replaceAll("cmnd", "")
-        .replaceAll(",", "")
-        .replaceAll(bookingInsertModel.value.areaIdMqtt!, "");
-    var values = powerSocketID.split("/");
-    if (values.length == 3 &&
-        values[0] == bookingInsertModel.value.charingPostIdMqtt &&
-        values[0] == "OFF" &&
-        values[2] == bookingInsertModel.value.charingPostId_Child) {
-      mqttClient.client.disconnect();
-      Get.back(result: {"page": "1"});
+    var arrPayload = pt.split(':');
+    var arrTopic = c[0].topic.split('/');
+
+    if (arrPayload.length == 10 &&
+        bookingInsertModel.value.areaIdMqtt == arrTopic[2] &&
+        bookingInsertModel.value.charingPostIdMqtt == arrPayload[0]) {
+      var arrChargingPost = List<String>.generate(
+          arrPayload[1].length, (index) => arrPayload[1][index]);
+      int? index =
+          int.tryParse(bookingInsertModel.value.charingPostId_Child ?? "0");
+      if (arrChargingPost[index! - 1] == "0") {
+        mqttClient.client.disconnect();
+        Get.back(result: {"page": "1"});
+      }
     }
   }
 
@@ -133,13 +135,14 @@ class ChargingPageController extends GetxController {
     try {
       EasyLoading.show();
       final builder = MqttClientPayloadBuilder();
-      builder.addString('Hello from mqtt_client');
+      builder.addString(
+          "${bookingInsertModel.value.charingPostIdMqtt!}:END+${bookingInsertModel.value.charingPostId_Child!}");
 
       mqttClient.client.publishMessage(
           "chrsys/cmnd/${bookingInsertModel.value.areaIdMqtt}",
           MqttQos.atMostOnce,
           builder.payload!);
-          
+
       var response = await HttpClientLocal().postBookingUpdate(booking.bookId!);
       var result = BookingInsertModel.getBookingInsertResponse(response.data);
       if (result.message == null) {

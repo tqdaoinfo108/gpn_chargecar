@@ -86,7 +86,7 @@ class BookingInsertModel {
     statusCPowerSocket = json["StatusCPowerSocket"];
     timeStopCharging = json["TimeStopCharging"];
     topicName = json["topicName"];
-    charingPostId_Child = json[""];
+    charingPostId_Child = json["CharingPostID_Child"];
   }
 
   static ResponseBase<BookingInsertModel> getBookingInsertResponse(
