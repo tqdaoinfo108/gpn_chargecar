@@ -45,7 +45,7 @@ class QRScannerPageController extends GetxController {
       var result = BookingInsertModel.getBookingInsertResponse(response.data);
       if (result.message == null) {
         result.data?.qrCode = qrcode;
-                Get.back(result: result.data);
+        Get.back(result: result.data);
       } else {
         EasyLoading.showError('qr_code_invalid'.tr);
       }

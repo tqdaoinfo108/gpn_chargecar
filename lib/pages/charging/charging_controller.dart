@@ -120,6 +120,7 @@ class ChargingPageController extends GetxController {
           int.tryParse(bookingInsertModel.value.charingPostId_Child ?? "0");
       if (arrChargingPost[index! - 1] == "0") {
         mqttClient.client.disconnect();
+        await Future.delayed(const Duration(seconds: 2));
         Get.back(result: {"page": "1"});
       }
     }
@@ -135,27 +136,30 @@ class ChargingPageController extends GetxController {
     try {
       EasyLoading.show();
       final builder = MqttClientPayloadBuilder();
-      builder.addString(
-          "${bookingInsertModel.value.charingPostIdMqtt!}:END+${bookingInsertModel.value.charingPostId_Child!}");
+      String payload =
+          "${bookingInsertModel.value.charingPostIdMqtt!}:END:${bookingInsertModel.value.charingPostId_Child!}";
+      builder.addString(payload);
 
-      mqttClient.client.publishMessage(
-          "chrsys/cmnd/${bookingInsertModel.value.areaIdMqtt}",
-          MqttQos.atMostOnce,
-          builder.payload!);
+      var topic = "chrsys/cmnd/${bookingInsertModel.value.areaIdMqtt}";
 
-      var response = await HttpClientLocal().postBookingUpdate(booking.bookId!);
-      var result = BookingInsertModel.getBookingInsertResponse(response.data);
-      if (result.message == null) {
-        Get.back(result: {"page": "1"});
-        EasyLoading.showSuccess("success".tr);
-        mqttClient.client.disconnect();
-      } else {
-        EasyLoading.showError("fail_again".tr);
-      }
+      mqttClient.client
+          .publishMessage(topic, MqttQos.exactlyOnce, builder.payload!);
+
+      // mqttClient.client.disconnect();
+      //   await Future.delayed(const Duration(seconds: 2));
+      //   Get.back(result: {"page": "1"});
+
+      // var response = await HttpClientLocal().postBookingUpdate(booking.bookId!);
+      // var result = BookingInsertModel.getBookingInsertResponse(response.data);
+      // if (result.message == null) {
+      //   Get.back(result: {"page": "1"});
+      //   EasyLoading.showSuccess("success".tr);
+      //   mqttClient.client.disconnect();
+      // } else {
+      //   EasyLoading.showError("fail_again".tr);
+      // }
     } catch (e) {
       EasyLoading.showError("fail_again".tr);
-    } finally {
-      EasyLoading.dismiss();
     }
   }
 }
