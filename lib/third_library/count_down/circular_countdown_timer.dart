@@ -70,8 +70,7 @@ class CircularCountDownTimer extends StatefulWidget {
   final CountDownController? controller;
 
   /// Handles the timer start.
-  final bool autoStart;
-
+  bool autoStart;
 
   CircularCountDownTimer({
     required this.width,
@@ -97,7 +96,6 @@ class CircularCountDownTimer extends StatefulWidget {
     this.autoStart = true,
     this.textFormat,
     this.controller,
-    
   })  : assert(initialDuration <= duration),
         super(key: key);
 
@@ -162,6 +160,17 @@ class CircularCountDownTimerState extends State<CircularCountDownTimer>
     countDownController?._initialDuration = widget.initialDuration;
     countDownController?._duration = widget.duration;
     countDownController?.isStarted = widget.autoStart;
+    countDownController?.onInitWidget = () {
+      setState(() {
+        countDownController?.isStarted = true;
+        countDownController?._isReverse = widget.isReverse;
+        countDownController?._initialDuration = widget.initialDuration;
+        countDownController?._duration = widget.duration;
+        _setAnimation();
+        _setAnimationDirection();
+        countDownController?.start();
+      });
+    };
 
     if (widget.initialDuration > 0 && widget.autoStart) {
       if (widget.isReverse) {
@@ -176,37 +185,10 @@ class CircularCountDownTimerState extends State<CircularCountDownTimer>
 
   String _getTime(Duration duration) {
     return !countDownController!.isShow ? "" :  _defaultFormat(duration);
-
-    // For HH:mm:ss format
-    if (widget.textFormat == CountdownTextFormat.HH_MM_SS) {
-      return '${duration.inHours.toString().padLeft(2, '0')}:${(duration.inMinutes % 60).toString().padLeft(2, '0')}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
-    }
-    // For mm:ss format
-    else if (widget.textFormat == CountdownTextFormat.MM_SS) {
-      return '${(duration.inMinutes % 60).toString().padLeft(2, '0')}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
-    }
-    // For ss format
-    else if (widget.textFormat == CountdownTextFormat.SS) {
-      return '${(duration.inSeconds).toString().padLeft(2, '0')}';
-    }
-    // For s format
-    else if (widget.textFormat == CountdownTextFormat.S) {
-      return '${(duration.inSeconds)}';
-    } else {
-      // Default format
-      return _defaultFormat(duration);
-    }
   }
 
   _defaultFormat(Duration duration) {
     return _printDuration(duration);
-    if (duration.inHours != 0) {
-      return '${duration.inHours.toString().padLeft(2, '0')}:${(duration.inMinutes % 60).toString().padLeft(2, '0')}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
-    } else if (duration.inMinutes != 0) {
-      return '${(duration.inMinutes % 60).toString().padLeft(2, '0')}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
-    } else {
-      return '${duration.inSeconds % 60}';
-    }
   }
 
   String _printDuration(Duration duration) {
@@ -263,7 +245,7 @@ class CircularCountDownTimerState extends State<CircularCountDownTimer>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: widget.width,
       height: widget.height,
       child: AnimatedBuilder(
@@ -296,7 +278,7 @@ class CircularCountDownTimerState extends State<CircularCountDownTimer>
                             child: Text(
                               time,
                               style: widget.textStyle ??
-                                  TextStyle(
+                                  const TextStyle(
                                     fontSize: 16.0,
                                     color: Colors.black,
                                   ),
@@ -325,7 +307,9 @@ class CountDownController {
   late bool _isReverse;
   bool isStarted = false, isPaused = false, isResumed = false;
   int? _initialDuration, _duration;
+  Function? onInitWidget = null;
   late bool isShow = false;
+
   /// This Method Starts the Countdown Timer
   void start() {
     if (_isReverse) {

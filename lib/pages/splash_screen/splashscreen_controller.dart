@@ -10,6 +10,7 @@ import 'package:charge_car/services/model/response_base.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../services/model/booking_detail.dart';
+import '../../services/model/booking_insert.dart';
 import '../../services/model/parking.dart';
 import '../../services/model/user.dart';
 import '../../services/servces.dart';
@@ -36,6 +37,8 @@ class SplashScreenController extends GetxController {
   }
 
   Future<void> onInitCheckAll() async {
+    getConfig();
+
     if (!await checkPermission()) {
       isPermission.value = false;
       return;
@@ -84,8 +87,13 @@ class SplashScreenController extends GetxController {
     ]);
 
     if (!response.contains(null)) {
+      var isBookingExist = await checkBookingExist();
+      if (isBookingExist != null) {
+        return true;
+      }
+
       Get.offAllNamed(LocalDB.getUserID == 0 ? "/login" : "/",
-          arguments: homeModel);
+          arguments: {"type": 1, "data": homeModel});
       return true;
     }
 
@@ -106,10 +114,10 @@ class SplashScreenController extends GetxController {
       LocalDB.setMqttPort = int.parse(listConfig
           .firstWhere((element) => element.configKey == "MQTT_Port")
           .configValue!);
-      LocalDB.setMqttServer = listConfig
+      LocalDB.setMqttUserName = listConfig
           .firstWhere((element) => element.configKey == "MQTT_UserName")
           .configValue!;
-      LocalDB.setMqttServer = listConfig
+      LocalDB.setMqttPassword = listConfig
           .firstWhere((element) => element.configKey == "MQTT_Password")
           .configValue!;
       return true;
@@ -174,14 +182,22 @@ class SplashScreenController extends GetxController {
     }
   }
 
-  Future<BookingDetail?> checkBookingExist() async {
+  Future<BookingInsertModel?> checkBookingExist() async {
     if (LocalDB.getUserID == 0) return null;
 
     try {
       var response =
           await HttpClientLocal().getBookingExist(LocalDB.getUserID, 0);
-      var booking = BookingDetail.getBookingDetailResponse(response.data);
+      var booking = BookingInsertModel.getBookingInsertResponse(response.data);
       if (booking.message == null) {
+        var result = await Get.toNamed("/", arguments: {
+          "type": 2,
+          "data": booking.data,
+          "homeData": homeModel
+        });
+        if (result != null) {
+          onInitCheckAll();
+        }
         return booking.data;
       }
     } catch (e) {

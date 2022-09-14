@@ -80,41 +80,41 @@ class BookingDetail {
       statusCPowerSocket});
 
   BookingDetail.fromJson(Map<String, dynamic> json) {
-    this.bookId = json["BookID"];
-    this.code = json["Code"];
-    this.dateBook = json["DateBook"];
-    this.dateStart = json["DateStart"];
-    this.dateEnd = json["DateEnd"];
-    this.powerConsumption = json["PowerConsumption"];
-    this.unitPrice = json["UnitPrice"];
-    this.amount = json["Amount"];
-    this.userId = json["UserID"];
-    this.statusBooking = json["StatusBooking"];
-    this.timeZoneName = json["TimeZoneName"];
-    this.desriptionBooking = json["DesriptionBooking"];
-    this.createdDate = json["CreatedDate"];
-    this.updatedDate = json["UpdatedDate"];
-    this.userCreated = json["UserCreated"];
-    this.userUpdated = json["UserUpdated"];
-    this.parkingId = json["ParkingID"];
-    this.codeParking = json["CodeParking"];
-    this.nameParking = json["NameParking"];
-    this.addressParking = json["AddressParking"];
-    this.phoneParking = json["PhoneParking"];
-    this.statusParking = json["StatusParking"];
-    this.areaId = json["AreaID"];
-    this.areaIdMqtt = json["AreaID_MQTT"];
-    this.nameArea = json["NameArea"];
-    this.statusArea = json["StatusArea"];
-    this.charingPostId = json["CharingPostID"];
-    this.charingPostIdMqtt = json["CharingPostID_MQTT"];
-    this.chargingPostName = json["ChargingPostName"];
-    this.statusChargingPost = json["StatusChargingPost"];
-    this.powerSocketId = json["PowerSocketID"];
-    this.powerSocketIdMqtt = json["PowerSocketID_MQTT"];
-    this.powerSocketName = json["PowerSocketName"];
-    this.statusCPowerSocket = json["StatusCPowerSocket"];
-    this.timeStopCharging = json["TimeStopCharging"];
+    bookId = json["BookID"];
+    code = json["Code"];
+    dateBook = json["DateBook"];
+    dateStart = json["DateStart"];
+    dateEnd = json["DateEnd"];
+    powerConsumption = json["PowerConsumption"];
+    unitPrice = json["UnitPrice"];
+    amount = json["Amount"];
+    userId = json["UserID"];
+    statusBooking = json["StatusBooking"];
+    timeZoneName = json["TimeZoneName"];
+    desriptionBooking = json["DesriptionBooking"];
+    createdDate = json["CreatedDate"];
+    updatedDate = json["UpdatedDate"];
+    userCreated = json["UserCreated"];
+    userUpdated = json["UserUpdated"];
+    parkingId = json["ParkingID"];
+    codeParking = json["CodeParking"];
+    nameParking = json["NameParking"];
+    addressParking = json["AddressParking"];
+    phoneParking = json["PhoneParking"];
+    statusParking = json["StatusParking"];
+    areaId = json["AreaID"];
+    areaIdMqtt = json["AreaID_MQTT"];
+    nameArea = json["NameArea"];
+    statusArea = json["StatusArea"];
+    charingPostId = json["CharingPostID"];
+    charingPostIdMqtt = json["CharingPostID_MQTT"];
+    chargingPostName = json["ChargingPostName"];
+    statusChargingPost = json["StatusChargingPost"];
+    powerSocketId = json["PowerSocketID"];
+    powerSocketIdMqtt = json["PowerSocketID_MQTT"];
+    powerSocketName = json["PowerSocketName"];
+    statusCPowerSocket = json["StatusCPowerSocket"];
+    timeStopCharging = json["TimeStopCharging"];
   }
 
   static ResponseBase<List<BookingDetail>> getListBookingDetailResponse(
@@ -145,7 +145,8 @@ class BookingDetail {
     }
   }
 
-  Map<String, dynamic> toInsertBookingJson(String qrCode, int parkingID2, int timeStopCharging) {
+  Map<String, dynamic> toInsertBookingJson(
+      String qrCode, int parkingID2, int timeStopCharging) {
     final Map<String, dynamic> auth = <String, dynamic>{};
     auth["UserID"] = LocalDB.getUserID;
     auth["UUSerID"] = "";

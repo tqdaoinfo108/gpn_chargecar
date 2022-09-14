@@ -1,4 +1,6 @@
 import 'package:charge_car/pages/home/profile/language_page.dart';
+import 'package:charge_car/pages/qr/qr_scanner_controller.dart';
+import 'package:charge_car/pages/qr/qr_scanner_page.dart';
 import 'package:charge_car/services/model/parking.dart';
 import 'package:charge_car/third_library/button_default.dart';
 import 'package:flutter/material.dart';
@@ -204,6 +206,8 @@ Widget homeChildPageOne(BuildContext context, HomeController controller) {
                                                 .parkingID
                                           });
                                       if (result != null) {
+                                        await Get.delete<
+                                            QRScannerPageController>();
                                         var result2 = await Get.toNamed(
                                             "/charging",
                                             arguments: result);

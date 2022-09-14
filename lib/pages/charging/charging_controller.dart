@@ -1,6 +1,6 @@
-import 'package:charge_car/pages/home/profile/language_page.dart';
 import 'package:charge_car/services/model/booking_insert.dart';
 import 'package:charge_car/services/servces.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:mqtt_client/mqtt_client.dart';
@@ -26,7 +26,8 @@ class ChargingModel {
 }
 
 class ChargingPageController extends GetxController {
-  var countController = CountDownController().obs;
+  // late Rx<PieAnimationController?> countController = Rx(null);
+  late Rx<CountDownController> countController = Rx(CountDownController());
 
   MqttClientLocal mqttClient = MqttClientLocal();
 
@@ -36,11 +37,11 @@ class ChargingPageController extends GetxController {
     ChargingModel("3${'h'.tr}", false, const Duration(hours: 3), 3),
     ChargingModel("4${'h'.tr}", false, const Duration(hours: 4), 4),
     ChargingModel("5${'h'.tr}", false, const Duration(hours: 5), 5),
-    ChargingModel("full".tr, true, const Duration(days: 9999), 0),
+    ChargingModel("full".tr, true, const Duration(days: 999999), 0),
   ].obs;
 
   var duration =
-      ChargingModel("full".tr, true, const Duration(hours: 999999), 0).obs;
+      ChargingModel("full".tr, true, const Duration(days: 999), 0).obs;
 
   Rx<BookingInsertModel> bookingInsertModel = Rx(BookingInsertModel(
       chargingPostName: "", nameArea: "", powerSocketName: ""));
@@ -53,18 +54,29 @@ class ChargingPageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    duration = listChargingModel.last.obs;
     bookingInsertModel.value = Get.arguments;
 
-    if (bookingInsertModel.value.qrCode == null) {
-      initialDuration.value = DateTime.now().millisecondsSinceEpoch ~/ 1000 -
-          bookingInsertModel.value.bookingStart!;
-      duration.value = listChargingModel.firstWhere((element) =>
-          element.value == (bookingInsertModel.value.timeStopCharging ?? 0));
-      countController.value.start();
-      isShowStop.value = true;
-      booking = BookingDetail(bookId: bookingInsertModel.value.bookingID);
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (bookingInsertModel.value.timeStartWhenExist != 0) {
+        for (var item in listChargingModel) {
+          item.isChoose =
+              item.value == bookingInsertModel.value.timeStopCharging!;
+        }
+        booking = BookingDetail(bookId: bookingInsertModel.value.bookingID);
+        isShowStop.value = true;
+        countController.value.isShow = true;
+        initialDuration.value = DateTime.now().millisecondsSinceEpoch ~/ 1000 -
+            bookingInsertModel.value.timeStartWhenExist!;
+        duration.value = listChargingModel.firstWhere((element) =>
+            element.value == (bookingInsertModel.value.timeStopCharging ?? 0));
+
+        await mqttClient.init((p0) => onMQTTCalled(p0));
+        mqttClient.client.subscribe(
+            bookingInsertModel.value.topicName ?? "#", MqttQos.atLeastOnce);
+
+        countController.value.start();
+      }
+    });
   }
 
   onChoose(ChargingModel choose) {
@@ -89,9 +101,8 @@ class ChargingPageController extends GetxController {
           duration.value.value);
       var result = BookingDetail.getBookingDetailResponse(response.data);
       if (result.message == null) {
-        booking = result.data!;
-        update();
         isShowStop.value = true;
+        booking = result.data!;
         countController.value.isShow = true;
         countController.value.start();
       } else {
@@ -135,29 +146,15 @@ class ChargingPageController extends GetxController {
   Future onStopBooking() async {
     try {
       EasyLoading.show();
-      final builder = MqttClientPayloadBuilder();
-      String payload =
-          "${bookingInsertModel.value.charingPostIdMqtt!}:END:${bookingInsertModel.value.charingPostId_Child!}";
-      builder.addString(payload);
 
-      var topic = "chrsys/cmnd/${bookingInsertModel.value.areaIdMqtt}";
-
-      mqttClient.client
-          .publishMessage(topic, MqttQos.exactlyOnce, builder.payload!);
-
-      // mqttClient.client.disconnect();
-      //   await Future.delayed(const Duration(seconds: 2));
-      //   Get.back(result: {"page": "1"});
-
-      // var response = await HttpClientLocal().postBookingUpdate(booking.bookId!);
-      // var result = BookingInsertModel.getBookingInsertResponse(response.data);
-      // if (result.message == null) {
-      //   Get.back(result: {"page": "1"});
-      //   EasyLoading.showSuccess("success".tr);
-      //   mqttClient.client.disconnect();
-      // } else {
-      //   EasyLoading.showError("fail_again".tr);
-      // }
+      var response = await HttpClientLocal().postBookingUpdate(booking.bookId!);
+      var result = BookingInsertModel.getBookingInsertResponse(response.data);
+      if (result.message == null) {
+        EasyLoading.showSuccess("success".tr);
+        countController.value.pause();
+      } else {
+        EasyLoading.showError("fail_again".tr);
+      }
     } catch (e) {
       EasyLoading.showError("fail_again".tr);
     }

@@ -212,8 +212,6 @@ class ChargingPage extends GetView<ChargingPageController> {
                                           TextButton(
                                             child: Text('yes'.tr),
                                             onPressed: () async {
-                                              controller.countController.value
-                                                  .reset();
                                               Get.back();
                                               await controller.onStopBooking();
                                             },

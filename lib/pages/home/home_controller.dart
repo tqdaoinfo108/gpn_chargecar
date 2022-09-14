@@ -9,6 +9,7 @@ import 'package:charge_car/utils/get_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map/plugin_api.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -47,10 +48,26 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    if (Get.arguments != null) {
-      homeData.value = Get.arguments;
-    }
-    homeData.refresh();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (Get.arguments != null) {
+        if (Get.arguments['type'] == 1) {
+          homeData.value = Get.arguments['data'];
+        } else if (Get.arguments['type'] == 2) {
+          homeData.value = Get.arguments['homeData'];
+
+          var result =
+              await Get.toNamed("/charging", arguments: Get.arguments['data']);
+          if (result != null) {
+            EasyLoading.show();
+            onChangePageScreen(int.parse(result["page"]!));
+            await getListBookingDetail();
+            EasyLoading.dismiss();
+          }
+        }
+      }
+      homeData.refresh();
+    });
+
     init();
     canLaunchUrl(Uri(scheme: 'tel', path: '123')).then((bool result) {
       isOpenCall.value = result;
@@ -143,9 +160,37 @@ class HomeController extends GetxController {
   }
 
   void moveLocation(ParkingModel model) {
-    mapController.value.move(model.getLatLng, 17);
-    markLocaltionCurrent.value = model;
-    pageController.value.open();
+    try {
+      mapController.value.move(model.getLatLng, 17);
+      markLocaltionCurrent.value = model;
+      pageController.value.open();
+    } catch (e) {
+      mapController.value.state =
+          MapState(GetMapOption, (a) {}, mapController.value.mapEventSink);
+      mapController.value.move(model.getLatLng, 17);
+      markLocaltionCurrent.value = model;
+      pageController.value.open();
+    }
+  }
+
+  MapOptions get GetMapOption {
+    return MapOptions(
+        keepAlive: true,
+        center: lstMarkLocaltion.isNotEmpty
+            ? lstMarkLocaltion[0].point
+            : LatLng(1, 1),
+        onTap: (tapPosition, point) {
+          pageController.value.close();
+        },
+        onLongPress: (tapPosition, point) {
+          pageController.value.close();
+        },
+        onPositionChanged: ((position, hasGesture) {
+          pageController.value.close();
+        }),
+        zoom: 15,
+        maxZoom: 17,
+        minZoom: 4);
   }
 
   // change dark mode
