@@ -135,7 +135,7 @@ class SignInPage extends GetView<SignInController> {
                         .validate()) {
                       var result = await controller.signIn();
                       if (result) {
-                        Get.offAllNamed("/splash");
+                        Get.back(result: true);
                       }
                     }
                   }),

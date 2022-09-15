@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:charge_car/services/model/config.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -46,7 +48,10 @@ class SplashScreenController extends GetxController {
 
     // login
     if (LocalDB.getUserID == 0) {
-      Get.offAllNamed("/login");
+      var isLogin = await Get.toNamed("/login");
+      if (isLogin) {
+        onInitCheckAll();
+      }
       return;
     }
     loadingIntoHome();
@@ -74,11 +79,6 @@ class SplashScreenController extends GetxController {
       isPermission.value = true;
     }
 
-    if (LocalDB.getUserID == 0) {
-      Get.offAllNamed("/login");
-      return true;
-    }
-
     var response = await Future.wait([
       getProfile(),
       getListParking(),
@@ -92,8 +92,13 @@ class SplashScreenController extends GetxController {
         return true;
       }
 
-      Get.offAllNamed(LocalDB.getUserID == 0 ? "/login" : "/",
+      var isResult = await Get.toNamed(LocalDB.getUserID == 0 ? "/login" : "/",
           arguments: {"type": 1, "data": homeModel});
+      if (isResult == null) {
+        exit(0);
+      } else {
+        onInitCheckAll();
+      }
       return true;
     }
 

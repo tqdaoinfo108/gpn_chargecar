@@ -73,7 +73,7 @@ class _InfoAccountPageState extends State<InfoAccountPage> {
       var response = await HttpClientLocal()
           .postUpdateAvatar(fullNameController.text, base64Image);
       var result = UserModel.getUserResponse(response.data);
-      if (result.message == null ) {
+      if (result.message == null) {
         userData = result.data!;
         EasyLoading.showSuccess("success".tr);
         Get.back(result: userData);
@@ -297,6 +297,14 @@ class _InfoAccountPageState extends State<InfoAccountPage> {
                     style: BorderStyle.none,
                   ),
                 ),
+                validator: (s) {
+                  if (s == null && s!.isEmpty) {
+                    return 'dont_blank'.tr;
+                  }
+                  if (!s.isNumericOnly) {
+                    return 'field_format_invalid'.tr;
+                  }
+                },
                 obscured: false,
                 hintTextStyle: Theme.of(context).textTheme.subtitle1!.copyWith(
                     color: Theme.of(context).dividerColor, fontSize: 14),

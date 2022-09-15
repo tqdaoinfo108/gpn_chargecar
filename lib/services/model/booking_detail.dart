@@ -11,6 +11,7 @@ class BookingDetail {
   double? powerConsumption;
   double? unitPrice;
   double? amount;
+  String? amountString;
   int? userId;
   int? statusBooking;
   String? timeZoneName;
@@ -115,6 +116,7 @@ class BookingDetail {
     powerSocketName = json["PowerSocketName"];
     statusCPowerSocket = json["StatusCPowerSocket"];
     timeStopCharging = json["TimeStopCharging"];
+    amountString = json["AmountString"];
   }
 
   static ResponseBase<List<BookingDetail>> getListBookingDetailResponse(

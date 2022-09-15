@@ -55,7 +55,7 @@ class ChargingPage extends GetView<ChargingPageController> {
                           strokeCap: StrokeCap.round,
                           textStyle: Theme.of(context)
                               .textTheme
-                              .headline4!
+                              .headline5!
                               .copyWith(fontWeight: FontWeight.bold),
                           textFormat: CountdownTextFormat.S,
                           isReverse: false,

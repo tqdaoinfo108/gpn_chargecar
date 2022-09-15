@@ -33,6 +33,7 @@ class HttpClientLocal {
   Future<Response> getListNotification(int page) =>
       HttpClientHelper().getRequest("/api/notification/getlist", query: {
         "userID": LocalDB.getUserID,
+        "languageCode": LocalDB.getLanguagCode,
         "page": page,
         "limit": Constants.PAGE_LIMIT
       });

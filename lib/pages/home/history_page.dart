@@ -54,7 +54,7 @@ Widget historyPage(BuildContext context, HomeController controller) {
               ),
               const SizedBox(height: Space.small),
               Text(
-                "${'total_amount'.tr}: ${data.amount ?? 0}",
+                "${'total_amount'.tr}: ${data.amountString}",
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               const SizedBox(height: Space.small),

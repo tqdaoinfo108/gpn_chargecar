@@ -73,7 +73,8 @@ class LanguageTranslations extends Translations {
           'cancel': 'Cancel',
           'skip': 'Skip',
           'server_busy': "The server is busy, please try again",
-          'retry': 'Retry'
+          'retry': 'Retry',
+          'field_format_invalid': 'Field format invalid'
         },
         'jp_JP': {
           'home': 'ホーム',
@@ -143,7 +144,8 @@ class LanguageTranslations extends Translations {
           'cancel': 'キャンセル',
           'skip': 'Skip',
           'server_busy': "The server is busy, please try again",
-          'retry': 'Retry'
+          'retry': 'リトライ',
+          'field_format_invalid': 'フィールド形式が無効です'
         }
       };
 }

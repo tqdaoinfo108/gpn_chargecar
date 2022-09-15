@@ -64,9 +64,12 @@ class _MyAppState extends State<MyApp> {
       initialBinding: SplashScreenBinding(),
       getPages: [
         GetPage(
-            name: "/splash",
-            page: () => const SplashScreenPage(),
-            binding: SplashScreenBinding()),
+          name: "/splash",
+          page: () => SplashScreenPage(),
+          binding: SplashScreenBinding(),
+          opaque: false,
+          showCupertinoParallax: true,
+        ),
         GetPage(
           name: "/",
           page: () => const HomePage(),

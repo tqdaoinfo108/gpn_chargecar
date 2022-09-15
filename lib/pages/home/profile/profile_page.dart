@@ -218,7 +218,7 @@ Widget profilePage(BuildContext context, HomeController controller) {
                             itemSetting("sign_out".tr, onPressed: () {
                               LocalDB.setUserID = 0;
                               Get.delete<HomeController>(force: true);
-                              Get.offAllNamed("/splash");
+                              Get.back(result: true);
                             }),
                             Container(
                               color: Colors.grey.withOpacity(.2),
