@@ -122,6 +122,7 @@ class ChargingPageController extends GetxController {
     var arrPayload = pt.split(':');
     var arrTopic = c[0].topic.split('/');
 
+    printInfo(info: "daotq: ------- $pt");
     if (arrPayload.length == 10 &&
         bookingInsertModel.value.areaIdMqtt == arrTopic[2] &&
         bookingInsertModel.value.charingPostIdMqtt == arrPayload[0]) {

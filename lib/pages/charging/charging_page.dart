@@ -155,9 +155,9 @@ class ChargingPage extends GetView<ChargingPageController> {
                                           ),
                                           TextButton(
                                             child: Text('yes'.tr),
-                                            onPressed: () {
-                                              controller.insertQRCode();
+                                            onPressed: () async {
                                               Get.back();
+                                              await controller.insertQRCode();
                                             },
                                           ),
                                         ],
