@@ -408,7 +408,7 @@ Widget homeChildPageOne(BuildContext context, HomeController controller) {
         // the fab
         Positioned(
           right: 20.0,
-          bottom: controller.fabHeight.value,
+          bottom: controller.markLocaltionCurrent.value == null ? 20 : controller.fabHeight.value,
           child: FloatingActionButton(
             // ignore: sort_child_properties_last
             child: Icon(

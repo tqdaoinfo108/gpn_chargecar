@@ -74,7 +74,9 @@ class LanguageTranslations extends Translations {
           'skip': 'Skip',
           'server_busy': "The server is busy, please try again",
           'retry': 'Retry',
-          'field_format_invalid': 'Field format invalid'
+          'field_format_invalid': 'Field format invalid',
+          'unable_to_connect':
+              'Unable to connect to the system, please try again later!'
         },
         'jp_JP': {
           'home': 'ホーム',
@@ -145,7 +147,8 @@ class LanguageTranslations extends Translations {
           'skip': 'Skip',
           'server_busy': "The server is busy, please try again",
           'retry': 'リトライ',
-          'field_format_invalid': 'フィールド形式が無効です'
+          'field_format_invalid': 'フィールド形式が無効です',
+          'unable_to_connect': 'システムに接続できません。後でもう一度お試しください'
         }
       };
 }

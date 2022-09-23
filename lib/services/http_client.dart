@@ -8,6 +8,7 @@ class HttpClientHelper {
     _dio.options = BaseOptions(
         sendTimeout: Constants.TIME_OUT,
         connectTimeout: Constants.TIME_OUT,
+        receiveTimeout : Constants.TIME_OUT,
         contentType: "application/json; charset=utf-8",
         baseUrl: Constants.URL_BASE,
         headers: {

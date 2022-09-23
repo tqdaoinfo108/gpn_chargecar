@@ -109,7 +109,7 @@ class ChargingPageController extends GetxController {
         EasyLoading.showError('qr_code_invalid'.tr);
       }
     } catch (e) {
-      EasyLoading.showError('qr_code_invalid'.tr);
+      EasyLoading.showError('unable_to_connect'.tr);
     } finally {
       EasyLoading.dismiss();
     }
@@ -157,7 +157,7 @@ class ChargingPageController extends GetxController {
         EasyLoading.showError("fail_again".tr);
       }
     } catch (e) {
-      EasyLoading.showError("fail_again".tr);
+      EasyLoading.showError('unable_to_connect'.tr);
     }
   }
 }

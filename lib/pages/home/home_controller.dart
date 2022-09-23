@@ -45,7 +45,7 @@ class HomeController extends GetxController {
 
   var isOpenCall = false.obs;
 
-  var fabHeight = 80.0.obs;
+  var fabHeight = 20.0.obs;
 
   @override
   void onInit() {

@@ -11,7 +11,7 @@ Widget historyPage(BuildContext context, HomeController controller) {
   var theme = Theme.of(context);
   final controller = Get.put(HomeController());
 
-  GestureDetector itemNotification(context, BookingDetail data) {
+  GestureDetector itemHistory(context, BookingDetail data) {
     return GestureDetector(
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: Paddings.minimum),
@@ -40,6 +40,11 @@ Widget historyPage(BuildContext context, HomeController controller) {
               const SizedBox(height: Space.medium),
               Text(
                 data.addressParking ?? "",
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              const SizedBox(height: Space.small),
+              Text(
+                "${data.nameArea} - ${data.chargingPostName} - ${data.charingPostIdMqtt}",
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               const SizedBox(height: Space.small),
@@ -114,7 +119,7 @@ Widget historyPage(BuildContext context, HomeController controller) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: Paddings.normal),
-                          child: itemNotification(
+                          child: itemHistory(
                               context,
                               controller.homeData.value.listBookingDetail!
                                   .data![index]),

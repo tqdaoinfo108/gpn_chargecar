@@ -45,7 +45,7 @@ class SignInController extends GetxController with GetTickerProviderStateMixin {
     EasyLoading.show();
     try {
       var response = await HttpClientLocal()
-          .postLogin(signInEmail.value, signInPassword.value);
+          .postLogin(signInEmailController.value.text, signInPassword.value);
       var userModel = UserModel.getUserResponse(response.data);
       if (userModel.message == null) {
         if (userModel.data!.confirmEmail == 0) {
