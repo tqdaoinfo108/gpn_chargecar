@@ -17,6 +17,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../services/model/booking_detail.dart';
 import '../../services/model/notification.dart';
+import '../../services/model/user.dart';
 import '../../services/servces.dart';
 import 'profile/dark_mode_page.dart';
 import 'package:latlong2/latlong.dart';
@@ -158,6 +159,19 @@ class HomeController extends GetxController {
       getListBookingDetail();
     } else if (pageNumber == 2) {
       getListNotifition();
+    } else if (pageNumber == 3) {
+      getProfile();
+    }
+  }
+
+  Future getProfile() async {
+    if (LocalDB.getUserID == 0) return true;
+
+    try {
+      await HttpClientLocal().getProfile(LocalDB.getUserID);
+    } catch (e) {
+      LocalDB.setUserID = 0;
+      Get.back(result: true);
     }
   }
 

@@ -77,6 +77,9 @@ class HttpClientLocal {
         "ImagesPaths": imageSource
       });
 
+  Future<Response> postForgotPassword(String email) => HttpClientHelper()
+      .postRequest("/api/user/forgotpassword", body: {"email": email});
+
   Future<Response> getListConfig() =>
       HttpClientHelper().getRequest("/api/config/getlist");
 }

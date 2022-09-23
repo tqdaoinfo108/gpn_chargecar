@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 class LocalDB {
@@ -11,9 +11,25 @@ class LocalDB {
   static set setThemeMode(String themeMode) =>
       GetStorage().write("themeMode", themeMode);
 
-  static String get getLanguagCode => GetStorage().read("locale") ?? "jp";
+  static String get getLanguagCode => getLocalionDefaul();
   static set setLanguageCode(String locale) =>
       GetStorage().write("locale", locale);
+
+  static String getLocalionDefaul() {
+    if (GetStorage().read("locale") == null) {
+      var location = Get.deviceLocale;
+      if (location != null) {
+        if (location.languageCode == "en") {
+          setLanguageCode = "en";
+          return "en";
+        } else {
+          setLanguageCode = "jp";
+          return "jp";
+        }
+      }
+    }
+    return GetStorage().read("locale") ?? "jp";
+  }
 
   static String get getMqttServer =>
       GetStorage().read("MQTT_server") ?? "gpn-advance-tech.com";

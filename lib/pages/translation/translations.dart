@@ -76,7 +76,10 @@ class LanguageTranslations extends Translations {
           'retry': 'Retry',
           'field_format_invalid': 'Field format invalid',
           'unable_to_connect':
-              'Unable to connect to the system, please try again later!'
+              'Unable to connect to the system, please try again later!',
+          'create_booking_success': 'Create booking charging success.',
+          'charging_order_completed': 'Create booking charging success.',
+          'reset_password': 'Reset password'
         },
         'jp_JP': {
           'home': 'ホーム',
@@ -145,10 +148,13 @@ class LanguageTranslations extends Translations {
           'start': '充電開始',
           'cancel': 'キャンセル',
           'skip': 'Skip',
-          'server_busy': "The server is busy, please try again",
+          'server_busy': "サーバーがビジー状態です。もう一度お試しください",
           'retry': 'リトライ',
           'field_format_invalid': 'フィールド形式が無効です',
-          'unable_to_connect': 'システムに接続できません。後でもう一度お試しください'
+          'unable_to_connect': 'システムに接続できません。後で  もう一度お試しください',
+          'create_booking_success': '予約課金の成功を作成します。',
+          'charging_order_completed': '充電注文完了',
+          'reset_password': 'パスワードを再設定する'
         }
       };
 }

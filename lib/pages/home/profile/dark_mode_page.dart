@@ -10,7 +10,7 @@ class DarkModeModel {
   String title;
   ThemeMode themeMode;
   String code;
-  DarkModeModel(this.title, this.themeMode,this.code);
+  DarkModeModel(this.title, this.themeMode, this.code);
 }
 
 final HomeController controller = Get.put(HomeController());
@@ -28,11 +28,24 @@ class DarkModePage extends StatelessWidget {
           newMethod(context, controller.listDarkMode[0]),
           Divider(thickness: 0.5, color: Colors.grey.withOpacity(0.1)),
           newMethod(context, controller.listDarkMode[1]),
-           Divider(thickness: 0.5, color: Colors.grey.withOpacity(0.1)),
+          Divider(thickness: 0.5, color: Colors.grey.withOpacity(0.1)),
           newMethod(context, controller.listDarkMode[2]),
         ],
       ),
     );
+  }
+
+  static String getTitle(String id) {
+    switch (id) {
+      case "system":
+        return "system".tr;
+      case "light":
+        return "light".tr;
+      case "dark":
+        return "dark".tr;
+      default:
+        return "system".tr;
+    }
   }
 
   InkWell newMethod(BuildContext context, DarkModeModel darkModeModel) {
@@ -41,7 +54,7 @@ class DarkModePage extends StatelessWidget {
       child: ListTile(
         visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
         title: Text(
-          darkModeModel.title,
+          getTitle(darkModeModel.code),
           style: Theme.of(context).textTheme.bodyText1,
         ),
         trailing: LocalDB.getThemeMode == darkModeModel.code

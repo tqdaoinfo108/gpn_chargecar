@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 
 import '../../third_library/custom_text_form_field.dart';
 import '../../utils/const.dart';
+import 'forgot_page.dart';
 import 'sign_in_controller.dart';
 
 class SignInPage extends GetView<SignInController> {
@@ -123,7 +124,25 @@ class SignInPage extends GetView<SignInController> {
                 },
               ),
             ),
-            const SizedBox(height: Space.superLarge),
+            const SizedBox(height: Space.large),
+            GestureDetector(
+              onTap: () {
+                Get.bottomSheet(const RegisterPage());
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    "reset_password".tr,
+                    style: theme.textTheme.bodyText1!.copyWith(
+                        color: theme.primaryColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: Space.large),
             SizedBox(
               width: widthOfScreen * 0.6,
               child: DefaultButton(

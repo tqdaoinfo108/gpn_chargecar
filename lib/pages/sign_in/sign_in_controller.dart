@@ -60,7 +60,7 @@ class SignInController extends GetxController with GetTickerProviderStateMixin {
         return false;
       }
     } catch (e) {
-      EasyLoading.showError("fail_again".tr);
+      EasyLoading.showError('user_pass_invalid'.tr);
       return false;
     } finally {
       EasyLoading.dismiss();

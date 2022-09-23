@@ -236,10 +236,10 @@ Widget profilePage(BuildContext context, HomeController controller) {
                             .copyWith(fontWeight: FontWeight.bold)),
                   ),
                   itemSetting("dark_mode".tr,
-                      value: controller.listDarkMode
+                      value: DarkModePage.getTitle(controller.listDarkMode
                           .firstWhere(
                               (element) => element.code == LocalDB.getThemeMode)
-                          .title, onPressed: () {
+                          .code), onPressed: () {
                     Get.bottomSheet(const DarkModePage());
                   }),
                   Divider(

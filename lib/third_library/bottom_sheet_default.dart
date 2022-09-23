@@ -15,7 +15,7 @@ class BottomSheetDefault extends StatelessWidget {
     return IntrinsicHeight(
       child: Container(
         decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
+            color: Theme.of(context).scaffoldBackgroundColor,
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(RadiusSize.kDialogCornerRadius),
                 topRight: Radius.circular(RadiusSize.kDialogCornerRadius))),
@@ -41,7 +41,7 @@ class BottomSheetDefault extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: Paddings.normal),
               child: body,
             ),
-            SizedBox(height: MediaQuery.of(context).size.height / 9),
+            SizedBox(height: MediaQuery.of(context).size.height / 21),
           ],
         ),
       ),

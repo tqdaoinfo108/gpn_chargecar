@@ -35,6 +35,16 @@ Widget notificationPage(BuildContext context, HomeController controller) {
     }
   }
 
+  String getTitleString(id) {
+    if (id == 1) {
+      return 'create_booking_success'.tr;
+    } else if (id == 2) {
+      return 'charging_order_completed'.tr;
+    } else {
+      return "";
+    }
+  }
+
   GestureDetector itemNotification(context, NotificationModel data) {
     return GestureDetector(
       child: Padding(
@@ -89,7 +99,7 @@ Widget notificationPage(BuildContext context, HomeController controller) {
                   children: [
                     Expanded(
                       child: Text(
-                        data.title ?? "",
+                        getTitleString(data.typeId!),
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 14,

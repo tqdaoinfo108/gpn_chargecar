@@ -8,7 +8,7 @@ class HttpClientHelper {
     _dio.options = BaseOptions(
         sendTimeout: Constants.TIME_OUT,
         connectTimeout: Constants.TIME_OUT,
-        receiveTimeout : Constants.TIME_OUT,
+        receiveTimeout: Constants.TIME_OUT,
         contentType: "application/json; charset=utf-8",
         baseUrl: Constants.URL_BASE,
         headers: {
@@ -19,8 +19,7 @@ class HttpClientHelper {
   Future<Response> getRequest(String path,
       {Map<String, dynamic>? query}) async {
     try {
-      var response =
-          await _dio.get(path, queryParameters: query);
+      var response = await _dio.get(path, queryParameters: query);
       return response;
     } on DioError catch (_, a) {
       throw Exception(_.message);
@@ -30,8 +29,7 @@ class HttpClientHelper {
   Future<Response> postRequest(String path,
       {Map<String, dynamic>? query, Map<String, dynamic>? body}) async {
     try {
-      var response = await _dio.post(path,
-          queryParameters: query, data: body);
+      var response = await _dio.post(path, queryParameters: query, data: body);
       return response;
     } on DioError catch (_, a) {
       throw Exception(_.message);

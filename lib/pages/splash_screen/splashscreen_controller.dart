@@ -49,7 +49,9 @@ class SplashScreenController extends GetxController {
     // login
     if (LocalDB.getUserID == 0) {
       var isLogin = await Get.toNamed("/login");
-      if (isLogin) {
+      if (isLogin == null) {
+        exit(0);
+      } else if (isLogin) {
         onInitCheckAll();
       }
       return;
@@ -79,11 +81,17 @@ class SplashScreenController extends GetxController {
       isPermission.value = true;
     }
 
+    var getprofile = await getProfile();
+    if (getprofile == null) {
+      LocalDB.setUserID = 0;
+      onInitCheckAll();
+      return false;
+    }
+
     var response = await Future.wait([
-      getProfile(),
       getListParking(),
       getNotification(1),
-      getListBookingDetail()
+      getListBookingDetail(),
     ]);
 
     if (!response.contains(null)) {
