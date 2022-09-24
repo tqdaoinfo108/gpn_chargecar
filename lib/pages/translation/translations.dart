@@ -77,8 +77,8 @@ class LanguageTranslations extends Translations {
           'field_format_invalid': 'Field format invalid',
           'unable_to_connect':
               'Unable to connect to the system, please try again later!',
-          'create_booking_success': 'Create booking charging success.',
-          'charging_order_completed': 'Create booking charging success.',
+          'create_booking_success': 'Create booking charging success',
+          'charging_order_completed': 'Charging order completed',
           'reset_password': 'Reset password'
         },
         'jp_JP': {
@@ -147,14 +147,14 @@ class LanguageTranslations extends Translations {
           'h': '時間',
           'start': '充電開始',
           'cancel': 'キャンセル',
-          'skip': 'Skip',
-          'server_busy': "サーバーがビジー状態です。もう一度お試しください",
-          'retry': 'リトライ',
-          'field_format_invalid': 'フィールド形式が無効です',
-          'unable_to_connect': 'システムに接続できません。後で  もう一度お試しください',
-          'create_booking_success': '予約課金の成功を作成します。',
-          'charging_order_completed': '充電注文完了',
-          'reset_password': 'パスワードを再設定する'
+          'skip': 'スキップ',
+          'server_busy': "EvStand充電システムサーバーから応答時間が長すぎます。しばらくしてからもう一度お試しください。",
+          'retry': '再試行',
+          'field_format_invalid': '入力内容に誤りがあります。ご確認の上、再度入力してください',
+          'unable_to_connect': 'EvStand充電システムに接続できません。しばらくしてからもう一度お試しください。',
+          'create_booking_success': '充電開始しました！',
+          'charging_order_completed': '充電完了しました！',
+          'reset_password': 'パスワード再設定'
         }
       };
 }
