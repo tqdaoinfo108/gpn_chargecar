@@ -64,7 +64,7 @@ class LanguageTranslations extends Translations {
           'splash_screen_message':
               'Using the EVstand charger is as easy as holding your smartphone over the QR code! It is a service application that can use chargers for electric vehicles "EV/PHEV" in general.',
           'qr_code_invalid': 'Invalid QR code or charging hole is in use',
-          'charge_within': "Charge within",
+          'charge_within': "Charge within %1\$",
           'register_on_failed':
               'We cannot confirm your authorization! To use it, please contact the facility manager displayed on the charging facility.',
           'time': 'Time',
@@ -140,9 +140,9 @@ class LanguageTranslations extends Translations {
           'splash_screen_message':
               'EVstand充電器の利用はQRコードへスマホをかざすだけの簡単操作！\n電気自動車「EV/PHEV」全般の充電器を利用できるサービスアプリです',
           'qr_code_invalid': '無効な QR コード又は充電スタンドが使用されています。',
-          'charge_within': "以内に充電",
+          'charge_within': "%1\$以内に充電",
           'register_on_failed':
-              'お客様のご利用権限が確認できません！ご利用頂くには充電器設備に表示されている施設管理者にお問い合わせ下さい。',
+              'お客様のご利用権限が確認できません！ご利用頂くには充電器設備に表示されている施設管理者にお問い合わせ下さい',
           'time': "時間",
           'h': '時間',
           'start': '充電開始',

@@ -9,6 +9,15 @@ import 'charging_controller.dart';
 class ChargingPage extends GetView<ChargingPageController> {
   const ChargingPage({Key? key}) : super(key: key);
 
+  String interpolate(String string, List<String> params) {
+    String result = string;
+    for (int i = 1; i < params.length + 1; i++) {
+      result = result.replaceAll('%${i}\$', params[i - 1]);
+    }
+
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(() => WillPopScope(
@@ -141,8 +150,10 @@ class ChargingPage extends GetView<ChargingPageController> {
                                         content: SingleChildScrollView(
                                           child: ListBody(
                                             children: <Widget>[
-                                              Text(
-                                                  '${'charge_within'.tr} ${controller.duration.value.title}?'),
+                                              Text(interpolate(
+                                                  'charge_within'.tr, [
+                                                controller.duration.value.title
+                                              ])),
                                             ],
                                           ),
                                         ),
