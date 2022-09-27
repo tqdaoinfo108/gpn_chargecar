@@ -9,7 +9,7 @@ class MqttClientLocal {
   Future<MqttServerClient> init(
       Function(List<MqttReceivedMessage<MqttMessage>>) onCalled) async {
     client = MqttServerClient.withPort(
-        LocalDB.getMqttServer, 'Mobile_client_mobile', LocalDB.getMqttPort);
+        LocalDB.getMqttServer, 'Mobile_client_mobile_${DateTime.now().microsecond}', LocalDB.getMqttPort);
 
     // client.logging(on: true);
     // client.onConnected = onConnected;
@@ -21,7 +21,7 @@ class MqttClientLocal {
     client.port = LocalDB.getMqttPort;
     final connMessage = MqttConnectMessage()
         .authenticateAs(LocalDB.getMqttUserName, LocalDB.getMqttPassword)
-        .withClientIdentifier('Mobile_client_mobile')
+        .withClientIdentifier('Mobile_client_mobile_${DateTime.now().microsecond}')
         .withWillQos(MqttQos.atLeastOnce);
     this.onCalled = onCalled;
 

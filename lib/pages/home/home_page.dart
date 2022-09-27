@@ -15,6 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants/dimens.dart';
 import '../../third_library/search_page/search_page.dart';
+import '../charging/charging_controller.dart';
 import 'history_page.dart';
 import 'notification_page.dart';
 import 'profile/profile_page.dart';
@@ -420,6 +421,7 @@ Widget homeChildPageOne(BuildContext context, HomeController controller) {
                   await Get.toNamed("/qr", arguments: {"parkingID": -100});
               if (result != null) {
                 await Get.delete<QRScannerPageController>();
+                await Get.delete<ChargingPageController>();
                 var result2 = await Get.toNamed("/charging", arguments: result);
                 if (result2 != null) {
                   if (result2["page"] != null && result2["page"] != "") {

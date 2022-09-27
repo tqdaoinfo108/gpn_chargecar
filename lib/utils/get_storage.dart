@@ -48,4 +48,11 @@ class LocalDB {
       GetStorage().read("MQTT_Password") ?? "gdev12345";
   static set setMqttPassword(String password) =>
       GetStorage().write("MQTT_Password", password);
+
+  static String get getLastLogin => GetStorage().read("LastLogin") ?? "0";
+  static set setLastLogin(String lastLogin) =>
+      GetStorage().write("LastLogin", lastLogin);
+
+  static String get getUUID => GetStorage().read("UUID") ?? "0";
+  static set setUUID(String uUID) => GetStorage().write("UUID", uUID);
 }

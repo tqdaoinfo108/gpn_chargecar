@@ -2,7 +2,7 @@ import 'package:charge_car/services/model/booking_insert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../services/servces.dart';
 
@@ -15,11 +15,12 @@ class QRScannerPageBinding implements Bindings {
 
 class QRScannerPageController extends GetxController {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  Barcode? result;
-  late QRViewController controllerQRView;
-  int parkingID = 0;
 
+  int parkingID = 0;
   bool isBack = true;
+  bool isCheck = true;
+  MobileScannerController controller = MobileScannerController(formats: [BarcodeFormat.qrCode]);
+
   @override
   void onInit() {
     super.onInit();
@@ -27,27 +28,30 @@ class QRScannerPageController extends GetxController {
     isBack = true;
   }
 
-  void onQRViewCreated(QRViewController controllerQRView2) {
-    controllerQRView = controllerQRView2;
-    controllerQRView.resumeCamera();
-    controllerQRView.scannedDataStream.listen((scanData) async {
-      if (scanData.code != null && scanData.code != "") {
-        var isValue = await onCheckQRCode(scanData.code!, parkingID);
+  Future onQRViewCreated(Barcode barcode) async {
+    if (isCheck) {
+      isCheck = false;
+      try {
+        var isValue = await onCheckQRCode(barcode.rawValue!, parkingID);
         if (isValue == null) {
-          controllerQRView.resumeCamera();
+          await Future.delayed(const Duration(seconds: 1));
         } else {
+          controller.stop();
+          controller.dispose();
           Get.back(result: isValue);
         }
+      } catch (e) {
+        await Future.delayed(const Duration(seconds: 1));
+      } finally {
+        isCheck = true;
       }
-      return;
-    });
+    }
   }
 
   Future<BookingInsertModel?> onCheckQRCode(
       String qrcode, int parkingID) async {
     try {
       EasyLoading.show();
-      controllerQRView.pauseCamera();
       var response = await HttpClientLocal().postCheckQRCode(qrcode, parkingID);
       var result = BookingInsertModel.getBookingInsertResponse(response.data);
       if (result.message == null) {
