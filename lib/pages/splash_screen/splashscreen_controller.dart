@@ -133,6 +133,9 @@ class SplashScreenController extends GetxController {
       LocalDB.setMqttPassword = listConfig
           .firstWhere((element) => element.configKey == "MQTT_Password")
           .configValue!;
+      LocalDB.setIsDebug = listConfig
+          .firstWhere((element) => element.configKey == "IsDebug")
+          .configValue!;
       return true;
     } catch (e) {
       return null;

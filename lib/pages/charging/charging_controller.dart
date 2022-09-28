@@ -91,13 +91,6 @@ class ChargingPageController extends GetxController {
   Future insertQRCode() async {
     try {
       await mqttClient.init((p0) => onMQTTCalled(p0));
-      mqttClient.client.onDisconnected = (() async {
-        await mqttClient.init((p0) => onMQTTCalled(p0));
-        mqttClient.client.subscribe(
-            bookingInsertModel.value.topicName ?? "#", MqttQos.atLeastOnce);
-        await Future.delayed(const Duration(seconds: 1));
-      });
-
       mqttClient.client.subscribe(
           bookingInsertModel.value.topicName ?? "#", MqttQos.atLeastOnce);
 

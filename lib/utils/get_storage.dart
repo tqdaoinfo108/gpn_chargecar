@@ -55,4 +55,7 @@ class LocalDB {
 
   static String get getUUID => GetStorage().read("UUID") ?? "0";
   static set setUUID(String uUID) => GetStorage().write("UUID", uUID);
+
+  static bool get isDebug => GetStorage().read("isDebug") == "true";
+  static set setIsDebug(String debug) => GetStorage().write("isDebug", debug);
 }

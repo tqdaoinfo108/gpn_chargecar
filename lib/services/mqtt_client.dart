@@ -1,4 +1,5 @@
 import 'package:charge_car/utils/get_storage.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
@@ -9,23 +10,29 @@ class MqttClientLocal {
   Future<MqttServerClient> init(
       Function(List<MqttReceivedMessage<MqttMessage>>) onCalled) async {
     client = MqttServerClient.withPort(
-        LocalDB.getMqttServer, 'Mobile_client_mobile_${DateTime.now().microsecond}', LocalDB.getMqttPort);
+        LocalDB.getMqttServer,
+        'Mobile_client_mobile_${DateTime.now().microsecond}',
+        LocalDB.getMqttPort);
 
     // client.logging(on: true);
-    // client.onConnected = onConnected;
-    // client.onDisconnected = onDisconnected;
-    // client.onUnsubscribed = onUnsubscribed;
-    // client.onSubscribed = onSubscribed;
-    // client.onSubscribeFail = onSubscribeFail;
+    client.onConnected = onConnected;
+    client.onDisconnected = onDisconnected;
+    client.onUnsubscribed = onUnsubscribed;
+    client.onSubscribed = onSubscribed;
+    client.onSubscribeFail = onSubscribeFail;
     // client.pongCallback = pong;
     client.port = LocalDB.getMqttPort;
     final connMessage = MqttConnectMessage()
         .authenticateAs(LocalDB.getMqttUserName, LocalDB.getMqttPassword)
-        .withClientIdentifier('Mobile_client_mobile_${DateTime.now().microsecond}')
+        .withClientIdentifier(
+            'Mobile_client_mobile_${DateTime.now().microsecond}')
         .withWillQos(MqttQos.atLeastOnce);
     this.onCalled = onCalled;
 
     client.connectionMessage = connMessage;
+    client.autoReconnect = true;
+    client.resubscribeOnAutoReconnect = true;
+
     try {
       await client.connect();
     } catch (e) {
@@ -42,27 +49,37 @@ class MqttClientLocal {
 
   // connection succeeded
   static void onConnected() {
-    print('Connected');
+    if (LocalDB.isDebug) {
+      EasyLoading.showInfo("Đã kết nối");
+    }
   }
 
 // unconnected
   static void onDisconnected() {
-    print('Disconnected');
+    if (LocalDB.isDebug) {
+      EasyLoading.showInfo("Đã mất kết nối");
+    }
   }
 
 // subscribe to topic succeeded
   static void onSubscribed(String topic) {
-    print('Subscribed topic: $topic');
+    if (LocalDB.isDebug) {
+      EasyLoading.showInfo("Đã theo dõi: $topic");
+    }
   }
 
 // subscribe to topic failed
   static void onSubscribeFail(String topic) {
-    print('Failed to subscribe $topic');
+    if (LocalDB.isDebug) {
+      EasyLoading.showInfo("Đã theo dõi thất bại: $topic");
+    }
   }
 
 // unsubscribe succeeded
   static void onUnsubscribed(String? topic) {
-    print('Unsubscribed topic: $topic');
+    if (LocalDB.isDebug) {
+      EasyLoading.showInfo("Đã ngừng theo dõi: $topic");
+    }
   }
 
 // PING response received
