@@ -8,6 +8,7 @@ import 'package:mqtt_client/mqtt_client.dart';
 import '../../services/model/booking_detail.dart';
 import '../../services/mqtt_client.dart';
 import '../../third_library/count_down/circular_countdown_timer.dart';
+import '../../utils/get_storage.dart';
 
 class ChargingPageBinding implements Bindings {
   @override
@@ -48,13 +49,14 @@ class ChargingPageController extends GetxController {
 
   late BookingDetail booking;
   var isShowStop = false.obs;
-
   var initialDuration = RxInt(0);
+  bool isInnerPage = true;
 
   @override
   void onInit() {
     super.onInit();
     bookingInsertModel.value = Get.arguments;
+    isInnerPage = true;
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (bookingInsertModel.value.timeStartWhenExist != 0) {
@@ -70,13 +72,28 @@ class ChargingPageController extends GetxController {
         duration.value = listChargingModel.firstWhere((element) =>
             element.value == (bookingInsertModel.value.timeStopCharging ?? 0));
 
-        await mqttClient.init((p0) => onMQTTCalled(p0));
+        await mqttClient.init((p0) => onMQTTCalled(p0), (() async {
+          await onCheckBookingExits();
+        }));
         mqttClient.client.subscribe(
             bookingInsertModel.value.topicName ?? "#", MqttQos.atLeastOnce);
 
         countController.value.start();
       }
     });
+  }
+
+  Future onCheckBookingExits() async {
+    if (LocalDB.getUserID == 0) return;
+
+    try {
+      await HttpClientLocal().getListBookingDetail(-100, 1);
+    } catch (e) {
+      mqttClient.client.disconnect();
+      isInnerPage = false;
+      Get.back(result: {"page": "1"});
+      return;
+    }
   }
 
   onChoose(ChargingModel choose) {
@@ -90,7 +107,9 @@ class ChargingPageController extends GetxController {
 
   Future insertQRCode() async {
     try {
-      await mqttClient.init((p0) => onMQTTCalled(p0));
+      await mqttClient.init((p0) => onMQTTCalled(p0), () async {
+        await onCheckBookingExits();
+      });
       mqttClient.client.subscribe(
           bookingInsertModel.value.topicName ?? "#", MqttQos.atLeastOnce);
 
@@ -106,10 +125,10 @@ class ChargingPageController extends GetxController {
         countController.value.isShow = true;
         countController.value.start();
       } else {
-        EasyLoading.showError('qr_code_invalid'.tr);
+        EasyLoading.showToast('qr_code_invalid'.tr);
       }
     } catch (e) {
-      EasyLoading.showError('unable_to_connect'.tr);
+      EasyLoading.showToast('unable_to_connect'.tr);
     } finally {
       EasyLoading.dismiss();
     }
@@ -125,14 +144,15 @@ class ChargingPageController extends GetxController {
     printInfo(info: "daotq: ------- $pt");
     if (arrPayload.length == 10 &&
         bookingInsertModel.value.areaIdMqtt == arrTopic[2] &&
-        bookingInsertModel.value.charingPostIdMqtt == arrPayload[0]) {
+        bookingInsertModel.value.charingPostIdMqtt == arrPayload[0] &&
+        isInnerPage) {
       var arrChargingPost = List<String>.generate(
           arrPayload[1].length, (index) => arrPayload[1][index]);
-      int? index =
-          int.tryParse(bookingInsertModel.value.charingPostId_Child ?? "0");
+      int? index = int.tryParse(bookingInsertModel.value.charingPostId_Child!);
       if (arrChargingPost[index! - 1] == "0") {
         mqttClient.client.disconnect();
-        await Future.delayed(const Duration(seconds: 2));
+        isInnerPage = false;
+        await Future.delayed(const Duration(seconds: 1));
         Get.back(result: {"page": "1"});
       }
     }
@@ -141,6 +161,7 @@ class ChargingPageController extends GetxController {
   @override
   void dispose() {
     super.dispose();
+    isInnerPage = false;
     mqttClient.client.disconnect();
   }
 
@@ -150,7 +171,7 @@ class ChargingPageController extends GetxController {
 
       var response = await HttpClientLocal().postBookingUpdate(booking.bookId!);
       var result = BookingInsertModel.getBookingInsertResponse(response.data);
-      if (result.message == null) {
+      if (result.message == null && result.data != null) {
         EasyLoading.showSuccess("success".tr);
         countController.value.pause();
       } else {

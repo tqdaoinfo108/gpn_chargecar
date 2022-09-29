@@ -8,7 +8,7 @@ class MqttClientLocal {
   late Function(List<MqttReceivedMessage<MqttMessage>>) onCalled;
 
   Future<MqttServerClient> init(
-      Function(List<MqttReceivedMessage<MqttMessage>>) onCalled) async {
+      Function(List<MqttReceivedMessage<MqttMessage>>) onCalled,Function() onConnected) async {
     client = MqttServerClient.withPort(
         LocalDB.getMqttServer,
         'Mobile_client_mobile_${DateTime.now().microsecond}',
@@ -48,11 +48,11 @@ class MqttClientLocal {
   }
 
   // connection succeeded
-  static void onConnected() {
-    if (LocalDB.isDebug) {
-      EasyLoading.showInfo("Đã kết nối");
-    }
-  }
+  // static void onConnected() {
+  //   if (LocalDB.isDebug) {
+  //     EasyLoading.showInfo("Đã kết nối");
+  //   }
+  // }
 
 // unconnected
   static void onDisconnected() {
