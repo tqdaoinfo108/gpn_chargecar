@@ -8,12 +8,12 @@ class MqttClientLocal {
   late Function(List<MqttReceivedMessage<MqttMessage>>) onCalled;
 
   Future<MqttServerClient> init(
-      Function(List<MqttReceivedMessage<MqttMessage>>) onCalled,Function() onConnected) async {
+      Function(List<MqttReceivedMessage<MqttMessage>>) onCalled,
+      Function() onConnected) async {
     client = MqttServerClient.withPort(
         LocalDB.getMqttServer,
         'Mobile_client_mobile_${DateTime.now().microsecond}',
         LocalDB.getMqttPort);
-
     // client.logging(on: true);
     client.onConnected = onConnected;
     client.onDisconnected = onDisconnected;
@@ -26,6 +26,7 @@ class MqttClientLocal {
         .authenticateAs(LocalDB.getMqttUserName, LocalDB.getMqttPassword)
         .withClientIdentifier(
             'Mobile_client_mobile_${DateTime.now().microsecond}')
+        .startClean()
         .withWillQos(MqttQos.atLeastOnce);
     this.onCalled = onCalled;
 

@@ -107,30 +107,29 @@ class ChargingPageController extends GetxController {
 
   Future insertQRCode() async {
     try {
+      EasyLoading.show();
+
       await mqttClient.init((p0) => onMQTTCalled(p0), () async {
         await onCheckBookingExits();
       });
       mqttClient.client.subscribe(
           bookingInsertModel.value.topicName ?? "#", MqttQos.atLeastOnce);
 
-      EasyLoading.show();
       var response = await HttpClientLocal().postInsertBooking(
           bookingInsertModel.value.qrCode ?? "",
           bookingInsertModel.value.parkingId ?? 0,
           duration.value.value);
       var result = BookingDetail.getBookingDetailResponse(response.data);
       if (result.message == null) {
-        isShowStop.value = true;
+        // isShowStop.value = true;
         booking = result.data!;
-        countController.value.isShow = true;
-        countController.value.start();
+        // countController.value.isShow = true;
+        // countController.value.start();
       } else {
         EasyLoading.showToast('qr_code_invalid'.tr);
       }
     } catch (e) {
       EasyLoading.showToast('unable_to_connect'.tr);
-    } finally {
-      EasyLoading.dismiss();
     }
   }
 
@@ -154,6 +153,13 @@ class ChargingPageController extends GetxController {
         isInnerPage = false;
         await Future.delayed(const Duration(seconds: 1));
         Get.back(result: {"page": "1"});
+      } else {
+        if (arrChargingPost[index - 1] == "1") {
+          isShowStop.value = true;
+          countController.value.isShow = true;
+          countController.value.start();
+          EasyLoading.dismiss();
+        }
       }
     }
   }
@@ -163,6 +169,7 @@ class ChargingPageController extends GetxController {
     super.dispose();
     isInnerPage = false;
     mqttClient.client.disconnect();
+    EasyLoading.dismiss();
   }
 
   Future onStopBooking() async {

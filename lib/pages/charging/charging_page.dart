@@ -1,6 +1,7 @@
 import 'package:charge_car/constants/dimens.dart';
 import 'package:charge_car/constants/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import '../../third_library/button_default.dart';
 import '../../third_library/count_down/circular_countdown_timer.dart';
@@ -21,7 +22,10 @@ class ChargingPage extends GetView<ChargingPageController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => WillPopScope(
-          onWillPop: () async => !controller.isShowStop.value,
+          onWillPop: () async {
+            EasyLoading.dismiss();
+            return !controller.isShowStop.value;
+          },
           child: Scaffold(
               appBar: controller.isShowStop.value
                   ? null
