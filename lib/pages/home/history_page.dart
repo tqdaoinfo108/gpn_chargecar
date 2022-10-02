@@ -34,42 +34,62 @@ Widget historyPage(BuildContext context, HomeController controller) {
                 data.nameParking ?? "",
                 style: Theme.of(context)
                     .textTheme
-                    .titleMedium!
-                    .copyWith(fontWeight: FontWeight.bold),
+                    .titleLarge!
+                    .copyWith(fontWeight: FontWeight.bold, fontSize: 17),
               ),
               const SizedBox(height: Space.medium),
-              Text(
-                data.addressParking ?? "",
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
+              Text(data.addressParking ?? "",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1!
+                      .copyWith(fontSize: 15)),
               const SizedBox(height: Space.small),
               Text(
                 "${data.nameArea} - ${data.chargingPostName} - ${data.charingPostIdMqtt}",
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(fontSize: 15),
               ),
               const SizedBox(height: Space.small),
               Text(
-                "${Functions.getDateTimeString(data.dateStart)} - ${Functions.getDateTimeString(data.dateEnd)}",
-                style: Theme.of(context).textTheme.bodyText1,
+                "${'from'.tr}: ${Functions.getDateTimeString(data.dateStart)}",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(fontSize: 15),
+              ),
+              const SizedBox(height: Space.small),
+              Text(
+                "${'to'.tr}: ${Functions.getDateTimeString(data.dateEnd)}",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(fontSize: 15),
               ),
               const SizedBox(height: Space.small),
               Text(
                 "${'number_kwh'.tr}: ${data.powerConsumption ?? 0}",
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(fontSize: 15),
               ),
               const SizedBox(height: Space.small),
               Text(
                 "${'total_amount'.tr}: ${data.amountString}",
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(fontSize: 15),
               ),
               const SizedBox(height: Space.small),
               Container(
                 alignment: Alignment.bottomRight,
                 child: Text(
                   Functions.getDateTimeString(data.createdDate),
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 11,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontSize: 14,
                       color: const Color(0xff67727d).withOpacity(0.6)),
                 ),
               ),

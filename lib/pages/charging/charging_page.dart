@@ -24,6 +24,7 @@ class ChargingPage extends GetView<ChargingPageController> {
     return Obx(() => WillPopScope(
           onWillPop: () async {
             EasyLoading.dismiss();
+            controller.isStart = false;
             return !controller.isShowStop.value;
           },
           child: Scaffold(

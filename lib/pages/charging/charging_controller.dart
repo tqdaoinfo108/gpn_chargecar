@@ -51,6 +51,7 @@ class ChargingPageController extends GetxController {
   var isShowStop = false.obs;
   var initialDuration = RxInt(0);
   bool isInnerPage = true;
+  bool isStart = false;
 
   @override
   void onInit() {
@@ -123,6 +124,11 @@ class ChargingPageController extends GetxController {
       if (result.message == null) {
         // isShowStop.value = true;
         booking = result.data!;
+        await Future.delayed(const Duration(seconds: 25));
+        if (!isStart) {
+          EasyLoading.showToast('unable_to_connect'.tr);
+          Get.back();
+        }
         // countController.value.isShow = true;
         // countController.value.start();
       } else {
@@ -151,10 +157,12 @@ class ChargingPageController extends GetxController {
       if (arrChargingPost[index! - 1] == "0") {
         mqttClient.client.disconnect();
         isInnerPage = false;
+        isStart = false;
         await Future.delayed(const Duration(seconds: 1));
         Get.back(result: {"page": "1"});
-      } else {
-        if (arrChargingPost[index - 1] == "1") {
+      } else if (arrChargingPost[index - 1] == "1") {
+        if (!isStart) {
+          isStart = true;
           isShowStop.value = true;
           countController.value.isShow = true;
           countController.value.start();
@@ -168,6 +176,7 @@ class ChargingPageController extends GetxController {
   void dispose() {
     super.dispose();
     isInnerPage = false;
+    isStart = false;
     mqttClient.client.disconnect();
     EasyLoading.dismiss();
   }
