@@ -5,7 +5,6 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 
 class MqttClientLocal {
   late MqttServerClient client;
-  late Function(List<MqttReceivedMessage<MqttMessage>>) onCalled;
 
   Future<MqttServerClient> init(
       Function(List<MqttReceivedMessage<MqttMessage>>) onCalled,
@@ -20,7 +19,8 @@ class MqttClientLocal {
     client.onUnsubscribed = onUnsubscribed;
     client.onSubscribed = onSubscribed;
     client.onSubscribeFail = onSubscribeFail;
-    // client.pongCallback = pong;
+    client.keepAlivePeriod = 20;
+    client.pongCallback = pong;
     client.port = LocalDB.getMqttPort;
     final connMessage = MqttConnectMessage()
         .authenticateAs(LocalDB.getMqttUserName, LocalDB.getMqttPassword)
@@ -28,7 +28,6 @@ class MqttClientLocal {
             'Mobile_client_mobile_${DateTime.now().microsecond}')
         .startClean()
         .withWillQos(MqttQos.atLeastOnce);
-    this.onCalled = onCalled;
 
     client.connectionMessage = connMessage;
     client.autoReconnect = true;

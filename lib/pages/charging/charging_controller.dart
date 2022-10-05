@@ -114,7 +114,7 @@ class ChargingPageController extends GetxController {
         await onCheckBookingExits();
       });
       mqttClient.client.subscribe(
-          bookingInsertModel.value.topicName ?? "#", MqttQos.atLeastOnce);
+          bookingInsertModel.value.topicName ?? "#", MqttQos.exactlyOnce);
 
       var response = await HttpClientLocal().postInsertBooking(
           bookingInsertModel.value.qrCode ?? "",
@@ -184,7 +184,11 @@ class ChargingPageController extends GetxController {
   Future onStopBooking() async {
     try {
       EasyLoading.show();
-
+      // ignore: unrelated_type_equality_checks
+      mqttClient.client.updates!
+          .listen((List<MqttReceivedMessage<MqttMessage>> c) async {
+        onMQTTCalled(c);
+      });
       var response = await HttpClientLocal().postBookingUpdate(booking.bookId!);
       var result = BookingInsertModel.getBookingInsertResponse(response.data);
       if (result.message == null && result.data != null) {
