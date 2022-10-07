@@ -1,5 +1,5 @@
 class ResponseBase<T> {
-  T? data;
+  T?  data;
   int? totals;
   int? status;
   String? message;

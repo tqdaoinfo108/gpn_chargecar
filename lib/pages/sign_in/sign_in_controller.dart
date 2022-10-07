@@ -54,7 +54,7 @@ class SignInController extends GetxController with GetTickerProviderStateMixin {
         }
         LocalDB.setUserID = userModel.data?.userID ?? 0;
         LocalDB.setUUID = userModel.data!.uUserID!;
-        LocalDB.setLastLogin = userModel.data!.lastLogin!;
+        LocalDB.setLastLogin = userModel.data!.lastLogin ?? "";
 
         EasyLoading.showSuccess("login_success".tr);
         return true;

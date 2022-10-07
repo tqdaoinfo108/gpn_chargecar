@@ -48,7 +48,9 @@ Widget profilePage(BuildContext context, HomeController controller) {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  controller.homeData.value.userModel!.imagesPaths!.isNotEmpty
+                  controller.homeData.value.userModel!.imagesPaths!
+                          .trim()
+                          .isNotEmpty
                       ? Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
