@@ -68,8 +68,7 @@ class ChargingPageController extends GetxController {
         booking = BookingDetail(bookId: bookingInsertModel.value.bookingID);
         isShowStop.value = true;
         countController.value.isShow = true;
-        initialDuration.value = DateTime.now().millisecondsSinceEpoch ~/ 1000 -
-            bookingInsertModel.value.timeStartWhenExist!;
+        initialDuration.value = bookingInsertModel.value.timeStartWhenExist!;
         duration.value = listChargingModel.firstWhere((element) =>
             element.value == (bookingInsertModel.value.timeStopCharging ?? 0));
 
@@ -114,7 +113,7 @@ class ChargingPageController extends GetxController {
         await onCheckBookingExits();
       });
       mqttClient.client.subscribe(
-          bookingInsertModel.value.topicName ?? "#", MqttQos.exactlyOnce);
+          bookingInsertModel.value.topicName ?? "#", MqttQos.atLeastOnce);
 
       var response = await HttpClientLocal().postInsertBooking(
           bookingInsertModel.value.qrCode ?? "",
