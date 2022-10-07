@@ -61,9 +61,9 @@ class SignInPage extends GetView<SignInController> {
                     return 'dont_blank'.tr;
                   }
 
-                  // if (!value.isEmail) {
-                  //   return "Email don't incorect";
-                  // }
+                  if (!s.isEmail) {
+                    return "Email don't incorect";
+                  }
                 },
                 onChanged: (s) {
                   controller.signInEmail.value = s;
