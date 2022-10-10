@@ -80,8 +80,8 @@ class LanguageTranslations extends Translations {
           'create_booking_success': 'Create booking charging success',
           'charging_order_completed': 'Charging order completed',
           'reset_password': 'Reset password',
-          'from': 'From',
-          'to': 'To',
+          'from': 'From %1\$',
+          'to': 'To %1\$',
         },
         'jp_JP': {
           'home': 'ホーム',
@@ -157,8 +157,8 @@ class LanguageTranslations extends Translations {
           'create_booking_success': '充電開始しました！',
           'charging_order_completed': '充電完了しました！',
           'reset_password': 'パスワード再設定',
-          'from': 'から',
-          'to': '迄',
+          'from': '%1\$から',
+          'to': '%1\$迄',
         }
       };
 }

@@ -11,6 +11,15 @@ Widget historyPage(BuildContext context, HomeController controller) {
   var theme = Theme.of(context);
   final controller = Get.put(HomeController());
 
+  String interpolate(String string, List<String> params) {
+    String result = string;
+    for (int i = 1; i < params.length + 1; i++) {
+      result = result.replaceAll('%${i}\$', params[i - 1]);
+    }
+
+    return result;
+  }
+
   GestureDetector itemHistory(context, BookingDetail data) {
     return GestureDetector(
       child: Container(
@@ -53,7 +62,8 @@ Widget historyPage(BuildContext context, HomeController controller) {
               ),
               const SizedBox(height: Space.small),
               Text(
-                "${'from'.tr}: ${Functions.getDateTimeString(data.dateStart)}",
+                interpolate(
+                    'from'.tr, [Functions.getDateTimeString(data.dateStart)]),
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1!
@@ -61,7 +71,8 @@ Widget historyPage(BuildContext context, HomeController controller) {
               ),
               const SizedBox(height: Space.small),
               Text(
-                "${'to'.tr}: ${Functions.getDateTimeString(data.dateEnd)}",
+                interpolate(
+                    'to'.tr, [Functions.getDateTimeString(data.dateEnd)]),
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1!
