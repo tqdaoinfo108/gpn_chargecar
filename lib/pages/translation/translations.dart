@@ -158,7 +158,7 @@ class LanguageTranslations extends Translations {
           'charging_order_completed': '充電完了しました！',
           'reset_password': 'パスワード再設定',
           'from': '%1\$から',
-          'to': '%1\$迄',
+          'to': '%1\$まで',
         }
       };
 }

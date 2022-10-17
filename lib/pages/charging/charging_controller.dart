@@ -26,7 +26,8 @@ class ChargingModel {
   ChargingModel(this.title, this.isChoose, this.duration, this.value);
 }
 
-class ChargingPageController extends GetxController {
+class ChargingPageController extends GetxController
+    with WidgetsBindingObserver {
   // late Rx<PieAnimationController?> countController = Rx(null);
   late Rx<CountDownController> countController = Rx(CountDownController());
 
@@ -54,8 +55,47 @@ class ChargingPageController extends GetxController {
   bool isStart = false;
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    print('state = $state');
+    if (state == AppLifecycleState.resumed) {
+      onLoadDetail();
+    }
+  }
+
+  Future<void> checkBookingExist() async {
+    if (LocalDB.getUserID == 0) return;
+
+    try {
+      var response =
+          await HttpClientLocal().getBookingExist(LocalDB.getUserID, 0);
+      var booking = BookingInsertModel.getBookingInsertResponse(response.data);
+      if (booking.message == null) {
+        bookingInsertModel.value = booking.data!;
+      } else {
+        Get.back(result: {"page": "1"});
+      }
+      // ignore: empty_catches
+    } catch (e) {}
+  }
+
+  Future onLoadDetail() async {
+    await checkBookingExist();
+    initialDuration.value = bookingInsertModel.value.timeStartWhenExist!;
+    initialDuration.refresh();
+  }
+
+  @override
+  onClose() {
+    super.onClose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
   void onInit() {
     super.onInit();
+    WidgetsBinding.instance.addObserver(this);
+
     bookingInsertModel.value = Get.arguments;
     isInnerPage = true;
 
