@@ -82,7 +82,11 @@ class ChargingPageController extends GetxController
   Future onLoadDetail() async {
     await checkBookingExist();
     initialDuration.value = bookingInsertModel.value.timeStartWhenExist!;
-    initialDuration.refresh();
+    countController.value.setTime(bookingInsertModel.value.timeStartWhenExist!);
+    if (LocalDB.isDebug)
+      // ignore: curly_braces_in_flow_control_structures
+      EasyLoading.showToast(
+          "Cập nhật time ${Duration(seconds: bookingInsertModel.value.timeStartWhenExist!).toString()}");
   }
 
   @override

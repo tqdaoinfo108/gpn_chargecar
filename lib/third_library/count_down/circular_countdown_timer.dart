@@ -184,7 +184,7 @@ class CircularCountDownTimerState extends State<CircularCountDownTimer>
   }
 
   String _getTime(Duration duration) {
-    return !countDownController!.isShow ? "" :  _defaultFormat(duration);
+    return !countDownController!.isShow ? "" : _defaultFormat(duration);
   }
 
   _defaultFormat(Duration duration) {
@@ -368,6 +368,12 @@ class CountDownController {
   String getTime() {
     return _state
         ._getTime(_state._controller!.duration! * _state._controller!.value);
+  }
+
+  void setTime(int seconds) {
+    _state._controller!.stop();
+    _initialDuration = seconds;
+    start();
   }
 }
 
