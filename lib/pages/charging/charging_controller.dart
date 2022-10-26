@@ -63,8 +63,8 @@ class ChargingPageController extends GetxController
     }
   }
 
-  Future<void> checkBookingExist() async {
-    if (LocalDB.getUserID == 0) return;
+  Future<bool> checkBookingExist() async {
+    if (LocalDB.getUserID == 0) return false;
 
     try {
       var response =
@@ -72,21 +72,34 @@ class ChargingPageController extends GetxController
       var booking = BookingInsertModel.getBookingInsertResponse(response.data);
       if (booking.message == null) {
         bookingInsertModel.value = booking.data!;
+        return true;
       } else {
         Get.back(result: {"page": "1"});
+        return false;
       }
       // ignore: empty_catches
-    } catch (e) {}
+    } catch (e) {
+      Get.back(result: {"page": "1"});
+      return false;
+    }
   }
 
   Future onLoadDetail() async {
-    await checkBookingExist();
-    initialDuration.value = bookingInsertModel.value.timeStartWhenExist!;
-    countController.value.setTime(bookingInsertModel.value.timeStartWhenExist!);
-    if (LocalDB.isDebug)
-      // ignore: curly_braces_in_flow_control_structures
-      EasyLoading.showToast(
-          "Cập nhật time ${Duration(seconds: bookingInsertModel.value.timeStartWhenExist!).toString()}");
+    var isResult = await checkBookingExist();
+    if (isResult) {
+      initialDuration.value = bookingInsertModel.value.timeStartWhenExist!;
+      countController.value
+          .setTime(bookingInsertModel.value.timeStartWhenExist!);
+      if (LocalDB.isDebug)
+        // ignore: curly_braces_in_flow_control_structures
+        EasyLoading.showToast(
+            "Cập nhật time ${Duration(seconds: bookingInsertModel.value.timeStartWhenExist!).toString()}");
+      await mqttClient.init((p0) => onMQTTCalled(p0), (() async {
+        await onCheckBookingExits();
+      }));
+      mqttClient.client.subscribe(
+          bookingInsertModel.value.topicName ?? "#", MqttQos.atLeastOnce);
+    }
   }
 
   @override
