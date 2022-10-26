@@ -73,13 +73,12 @@ class ChargingPageController extends GetxController
       if (booking.message == null) {
         bookingInsertModel.value = booking.data!;
         return true;
-      } else {
-        Get.back(result: {"page": "1"});
-        return false;
       }
-      // ignore: empty_catches
-    } catch (e) {
-      Get.back(result: {"page": "1"});
+      return false;
+    } on Exception catch (_, ex) {
+      if (_.toString().contains("400")) {
+        Get.back(result: {"page": "1"});
+      }
       return false;
     }
   }
