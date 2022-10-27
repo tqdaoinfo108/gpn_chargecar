@@ -77,7 +77,12 @@ class ChargingPageController extends GetxController
       return false;
     } on Exception catch (_, ex) {
       if (_.toString().contains("400")) {
-        Get.back(result: {"page": "1"});
+        mqttClient.client.disconnect();
+        if (isInnerPage) {
+          Get.back(result: {"page": "1"});
+        }
+        isInnerPage = false;
+        isStart = false;
       }
       return false;
     }
@@ -94,7 +99,8 @@ class ChargingPageController extends GetxController
         EasyLoading.showToast(
             "Cập nhật time ${Duration(seconds: bookingInsertModel.value.timeStartWhenExist!).toString()}");
       await mqttClient.init((p0) => onMQTTCalled(p0), (() async {
-        await onCheckBookingExits();
+        await Future.delayed(const Duration(seconds: 2));
+        await checkBookingExist();
       }));
       mqttClient.client.subscribe(
           bookingInsertModel.value.topicName ?? "#", MqttQos.atLeastOnce);
@@ -129,7 +135,8 @@ class ChargingPageController extends GetxController
             element.value == (bookingInsertModel.value.timeStopCharging ?? 0));
 
         await mqttClient.init((p0) => onMQTTCalled(p0), (() async {
-          await onCheckBookingExits();
+          await Future.delayed(const Duration(seconds: 2));
+          await checkBookingExist();
         }));
         mqttClient.client.subscribe(
             bookingInsertModel.value.topicName ?? "#", MqttQos.atLeastOnce);
@@ -137,19 +144,6 @@ class ChargingPageController extends GetxController
         countController.value.start();
       }
     });
-  }
-
-  Future onCheckBookingExits() async {
-    if (LocalDB.getUserID == 0) return;
-
-    try {
-      await HttpClientLocal().getListBookingDetail(-100, 1);
-    } catch (e) {
-      mqttClient.client.disconnect();
-      isInnerPage = false;
-      Get.back(result: {"page": "1"});
-      return;
-    }
   }
 
   onChoose(ChargingModel choose) {
@@ -164,9 +158,9 @@ class ChargingPageController extends GetxController
   Future insertQRCode() async {
     try {
       EasyLoading.show();
-
       await mqttClient.init((p0) => onMQTTCalled(p0), () async {
-        await onCheckBookingExits();
+        await Future.delayed(const Duration(seconds: 2));
+        await checkBookingExist();
       });
       mqttClient.client.subscribe(
           bookingInsertModel.value.topicName ?? "#", MqttQos.atLeastOnce);
@@ -210,11 +204,8 @@ class ChargingPageController extends GetxController
           arrPayload[1].length, (index) => arrPayload[1][index]);
       int? index = int.tryParse(bookingInsertModel.value.charingPostId_Child!);
       if (arrChargingPost[index! - 1] == "0") {
-        mqttClient.client.disconnect();
-        isInnerPage = false;
-        isStart = false;
         await Future.delayed(const Duration(seconds: 1));
-        Get.back(result: {"page": "1"});
+        await checkBookingExist();
       } else if (arrChargingPost[index - 1] == "1") {
         if (!isStart) {
           isStart = true;
