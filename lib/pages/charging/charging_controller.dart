@@ -223,7 +223,6 @@ class ChargingPageController extends GetxController
     super.dispose();
     isInnerPage = false;
     isStart = false;
-    mqttClient.client.disconnect();
     EasyLoading.dismiss();
   }
 
